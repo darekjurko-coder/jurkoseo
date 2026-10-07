@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>JURKO AI Marketing Hub</title>
+<style>
+:root{--nav:#0f2232;--nav2:#15374f;--blue:#1769ff;--bg:#f2f6fa;--card:#fff;--text:#122033;--muted:#6a7a8d;--line:#dfe7ef;--green:#18a765;--orange:#f0a21c;--red:#e34d4d;--purple:#6d5ce7;--cyan:#1598c7}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select,textarea{font:inherit}.app{display:grid;grid-template-columns:230px minmax(720px,1fr) 360px;min-height:100vh}.side{background:linear-gradient(180deg,var(--nav),#102a3e);color:#fff;padding:16px 14px;position:sticky;top:0;height:100vh;overflow:auto}.brand{font-size:28px;font-weight:900;letter-spacing:.5px}.brand small{font-size:13px;font-weight:600;margin-left:8px;opacity:.85}.subtitle{font-size:10px;color:#9eb3c6;margin:4px 0 18px}.nav button{display:flex;align-items:center;gap:9px;width:100%;padding:10px 11px;border:0;border-radius:8px;background:transparent;color:#deebf5;text-align:left;cursor:pointer;margin:3px 0;font-size:12px}.nav button:hover,.nav button.active{background:var(--blue);color:#fff}.main{padding:16px;overflow:auto}.right{background:#f8fafc;border-left:1px solid var(--line);padding:14px;overflow:auto}.topbar{display:flex;align-items:center;gap:10px;margin-bottom:12px}.page-title{font-size:22px;font-weight:900;flex:1}.search{width:min(430px,48vw);padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}.save{font-size:11px;color:var(--muted)}
+.area-switch{display:flex;gap:8px;margin:0 0 12px}.area-switch button{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px;font-weight:900;cursor:pointer}.area-switch button.active{background:linear-gradient(90deg,#1769ff,#167be8);color:#fff;border-color:#1769ff}
+.view{display:none}.view.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;box-shadow:0 1px 2px rgba(17,38,58,.04)}.title{font-weight:900;margin-bottom:9px}.muted{color:var(--muted)}.small{font-size:11px}.kpis{display:grid;grid-template-columns:repeat(5,minmax(110px,1fr));gap:9px}.kpi .label{font-size:11px;color:var(--muted)}.kpi .value{font-size:24px;font-weight:900;margin-top:5px}.grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:10px;margin-top:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0}.toolbar input,.toolbar select{padding:8px 9px;border:1px solid var(--line);border-radius:8px;background:#fff}.btn{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-weight:750;font-size:12px}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.green{background:var(--green);border-color:var(--green);color:#fff}.btn.danger{color:var(--red)}table{width:100%;border-collapse:collapse;font-size:11.5px}th,td{padding:7px 8px;border-bottom:1px solid #edf1f5;text-align:left;vertical-align:top}th{background:#f6f8fb;position:sticky;top:0;z-index:2}.tablewrap{max-height:540px;overflow:auto;border:1px solid var(--line);border-radius:9px}.tag{display:inline-block;font-size:10px;padding:3px 7px;border-radius:999px;font-weight:800;background:#edf1f5;color:#5a6b7b}.tag.seo{background:#e5f7ef;color:#0a8155}.tag.ads{background:#fff1d6;color:#996000}.tag.both{background:#eee9ff;color:#6547c9}.tag.exclude{background:#ffe3e3;color:#b52b24}.tag.ok{background:#e6f7ee;color:#0a8252}.tag.warn{background:#fff1d9;color:#9a6500}.tag.blue{background:#e8f0ff;color:#1769ff}.prio{font-weight:900}.prio.A{color:#bd2b24}.prio.B{color:#aa6800}.prio.C{color:#647587}.action{display:flex;justify-content:space-between;gap:9px;padding:9px 0;border-bottom:1px solid #edf1f5}.action:last-child{border-bottom:0}.reco{border-left:4px solid var(--blue);background:#fff;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:8px;padding:10px;margin:7px 0}.reco.high{border-left-color:var(--red)}.reco.good{border-left-color:var(--green)}.rtitle{font-weight:900;margin-bottom:4px}.why{font-size:11px;color:var(--muted);margin-top:4px}.note{background:#fff8e6;border:1px solid #efddb3;border-radius:8px;padding:9px;font-size:11.5px}.statrow{display:flex;justify-content:space-between;border-bottom:1px solid #edf1f5;padding:7px 0;font-size:12px}.company-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.company{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;cursor:pointer}.company:hover{border-color:#9bbcff}.company b{display:block}.company .meta{font-size:10.5px;color:var(--muted);margin-top:4px}.split{display:grid;grid-template-columns:180px 1fr;gap:10px}.filters{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px;height:max-content}.filters button{width:100%;text-align:left;padding:8px;border:0;border-radius:7px;background:transparent;cursor:pointer}.filters button.active,.filters button:hover{background:#eef4ff;color:var(--blue)}.spark{width:100%;height:50px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.period-tabs{display:flex;gap:5px;flex-wrap:wrap}.period-tabs button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 8px;cursor:pointer;font-size:11px}.period-tabs button.active{background:var(--blue);color:#fff}.statusdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}.greenDot{background:var(--green)}.orangeDot{background:var(--orange)}.redDot{background:var(--red)}.grayDot{background:#a9b4c0}.right-tabs{display:flex;gap:5px}.right-tabs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px;cursor:pointer;font-size:11px}.right-tabs button.active{background:var(--blue);color:#fff}.empty{padding:24px;text-align:center;color:var(--muted)}.hidden{display:none}.modal{position:fixed;inset:0;background:rgba(10,25,38,.5);display:none;align-items:center;justify-content:center;z-index:50}.modal.open{display:flex}.modalbox{background:#fff;border-radius:14px;padding:16px;width:min(760px,93vw);max-height:90vh;overflow:auto}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.formgrid label{font-size:11px;font-weight:800}.formgrid input,.formgrid select,.formgrid textarea{width:100%;padding:8px;border:1px solid var(--line);border-radius:7px;margin-top:3px}.full{grid-column:1/-1}.foot{display:flex;justify-content:flex-end;gap:7px;margin-top:12px}
+.market-score{display:flex;align-items:center;gap:8px}.scorebar{flex:1;height:7px;background:#edf1f5;border-radius:99px;overflow:hidden}.scorefill{height:100%;background:var(--blue);border-radius:99px}.gapbox{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.gapitem{border:1px solid var(--line);border-radius:9px;padding:9px;background:#fff}.gapitem b{display:block;font-size:18px;margin-top:3px}.comp-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}.comp-head select{padding:7px 8px;border:1px solid var(--line);border-radius:7px;background:#fff}.rank-up{color:var(--green);font-weight:800}.rank-down{color:var(--red);font-weight:800}.rank-na{color:var(--muted)}
+@media(max-width:1320px){.app{grid-template-columns:210px 1fr}.right{grid-column:2}.kpis{grid-template-columns:repeat(3,1fr)}.company-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:850px){.app{display:block}.side{position:static;height:auto}.right{border-left:0}.kpis,.grid2,.grid3,.grid4,.company-grid,.formgrid,.split{grid-template-columns:1fr}.search{width:100%}.topbar{flex-wrap:wrap}}
+
+.tierA,.tierB,.tierC{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.tierA{background:#dcfce7;color:#166534}.tierB{background:#dbeafe;color:#1d4ed8}.tierC{background:#f3f4f6;color:#4b5563}
+
+.ads-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 12px}
+.ads-tabs button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer}
+.ads-tabs button.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.ads-panel{display:none}.ads-panel.active{display:block}
+.chip-cloud{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1px solid #b8cdfa;background:#fff;border-radius:999px;padding:6px 10px;font-size:12px;line-height:1.2}
+.chip.good{background:#ecfdf5;border-color:#a7f3d0}.chip.warn{background:#fff7ed;border-color:#fed7aa}.chip.bad{background:#fef2f2;border-color:#fecaca}
+
+.competitor-mini{border:1px solid var(--line);border-radius:9px;padding:9px;margin:6px 0;background:#fff;cursor:pointer}
+.competitor-mini:hover{border-color:#94a3b8;box-shadow:0 2px 8px rgba(15,23,42,.08)}
+.competitor-mini .name{font-weight:900}.competitor-mini .meta{font-size:11px;color:var(--muted);margin-top:3px}
+.comp-detail{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;margin-top:8px}
+.comp-detail .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.comp-detail .chips span{font-size:10px;padding:4px 7px;border-radius:999px;background:#eef3ff;color:#2456a8}
+
+.company{cursor:pointer;transition:.15s}
+.company:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(15,23,42,.08);border-color:#8fb5ff}
+.company.active{outline:2px solid #2878ff;background:#f7fbff}
+.factory-detail-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:10px}
+.factory-keywords{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.factory-keywords span{background:#eef4ff;border:1px solid #d8e5ff;border-radius:999px;padding:5px 8px;font-size:11px}
+@media(max-width:900px){.factory-detail-grid{grid-template-columns:1fr}}
+
+.gbp-manage-panel{margin-top:10px}
+.queue-item{border:1px solid var(--line);border-radius:10px;padding:9px;margin:7px 0;background:#fff}
+.queue-item .qhead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.queue-item .qmeta{font-size:11px;color:var(--muted);margin-top:4px}
+.queue-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.queue-actions button{font-size:10px;padding:5px 7px}
+
+.gbp-source-grid{display:grid;grid-template-columns:1fr 1.1fr 1.4fr auto;gap:8px;align-items:end}.gbp-source-grid label{font-size:11px;font-weight:800}.gbp-source-grid select,.gbp-source-grid input{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:#fff}.gbp-pipeline{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.gbp-pipeline span{font-size:10px;padding:5px 8px;border-radius:999px;background:#eef4ff;color:#2456a8;font-weight:800}.source-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.queue-mini{margin-top:8px;border-top:1px solid var(--line);padding-top:8px}@media(max-width:900px){.gbp-source-grid{grid-template-columns:1fr}}
+
+.gbp-workflow{margin-top:10px}.gbp-workflow-head{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 10px}.gbp-stage{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;font-weight:800;font-size:12px;cursor:pointer}.gbp-stage.active{background:var(--blue);border-color:var(--blue);color:#fff}.gbp-stage .count{display:inline-block;margin-left:5px;min-width:20px;padding:1px 5px;border-radius:999px;background:#eef4ff;color:#2454a6;font-size:10px}.gbp-stage.active .count{background:rgba(255,255,255,.2);color:#fff}.workflow-note{font-size:11px;color:var(--muted);margin-bottom:7px}.workflow-card{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;background:#fff}.workflow-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.workflow-kind{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.workflow-empty{padding:18px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand">JURKO <small>AI Marketing Hub</small></div>
+  <div class="subtitle">SEO • Ads • Social • Newsletter • Partnerzy • Treści</div>
+  <div class="nav" id="nav">
+    <button class="active" data-view="dashboard">⌂ Pulpit</button>
+    <button data-view="marketing">◉ Marketing / SEO</button>
+    <button data-view="keywords">⌕ Słowa MASTER</button>
+    <button data-view="history">◷ Historia wyszukiwań</button>
+    <button data-view="factories">▦ Fabryki i producenci</button>
+    <button data-view="ads">◎ Google Ads</button>
+    <button data-view="maps">⌖ Google Firma / Maps</button>
+    <button data-view="seo">↗ SEO / GBP</button>
+    <button data-view="senuto">◫ Senuto</button>
+    <button data-view="searchconsole">⌁ Search Console</button>
+    <button data-view="content">✎ Treści i artykuły</button>
+    <button data-view="social">◍ Social Media</button>
+    <button data-view="newsletter">✉ Newsletter / E-mail</button>
+    <button data-view="designers">♙ Biura projektowe</button>
+    <button data-view="campaigns">▣ Kampanie</button>
+    <button data-view="competition">◈ Konkurencja / Localo</button>
+    <button data-view="reports">▤ Raporty</button>
+    <button data-view="drive">▱ Pliki / Google Drive</button>
+    <button data-view="integrations">⚙ Integracje</button>
+    <button data-view="settings">⚙ Ustawienia</button>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar"><div class="page-title" id="pageTitle">Pulpit</div><input class="search" id="globalSearch" placeholder="Szukaj frazy, producenta, kolekcji, kampanii…"><div class="save" id="saveInfo">Dane zapisują się lokalnie</div></div>
+  <div class="area-switch"><button id="tilesBtn" class="active">Płytki ceramiczne</button><button id="buildingBtn">Materiały budowlane</button></div>
+
+  <section id="dashboard" class="view active">
+    <div class="kpis" id="dashKpis"></div>
+    <div class="grid2"><div class="card"><div class="section-head"><div class="title">Najważniejsze frazy i trendy</div><span class="tag blue">TOP 10</span></div><div id="dashTop"></div></div><div class="card"><div class="title">Co wymaga uwagi</div><div id="dashAlerts"></div></div></div>
+    <div class="grid2"><div class="card"><div class="title">Rekomendacje AI</div><div id="dashRecos"></div></div><div class="card"><div class="title">Plan 14 dni</div><div id="plan14"></div></div></div>
+  </section>
+
+  <section id="marketing" class="view">
+    <div class="kpis" id="marketingKpis"></div>
+    <div class="grid2"><div class="card"><div class="title">SEO + Ads: priorytety</div><div id="marketingPriorities"></div></div><div class="card"><div class="title">Lejek danych</div><div id="dataFunnel"></div></div></div>
+  </section>
+
+  <section id="keywords" class="view">
+    <div class="card"><div class="section-head"><div class="title">Słowa MASTER</div><button class="btn primary" id="addKeyword">+ Dodaj słowo</button></div>
+      <div class="toolbar"><input id="searchKw" placeholder="Fraza / marka / kolekcja"><select id="decisionFilter"><option value="">Wszystkie decyzje</option><option>SEO</option><option>Ads</option><option>SEO + Ads</option><option>Wyklucz</option><option>Do sprawdzenia</option></select><select id="priorityFilter"><option value="">Priorytet</option><option>A</option><option>B</option><option>C</option></select><select id="sourceFilter"><option value="">Źródło</option><option>GBP</option><option>Google Ads</option><option>Search Console</option><option>Localo</option><option>Senuto</option><option>Plan SEO</option><option>Ręczne</option></select><button class="btn" id="exportCsv">Eksport CSV</button></div>
+      <div class="tablewrap"><table><thead><tr><th>Fraza</th><th>Marka / grupa</th><th>Decyzja</th><th>Priorytet</th><th>Źródło</th><th>Warszawa</th><th>Polska</th><th>Pozycja</th><th>Ads koszt</th><th>Konw.</th><th></th></tr></thead><tbody id="keywordRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="history" class="view">
+    <div class="card"><div class="section-head"><div class="title">Historia wyszukiwań — Warszawa / Polska</div><div class="period-tabs" id="periodTabs"><button data-period="quarter" class="active">Kwartał</button><button data-period="half">Półrocze</button><button data-period="year">Rok</button></div></div>
+      <div class="note">Nie wymyślamy brakujących wolumenów. Jeżeli API nie zwróciło historycznych danych, aplikacja pokazuje „brak danych”. Po podłączeniu Keyword Planner / Search Console / Localo tabela wypełni się automatycznie.</div>
+      <div class="toolbar"><input id="historySearch" placeholder="Szukaj frazy lub producenta"><select id="geoFilter"><option value="all">Warszawa + Polska</option><option value="Warszawa">Warszawa</option><option value="Polska">Polska</option></select></div>
+      <div class="tablewrap"><table><thead><tr><th>Fraza</th><th>Producent / grupa</th><th>Obszar</th><th>Okres</th><th>Wolumen</th><th>Zmiana</th><th>Trend</th><th>Źródło</th><th>Rekomendacja</th></tr></thead><tbody id="historyRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="factories" class="view">
+    <div class="toolbar"><input id="factorySearch" placeholder="Szukaj fabryki / marki..." style="max-width:420px"><span class="tag blue">Źródło: 01 Kontakty fabryki włoskie Cersait 2026</span></div>
+    <div class="split"><div class="filters" id="factoryFilters"><button class="active" data-group="all">Wszyscy</button><button data-group="partner">Współpracujemy</button><button data-group="cersaie">Cersaie 2026 / nowe</button><button data-group="poland">Polskie</button><button data-group="italy">Włoskie</button><button data-group="spain">Hiszpańskie</button><button data-group="portugal">Portugalskie</button><button data-group="building">Budowlane</button></div><div><div class="company-grid" id="companyGrid"></div><div id="factoryDetail" class="card" style="margin-top:10px"></div></div></div>
+    <div class="card" style="margin-top:10px"><div class="section-head"><div class="title">Porównanie producentów / fabryk</div><span class="tag blue">wolumen miesięczny tylko z Senuto / Keyword Planner</span></div>
+      <div class="note"><b>Ważne:</b> dane GBP Jan–Sep 2026 są sumą zapytań do wizytówki w tym okresie, a nie miesięcznym wolumenem Google. Dlatego miesięczne kolumny są wypełniane tylko danymi porównywalnymi z Senuto / Keyword Planner.</div>
+      <div class="tablewrap"><table><thead><tr><th>Producent</th><th>Kraj</th><th>Status</th><th>Frazy</th><th>Warszawa / mies.</th><th>Polska / mies.</th><th>GBP / inne dane</th><th>Okres / źródło</th><th>Trend 12M</th><th>Potencjał</th><th>Decyzja</th></tr></thead><tbody id="factoryRows"></tbody></table></div></div>
+
+    <div class="card" style="margin-top:10px">
+      <div class="section-head"><div class="title">Analiza fabryki: SEO + Google Ads</div><span class="tag blue">wspólny moduł decyzyjny</span></div>
+      <div class="note"><b>Nie zapisujemy tego tylko w Senuto ani tylko w Google Ads.</b> Senuto dostarcza dane SEO, a Google Ads dane reklamowe. Wynik łączymy tutaj — przy konkretnej fabryce i kolekcji — żeby aplikacja mogła powiedzieć, co reklamować, jaką stawką startową i kiedy.</div>
+      <div class="tablewrap" style="margin-top:9px"><table>
+        <thead><tr><th>Fabryka / kolekcja</th><th>Fraza</th><th>Senuto: wolumen / trend / pozycja</th><th>Google Ads: konkurencja / CPC</th><th>Godziny i dni</th><th>Decyzja</th><th>Priorytet</th></tr></thead>
+        <tbody id="factoryDecisionRows"></tbody>
+      </table></div>
+      <div class="grid3" style="margin-top:10px">
+        <div class="note"><b>Źródło: Senuto</b><br>wolumen, trend, pozycje, widoczność, konkurenci, luka SEO.</div>
+        <div class="note"><b>Źródło: Google Ads</b><br>stawki, konkurencja reklamowa, kliknięcia, koszt, konwersje, godzina i dzień.</div>
+        <div class="note"><b>JURKO AI</b><br>łączy oba źródła i oznacza: reklamować / SEO / oba / obserwować.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ads" class="view">
+    <div class="card">
+      <div class="section-head"><div class="title">Google Ads — Płytki</div><span class="tag ok">konto 210-315-9630</span></div>
+      <div class="ads-tabs" id="adsTabs">
+        <button class="active" data-tab="searchterms">Wyniki wyszukiwań klientów</button>
+        <button data-tab="keywords">Słowa kluczowe kampanii</button>
+        <button data-tab="history">Historia i statystyki</button>
+        <button data-tab="campaigns">Kampanie</button>
+      </div>
+    </div>
+
+    <div id="adsTab_searchterms" class="ads-panel active">
+      <div class="grid2">
+        <div class="card">
+          <div class="section-head"><div class="title">Najczęstsze wyszukiwania klientów</div><span class="tag blue">rzeczywiste zapytania</span></div>
+          <div class="note">To są hasła faktycznie wpisywane przez użytkowników w Google, które spowodowały wyświetlenie reklamy.</div>
+          <div class="chip-cloud" id="adsSearchCloud" style="margin-top:10px"></div>
+        </div>
+        <div class="card">
+          <div class="title">Najlepsze hasła wg konwersji</div>
+          <div id="adsSearchWinners"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:10px">
+        <div class="section-head"><div class="title">Wyniki wyszukiwań — tabela</div><span class="tag">od 01.01.2025</span></div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Hasło klienta</th><th>Kampania</th><th>Wyświetlenia</th><th>Kliknięcia</th><th>CTR</th><th>Koszt</th><th>Konwersje</th><th>Koszt/konw.</th><th>Ocena AI</th></tr></thead>
+          <tbody id="adsSearchTermRows"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div id="adsTab_keywords" class="ads-panel">
+      <div class="grid2">
+        <div class="card">
+          <div class="title">Słowa kluczowe ustawione w kampaniach</div>
+          <div class="note">Tu widzisz słowa, które były ustawione przez nas w Google Ads. To nie to samo co faktyczne wyszukiwane hasła klientów.</div>
+          <div class="tablewrap" style="margin-top:8px"><table>
+            <thead><tr><th>Słowo</th><th>Dopasowanie</th><th>Wyświetlenia</th><th>Kliknięcia</th><th>Koszt</th><th>Konwersje</th><th>Ocena</th></tr></thead>
+            <tbody id="adsKeywordHistoryRows"></tbody>
+          </table></div>
+        </div>
+        <div class="card">
+          <div class="title">Co zrobić ze słowami</div>
+          <div id="adsKeywordActions"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="adsTab_history" class="ads-panel">
+      <div class="card">
+        <div class="section-head"><div class="title">Historia Google Ads od 01.01.2025</div><span class="tag ok">pobrano z Google Ads API</span></div>
+        <div class="grid3" id="adsHistoryKpis" style="margin-top:10px"></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="title">Urządzenia</div>
+          <div class="tablewrap"><table><thead><tr><th>Urządzenie</th><th>Wyświetlenia</th><th>Kliknięcia</th><th>Koszt</th><th>Konwersje</th></tr></thead><tbody id="adsDeviceRows"></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="title">Najlepsze dni i godziny</div>
+          <div class="tablewrap"><table><thead><tr><th>Dzień</th><th>Godzina</th><th>Kliknięcia</th><th>Koszt</th><th>Konwersje</th></tr></thead><tbody id="adsHourRows"></tbody></table></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:10px">
+        <div class="title">Historia kampanii miesiąc po miesiącu</div>
+        <div class="tablewrap"><table><thead><tr><th>Miesiąc</th><th>Kampania</th><th>Wyświetlenia</th><th>Kliknięcia</th><th>Koszt</th><th>Konwersje</th></tr></thead><tbody id="adsCampaignHistoryRows"></tbody></table></div>
+      </div>
+    </div>
+
+    <div id="adsTab_campaigns" class="ads-panel">
+      <div class="grid2">
+        <div class="card"><div class="title">Google Ads</div><div id="adsSummary"></div></div>
+        <div class="card"><div class="title">Kontrola kampanii</div><div class="action"><span>Konto JURKO</span><span class="tag ads">210-315-9630</span></div><div class="action"><span>Manager</span><span class="tag ads">603-777-7052</span></div><div class="action"><span>API</span><span class="tag ok">połączono</span></div></div>
+      </div>
+      <div class="card" style="margin-top:10px"><div class="title">Status kampanii</div><div id="campaignSummary"></div></div>
+      <div class="card" style="margin-top:10px"><div class="title">Słowa oznaczone do Google Ads</div><div class="tablewrap"><table><thead><tr><th>Fraza</th><th>Dopasowanie</th><th>Status</th><th>Wyświetlenia</th><th>Kliknięcia</th><th>Koszt</th><th>Konwersje</th></tr></thead><tbody id="adsRows"></tbody></table></div></div>
+    </div>
+  </section>
+
+
+
+  <section id="maps" class="view">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="title">Google Firma / Maps — centrum zarządzania JURKO</div>
+          <div class="muted small">Profil Firmy Google • automat co 3 dni • fal.ai • Canva • wpisy • SEO lokalne • opinie • wyniki</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <a class="btn" href="https://business.google.com/" target="_blank" rel="noopener">Otwórz Google Business</a>
+          <a class="btn" href="https://drive.google.com/drive/folders/1_wOz68J5qPPkrR0QgpezQQPzW5PG9Ho9" target="_blank" rel="noopener">Otwórz Drive JURKO</a>
+        </div>
+      </div>
+      <div class="note" style="margin-top:9px"><b>Cel:</b> z jednego miejsca sterujesz całym procesem Google JURKO. <b>Automat publikacji jest aktywny:</b> co 3 dni wybiera kolekcję z 5 priorytetowych producentów, przygotowuje wizualizacje w fal.ai, branding w Canvie, tekst SEO i publikuje post w Profilu Firmy Google. Co 10 postów wykonywana jest analiza wyników.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <label style="min-width:260px"><span class="small muted">Profil firmy</span>
+          <select id="gbpProfileSelect">
+            <option value="tiles">JURKO — płytki / łazienki</option>
+            <option value="building">JURKO — materiały budowlane</option>
+          </select>
+        </label>
+        <span class="tag ok">GBP API połączone</span>
+        <span class="tag blue">PLAN: co 3 dni</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <div class="section-head"><div><div class="title">Co publikujemy jako następne?</div><div class="muted small">Wybierz producenta i kolekcję albo wpisz własną. Automat wykorzysta oficjalną stronę producenta jako źródło i materiały z Drive.</div></div><span class="tag blue">PLAN: co 3 dni</span></div>
+      <div class="gbp-source-grid" style="margin-top:10px">
+        <label>Producent<select id="autoProducer"></select></label>
+        <label>Kolekcja<select id="autoCollection"></select></label>
+        <label>Lub wpisz kolekcję ręcznie<input id="autoCollectionCustom" placeholder="np. Grand Cave"></label>
+        <button class="btn primary" id="autoAddQueue">Dodaj do kolejki</button>
+      </div>
+      <div class="toolbar" style="margin-top:8px"><label style="flex:1;min-width:320px"><span class="small muted">Folder / plik na Google Drive</span><input id="autoDriveLink" placeholder="Wklej link do folderu kolekcji lub zdjęcia z Drive" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px"></label><button class="btn" id="autoUseDrive">Użyj materiałów z Drive</button></div>
+      <div class="source-links" id="autoSourceLinks"></div>
+      <div class="gbp-pipeline"><span>1. źródła producenta</span><span>2. fal.ai / Nano Banana 2</span><span>3. Canva / JURKO</span><span>4. tekst + słowa kluczowe</span><span>5. Google Firma</span><span>6. analiza co 10 postów</span></div>
+      <div class="queue-mini"><div class="small muted">Kolejka publikacji</div><div id="autoPublishQueue"></div><div class="note" style="margin-top:8px"><b>Ważne:</b> kolejka jest obecnie zapisywana w tej przeglądarce. Historia LIVE poniżej pokazuje faktyczne wpisy Google zsynchronizowane 05.10.2026. Docelowo kolejkę zapiszemy centralnie, żeby nic nie znikało.</div></div>
+    </div>
+
+    <div class="ads-tabs" id="gbpManageTabs" style="margin-top:10px">
+      <button class="active" data-gbp-tab="overview">Pulpit firmy</button>
+      <button data-gbp-tab="automation">Automatyzacja</button>
+      <button data-gbp-tab="photos">Materiały ręczne</button>
+      <button data-gbp-tab="posts">Wpisy</button>
+      <button data-gbp-tab="seo">SEO lokalne</button>
+      <button data-gbp-tab="reviews">Opinie</button>
+      <button data-gbp-tab="results">Wyniki lokalne</button>
+    </div>
+
+    <div id="gbpTab_overview" class="gbp-manage-panel">
+      <div class="grid2">
+        <div class="card">
+          <div class="title">Stan profilu</div>
+          <div id="gbpProfileSummary"></div>
+        </div>
+        <div class="card">
+          <div class="title">Co warto robić regularnie</div>
+          <div id="gbpRoutine"></div>
+        </div>
+      </div>
+      <div class="grid3">
+        <div class="card"><div class="title">Automatyzacja</div><div class="muted small">fal.ai → Drive → Canva → tekst SEO → Google. Publikacja co 3 dni.</div><div style="margin-top:9px"><button class="btn primary" onclick="openGbpTab('automation')">Zobacz automat</button></div></div>
+        <div class="card"><div class="title">Wpisy</div><div class="muted small">Historia, ręczne wpisy awaryjne i podgląd publikacji.</div><div style="margin-top:9px"><button class="btn primary" onclick="openGbpTab('posts')">Otwórz wpisy</button></div></div>
+        <div class="card"><div class="title">SEO lokalne</div><div class="muted small">Frazy Warszawa + marki + analiza wyników co 10 postów.</div><div style="margin-top:9px"><button class="btn" onclick="openGbpTab('seo')">Sprawdź SEO</button></div></div>
+      </div>
+    </div>
+
+    <div id="gbpTab_automation" class="gbp-manage-panel hidden">
+      <div class="grid2">
+        <div class="card">
+          <div class="section-head"><div class="title">Automat publikacji JURKO</div><span class="tag warn">DO URUCHOMIENIA</span></div>
+          <div id="gbpAutomationStatus"></div>
+        </div>
+        <div class="card">
+          <div class="title">Stały proces</div>
+          <div id="gbpAutomationFlow"></div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="title">Słowa kluczowe — rotacja</div><div class="chip-cloud" id="gbpAutoKeywordCloud"></div><div class="note" style="margin-top:9px">Do jednego posta trafiają naturalnie 2–4 frazy, bez upychania słów kluczowych.</div></div>
+        <div class="card"><div class="title">Kontakt stały w poście</div><div id="gbpAutoContact"></div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="title">Kontrola 10 postów</div><div id="gbpTenPostReview"></div></div>
+        <div class="card"><div class="title">Materiały i archiwum</div><div id="gbpAutoArchive"></div></div>
+      </div>
+      <div class="card" style="margin-top:10px">
+        <div class="section-head"><div><div class="title">Fabryki i kolekcje — baza publikacji</div><div class="muted small">Listy kolekcji pochodzą z oficjalnych stron producentów. Nie wpisujemy wymyślonych wolumenów ani wyników.</div></div><span class="tag blue">5 producentów</span></div>
+        <div class="toolbar"><select id="collectionFactoryFilter"><option value="">Wszystkie fabryki</option></select><input id="collectionCatalogSearch" placeholder="Szukaj kolekcji..." style="min-width:260px"></div>
+        <div class="tablewrap" style="max-height:520px"><table><thead><tr><th>Producent</th><th>Kolekcja</th><th>Źródło</th><th>Fraza lokalna</th><th>Status</th><th>Akcja</th></tr></thead><tbody id="collectionCatalogRows"></tbody></table></div>
+      </div>
+      <div class="card" style="margin-top:10px"><div class="title">Zasady źródeł</div><div class="note"><b>Źródło produktu:</b> oficjalna strona producenta + materiały JURKO z Drive. Nie używamy przypadkowych zdjęć z internetu. Link w poście kierujemy do JURKO, nie do producenta, żeby nie oddawać ruchu klienta.</div><div id="gbpBrandSources" style="margin-top:8px"></div></div>
+    </div>
+
+    <div id="gbpTab_photos" class="gbp-manage-panel hidden">
+      <div class="grid2">
+        <div class="card">
+          <div class="section-head"><div class="title">Dodaj materiał ręcznie z Google Drive</div><a class="btn" href="https://drive.google.com/drive/folders/1_wOz68J5qPPkrR0QgpezQQPzW5PG9Ho9" target="_blank" rel="noopener">Wybierz na Drive</a></div>
+          <div class="note">Ta zakładka zostaje tylko jako tryb ręczny / awaryjny. Automat pobiera materiały z folderu kolekcji samodzielnie.</div>
+          <div class="formgrid" style="margin-top:10px">
+            <label class="full">Link do zdjęcia z Google Drive<input id="gbpPhotoUrl" placeholder="https://drive.google.com/..."></label>
+            <label>Tytuł / co jest na zdjęciu<input id="gbpPhotoTitle" placeholder="np. ekspozycja Tubądzin Grand Cave"></label>
+            <label>Kategoria<select id="gbpPhotoCategory"><option>Salon / wnętrze</option><option>Ekspozycja</option><option>Produkt / kolekcja</option><option>Realizacja klienta</option><option>Zespół</option><option>Elewacja / wejście</option></select></label>
+            <label class="full">Opis SEO / notatka<input id="gbpPhotoNote" placeholder="np. płytki wielkoformatowe Tubądzin Warszawa"></label>
+          </div>
+          <div class="toolbar"><button class="btn primary" id="gbpAddPhotoBtn">Dodaj do kolejki</button><span class="small muted">Nie publikuje automatycznie.</span></div>
+        </div>
+        <div class="card"><div class="title">Kolejka zdjęć do publikacji</div><div id="gbpPhotoQueue"></div></div>
+      </div>
+    </div>
+
+    <div id="gbpTab_posts" class="gbp-manage-panel hidden">
+      <div class="grid2">
+        <div class="card">
+          <div class="title">Ręczny wpis Google / awaryjny</div>
+          <div class="muted small">Dotyczy tylko wybranego Profilu Firmy Google JURKO.</div>
+          <div class="formgrid" style="margin-top:10px">
+            <label>Typ wpisu<select id="gbpPostType"><option>Nowość</option><option>Produkt / kolekcja</option><option>Oferta</option><option>Porada</option><option>Wydarzenie</option></select></label>
+            <label>Temat / fraza SEO<input id="gbpPostKeyword" placeholder="np. płytki włoskie Warszawa"></label>
+            <label class="full">Tytuł<input id="gbpPostTitle" placeholder="np. Nowa ekspozycja włoskich płytek w JURKO"></label>
+            <label class="full">Treść<textarea id="gbpPostText" rows="5" placeholder="Krótki wpis dla klienta..."></textarea></label>
+            <label class="full">Link do zdjęcia z Drive<input id="gbpPostImage" placeholder="https://drive.google.com/..."></label>
+            <label>CTA<select id="gbpPostCta"><option>Zadzwoń</option><option>Dowiedz się więcej</option><option>Odwiedź salon</option><option>Brak</option></select></label>
+            <label>Strona docelowa<input id="gbpPostLanding" placeholder="np. /tubadzin-warszawa"></label>
+          </div>
+          <div class="toolbar"><button class="btn primary" id="gbpAddPostBtn">Dodaj do zatwierdzenia</button><button class="btn" id="gbpAiPostBtn">Wygeneruj szkic AI</button></div>
+        </div>
+        <div class="card">
+          <div class="title">Jak działa obieg Google Firma</div>
+          <div class="action"><span><b>1. Do przygotowania</b><br><span class="small muted">kolekcja / temat czeka na tekst i grafikę</span></span></div>
+          <div class="action"><span><b>2. Do zatwierdzenia</b><br><span class="small muted">gotowy podgląd dla Ciebie</span></span></div>
+          <div class="action"><span><b>3. Zaplanowane</b><br><span class="small muted">zaakceptowane, czeka na termin publikacji</span></span></div>
+          <div class="action"><span><b>4. Opublikowane</b><br><span class="small muted">faktycznie widoczne w Google</span></span></div>
+          <div class="action"><span><b>5. Archiwum</b><br><span class="small muted">stare / wycofane materiały</span></span></div>
+        </div>
+      </div>
+      <div class="card gbp-workflow">
+        <div class="section-head"><div><div class="title">Obieg publikacji — Google Firma</div><div class="muted small">Tu widzisz kolekcje i wpisy dla wybranego profilu firmy. Nic z SEO/Google Ads nie miesza się z tą kolejką.</div></div><span class="tag blue" id="gbpWorkflowProfile">JURKO — płytki / łazienki</span></div>
+        <div class="gbp-workflow-head" id="gbpWorkflowTabs"></div>
+        <div id="gbpWorkflowList"></div>
+      </div>
+    </div>
+
+    <div id="gbpTab_seo" class="gbp-manage-panel hidden">
+      <div class="grid2">
+        <div class="card"><div class="title">SEO lokalne — profil firmy</div><div id="gbpSeoChecklist"></div></div>
+        <div class="card"><div class="title">Frazy lokalne do wzmacniania</div><div class="chip-cloud" id="mapsPhraseCloud"></div><div class="note" style="margin-top:9px">Wpisy i zdjęcia powinny być naturalne. Nie upychamy słów kluczowych w nazwie firmy ani sztucznie w każdej treści.</div></div>
+      </div>
+      <div class="card" style="margin-top:10px"><div class="title">Plan treści pod lokalne SEO</div><div id="gbpSeoContentPlan"></div></div>
+    </div>
+
+    <div id="gbpTab_reviews" class="gbp-manage-panel hidden">
+      <div class="grid2">
+        <div class="card"><div class="title">Opinie Google</div><div class="note">Docelowo: lista nowych opinii, propozycja odpowiedzi AI, status „do zatwierdzenia”, potem publikacja.</div><div id="gbpReviewSummary"></div></div>
+        <div class="card"><div class="title">Zasada odpowiedzi</div><div id="gbpReviewRules"></div></div>
+      </div>
+    </div>
+
+    <div id="gbpTab_results" class="gbp-manage-panel hidden">
+      <div class="grid2">
+        <div class="card">
+          <div class="section-head"><div class="title">Google Maps — wyniki lokalne</div><span class="tag ok">JURKO Warszawa</span></div>
+          <div class="note">Wyświetlenia profilu i reklam lokalnych, telefony, wyznaczenia trasy, kliknięcia w stronę i koszt działań.</div>
+          <div class="grid3" id="mapsKpis" style="margin-top:10px"></div>
+        </div>
+        <div class="card"><div class="title">Cele lokalne</div><div id="mapsGoals"></div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="title">Wyniki wg obszaru</div><div class="tablewrap"><table><thead><tr><th>Obszar</th><th>Wyświetlenia</th><th>Telefony</th><th>Trasy</th><th>WWW</th><th>Koszt</th><th>Koszt działania</th></tr></thead><tbody id="mapsAreaRows"></tbody></table></div></div>
+        <div class="card"><div class="title">Najlepsze dni i godziny</div><div class="tablewrap"><table><thead><tr><th>Dzień</th><th>Godzina</th><th>Telefony</th><th>Trasy</th><th>Ocena</th></tr></thead><tbody id="mapsHourRows"></tbody></table></div></div>
+      </div>
+      <div class="card" style="margin-top:10px"><div class="title">Rekomendacje AI dla Google Maps</div><div id="mapsRecommendations"></div></div>
+    </div>
+  </section>
+
+  <section id="seo" class="view"><div class="grid2"><div class="card"><div class="title">SEO / GBP</div><div id="seoSummary"></div></div><div class="card"><div class="title">Najmocniejsze zapytania GBP</div><div id="gbpTop"></div></div></div><div class="card" style="margin-top:10px"><div class="title">Frazy do pozycjonowania</div><div class="tablewrap"><table><thead><tr><th>Fraza</th><th>Intencja</th><th>Landing</th><th>Pozycja</th><th>Wolumen / wynik</th><th>Priorytet</th><th>Co zrobić</th></tr></thead><tbody id="seoRows"></tbody></table></div></div></section>
+
+  <section id="senuto" class="view">
+    <div class="grid2">
+      <div class="card">
+        <div class="section-head"><div class="title" id="senutoTitle">Senuto — Płytki ceramiczne</div><span class="tag ok">API połączone</span></div>
+        <div id="senutoStatus"></div>
+      </div>
+      <div class="card">
+        <div class="title">Co zapisujemy</div>
+        <div id="senutoScope"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <div class="section-head"><div class="title">Dane rzeczywiste dostępne już teraz</div><span class="tag ok">GBP + Google Ads</span></div>
+      <div class="note">Tu pokazujemy dane, które już mamy. <b>Nie są oznaczane jako Senuto.</b> Po uruchomieniu automatycznego pobierania Senuto dojdą TOP3/TOP10/TOP50, widoczność oraz trendy.</div>
+      <div class="tablewrap" style="margin-top:9px"><table>
+        <thead><tr><th>Fraza</th><th>Marka</th><th>Źródło</th><th>Warszawa / wynik</th><th>Decyzja</th><th>Priorytet</th></tr></thead>
+        <tbody id="liveSeedRows"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <div class="section-head"><div class="title">Monitoring producentów i marek</div><span class="tag blue" id="senutoAreaTag">Płytki — osobna baza</span></div>
+      <div class="note" id="senutoNote"></div>
+      <div class="tablewrap" style="margin-top:9px"><table>
+        <thead><tr><th>Producent / marka</th><th>Obszar</th><th>Frazy</th><th>TOP3</th><th>TOP10</th><th>TOP50</th><th>Widoczność</th><th>Trend 3M</th><th>Trend 6M</th><th>Trend 12M</th><th>Ostatni zapis</th></tr></thead>
+        <tbody id="senutoProducerRows"></tbody>
+      </table></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="title">Frazy do pobierania z Senuto</div>
+        <div id="senutoPhraseGroups"></div>
+      </div>
+      <div class="card">
+        <div class="title">Historia zapisów</div>
+        <div id="senutoHistoryBox"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <div class="title">Import danych Senuto JSON</div>
+      <div class="note">Ta sekcja zapisuje dane osobno dla aktualnie wybranego rynku. <b>Płytki nigdy nie mieszają się z materiałami budowlanymi.</b> Gdy podłączymy automatyczny scenariusz Make, ten sam model danych będzie uzupełniany bez ręcznego wklejania.</div>
+      <textarea id="senutoImport" rows="8" style="width:100%;margin-top:9px;padding:9px;border:1px solid var(--line);border-radius:8px" placeholder='[{"brand":"Tubądzin","top3":12,"top10":35,"top50":140,"visibility":123.4,"trend3":5.2,"trend6":8.1,"trend12":15.4}]'></textarea>
+      <div class="toolbar"><button class="btn primary" id="importSenutoBtn">Zapisz dane Senuto</button><span id="senutoImportInfo" class="small muted"></span></div>
+    </div>
+  </section>
+
+  <section id="searchconsole" class="view">
+    <div class="grid2">
+      <div class="card"><div class="title">Search Console — gotowość</div><div id="scStatus"></div></div>
+      <div class="card"><div class="title">Najważniejsze wskaźniki</div><div id="scKpis"></div></div>
+    </div>
+    <div class="card" style="margin-top:10px"><div class="section-head"><div class="title">Zapytania z Google organicznego</div><span class="tag warn">po uruchomieniu nowej strony</span></div>
+      <div class="tablewrap"><table><thead><tr><th>Fraza</th><th>Kliknięcia</th><th>Wyświetlenia</th><th>CTR</th><th>Śr. pozycja</th><th>Decyzja</th><th>Rekomendacja</th></tr></thead><tbody id="scRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="content" class="view"><div class="grid2"><div class="card"><div class="title">Treści / artykuły WWW</div><div id="contentQueue"></div></div><div class="card"><div class="title">Pomysły generowane z fraz</div><div id="contentIdeas"></div></div></div></section>
+  <section id="social" class="view"><div class="grid3" id="socialCards"></div><div class="card" style="margin-top:10px"><div class="title">Kalendarz publikacji</div><div id="socialPlan"></div></div></section>
+  <section id="newsletter" class="view"><div class="grid2"><div class="card"><div class="title">Newsletter / E-mail</div><div id="newsletterStats"></div></div><div class="card"><div class="title">Kolejka wysyłek</div><div id="newsletterQueue"></div></div></div></section>
+  <section id="designers" class="view"><div class="grid2"><div class="card"><div class="title">Projektanci i biura</div><div id="designerStats"></div></div><div class="card"><div class="title">Szybkie działania</div><div id="designerActions"></div></div></div></section>
+  <section id="campaigns" class="view"><div class="card"><div class="title">Kampanie marketingowe</div><div id="campaignsTable"></div></div></section>
+  <section id="competition" class="view">
+    <div class="grid2">
+      <div class="card"><div class="title">Localo / konkurencja lokalna</div><div id="localoBox"></div></div>
+      <div class="card"><div class="title">Rynek Warszawa — JURKO na tle konkurencji</div><div id="marketSummary"></div></div>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <div class="section-head"><div class="title">Porównanie konkurencji — osobno dla każdego rynku</div><span class="tag blue" id="competitionAreaTag">Płytki ceramiczne</span></div>
+      <div class="comp-head"><span class="muted small">Dane docelowo: Localo + Senuto + GBP + Google Ads + Search Console</span></div>
+      <div class="tablewrap"><table><thead><tr><th>Firma / domena</th><th>Rynek</th><th>Pozycja lokalna</th><th>Widoczność SEO</th><th>Wspólne frazy</th><th>Opinie GBP</th><th>Ads</th><th>Mocna strona</th><th>Luka względem JURKO</th><th>Rekomendacja AI</th></tr></thead><tbody id="competitionRows"></tbody></table></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="title">Konkurenci do obserwacji</div><div id="competitorBox"></div></div>
+      <div class="card"><div class="title">Luki rynkowe i szanse dla JURKO</div><div id="marketGaps"></div></div>
+    </div>
+  </section>
+  <section id="reports" class="view"><div class="grid3" id="reportCards"></div></section>
+  <section id="drive" class="view"><div class="card"><div class="title">Google Drive — struktura projektu</div><div id="driveStructure"></div></div></section>
+  <section id="integrations" class="view">
+    <div class="grid2">
+      <div class="card"><div class="title">Integracje</div><div id="integrationRows"></div></div>
+      <div class="card"><div class="title">Stan synchronizacji danych</div><div id="syncStatus"></div></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="card"><div class="title">Import Google Ads JSON</div><div class="note">Wklej odpowiedź z Google Ads API (kampanie lub keyword_view). Tokenów nie wklejaj.</div><textarea id="adsImport" rows="12" style="width:100%;margin-top:9px;padding:9px;border:1px solid var(--line);border-radius:8px" placeholder="Wklej JSON z Google Ads API..."></textarea><div class="toolbar"><button class="btn primary" id="importAdsBtn">Importuj Ads</button><span id="adsImportInfo" class="small muted"></span></div></div>
+      <div class="card"><div class="title">Import wyszukiwań GBP / SEO</div><div class="formgrid"><label>Data pomiaru<input type="month" id="seoImportMonth"></label><label>Obszar<select id="seoImportGeo"><option>Warszawa</option><option>Polska</option></select></label></div><div class="note" style="margin-top:9px">Wklej odpowiedź z Business Profile Performance API lub prostą listę JSON fraza + liczba.</div><textarea id="seoImport" rows="9" style="width:100%;margin-top:9px;padding:9px;border:1px solid var(--line);border-radius:8px" placeholder="Wklej JSON z GBP / SEO..."></textarea><div class="toolbar"><button class="btn primary" id="importSeoBtn">Importuj SEO</button><span id="seoImportInfo" class="small muted"></span></div></div>
+    </div>
+    <div class="card" style="margin-top:10px"><div class="title">Import Search Console JSON</div><div class="note"><b>Gotowe technicznie.</b> Po uruchomieniu nowej strony i weryfikacji jurko.pl wkleisz odpowiedź z Search Analytics API. System zaczyta frazy, kliknięcia, wyświetlenia, CTR i średnią pozycję.</div><textarea id="scImport" rows="8" style="width:100%;margin-top:9px;padding:9px;border:1px solid var(--line);border-radius:8px" placeholder='{"rows":[{"keys":["płytki warszawa"],"clicks":12,"impressions":450,"ctr":0.0267,"position":8.4}]}'></textarea><div class="toolbar"><button class="btn primary" id="importScBtn">Importuj Search Console</button><span id="scImportInfo" class="small muted"></span></div></div>
+    <div class="card" style="margin-top:10px"><div class="title">Co robi import</div><div class="grid3"><div class="note"><b>Google Ads</b><br>Aktualizuje kampanie, słowa, wyświetlenia, kliknięcia, koszt i status.</div><div class="note"><b>GBP / Search Console</b><br>Łączy popyt lokalny z realnym ruchem organicznym, CTR i pozycją.</div><div class="note"><b>Doradca AI</b><br>Po imporcie rekomendacje przeliczają się automatycznie.</div></div></div>
+  </section>
+  <section id="settings" class="view"><div class="grid2"><div class="card"><div class="title">Ustawienia publikacji</div><div id="settingsRows"></div></div><div class="card"><div class="title">Kopia danych</div><div class="action"><span>Eksport danych aplikacji</span><button class="btn" id="backupJson">Pobierz JSON</button></div><div class="note">Zmiany w tej wersji są zapisywane w przeglądarce. Docelowo dane powinny być zsynchronizowane z bazą i arkuszem Google.</div></div></div></section>
+</main>
+
+<aside class="right"><div class="right-tabs"><button class="active" id="advisorTab">Doradca AI</button><button id="quickTab">Szybkie akcje</button><button id="competitorTab">Konkurencja</button></div><div id="advisorPanel"></div><div id="quickPanel" class="hidden"></div><div id="competitorPanel" class="hidden"></div></aside>
+</div>
+
+<div class="modal" id="modal"><div class="modalbox"><div class="section-head"><div class="title" id="modalTitle">Słowo kluczowe</div><button class="btn" id="closeModal">✕</button></div><form id="kwForm"><div class="formgrid">
+<label>Fraza<input name="phrase" required></label><label>Marka / grupa<input name="brand"></label><label>Obszar<select name="area"><option value="tiles">Płytki ceramiczne</option><option value="building">Materiały budowlane</option></select></label><label>Decyzja<select name="decision"><option>SEO</option><option>Ads</option><option>SEO + Ads</option><option>Wyklucz</option><option>Do sprawdzenia</option></select></label><label>Priorytet<select name="priority"><option>A</option><option>B</option><option>C</option></select></label><label>Źródło<select name="source"><option>GBP</option><option>Google Ads</option><option>Search Console</option><option>Localo</option><option>Senuto</option><option>Plan SEO</option><option>Ręczne</option></select></label><label>Dopasowanie Ads<select name="match"><option value="">—</option><option>BROAD</option><option>PHRASE</option><option>EXACT</option></select></label><label>Status Ads<select name="adStatus"><option value="">—</option><option>ENABLED</option><option>PAUSED</option><option>REMOVED</option></select></label><label>Warszawa — wolumen / wynik<input type="number" name="warsaw" min="0"></label><label>Polska — wolumen<input type="number" name="poland" min="0"></label><label>Wyświetlenia Ads<input type="number" name="impressions" min="0"></label><label>Kliknięcia<input type="number" name="clicks" min="0"></label><label>Koszt zł<input type="number" name="cost" min="0" step="0.01"></label><label>Konwersje<input type="number" name="conversions" min="0" step="0.01"></label><label>Pozycja Google<input type="number" name="position" min="0" step="0.1"></label><label>Intencja SEO<input name="intent"></label><label class="full">Strona docelowa<input name="landing"></label><label class="full">Notatka<textarea name="note" rows="3"></textarea></label>
+</div><div class="foot"><button type="button" class="btn" id="cancelModal">Anuluj</button><button class="btn primary">Zapisz</button></div></form></div></div>
+
+<script>
+const OLD='jurkoMarketingHub_v3', STORAGE='jurkoMarketingHub_v5'; 
+
+
+let gbpPhotoQueue=JSON.parse(localStorage.getItem('jurko_gbp_photos')||'[]');
+let gbpPostQueue=JSON.parse(localStorage.getItem('jurko_gbp_posts')||'[]');
+let gbpArchive=JSON.parse(localStorage.getItem('jurko_gbp_archive')||'[]');
+let gbpWorkflowStage=localStorage.getItem('jurko_gbp_workflow_stage')||'Do przygotowania';
+let gbpSelectedProfile=localStorage.getItem('jurko_gbp_profile')||'tiles';
+const GBP_WORKFLOW_STAGES=['Do przygotowania','Do zatwierdzenia','Zaplanowane','Opublikowane','Archiwum'];
+function normalizeGbpStatus(v){if(v==='W kolejce'||v==='Do publikacji')return 'Do przygotowania';if(v==='Zatwierdzony'||v==='Zatwierdzone')return 'Zaplanowane';if(v==='Opublikowany'||v==='LIVE')return 'Opublikowane';return GBP_WORKFLOW_STAGES.includes(v)?v:'Do przygotowania'}
+gbpPostQueue=gbpPostQueue.map(x=>({...x,status:normalizeGbpStatus(x.status)}));
+const GBP_PUBLISHED_HISTORY=[
+{id:'1983267265702409302',date:'2026-10-05T21:54:56.997435Z',state:'LIVE',title:'Tubądzin Grand Cave w salonie JURKO w Warszawie',summary:'Grand Cave to kolekcja inspirowana naturalnym kamieniem — elegancka, spokojna i idealna do nowoczesnych łazienek, salonów oraz stref wellness.',url:'https://local.google.com/place?id=16454481031225323389&use=posts&lpsid=CIHM0ogKENrNj9L-nJ35ew',media:'https://lh3.googleusercontent.com/p/AF1QipMKhxiYojKlhssy8xPtKpa38FWDtjQuiY6I9WIv'},
+{id:'7110629626750111256',date:'2026-10-05T21:38:05.273026Z',state:'LIVE',title:'Tubądzin River Crown / River Cliff',summary:'Eleganckie powierzchnie inspirowane naturalnym kamieniem, duże formaty i efekt premium. Wpis opublikowany na profilu JURKO.',url:'https://local.google.com/place?id=16454481031225323389&use=posts&lpsid=CIHM0ogKEJ3d6J7aq4iXvgE',media:'https://lh3.googleusercontent.com/p/AF1QipMb-NeNnMgXUwSMVvRWosEZeq71dFgxzoV-rhMw'},
+{id:'868318653849300466',date:'2026-10-05T18:59:49.820875Z',state:'LIVE',title:'Grand Cave Tubądzin — nowość w salonie JURKO',summary:'Wpis Grand Cave opublikowany z przyciskiem Zadzwoń.',url:'https://local.google.com/place?id=16454481031225323389&use=posts&lpsid=CIHM0ogKELjwnpTOhbuMmAE',media:''}
+];
+function saveGbpManager(){
+ localStorage.setItem('jurko_gbp_photos',JSON.stringify(gbpPhotoQueue));
+ localStorage.setItem('jurko_gbp_posts',JSON.stringify(gbpPostQueue));
+ localStorage.setItem('jurko_gbp_archive',JSON.stringify(gbpArchive));
+ localStorage.setItem('jurko_gbp_workflow_stage',gbpWorkflowStage);
+ localStorage.setItem('jurko_gbp_profile',gbpSelectedProfile);
+}
+
+const MAPS_LOCAL_DATA={
+  source:'GBP / do uzupełnienia reklamami lokalnymi',
+  period:'bieżący',
+  totals:{impressions:0,calls:0,directions:0,website:0,cost:0},
+  areas:[
+    ['Warszawa',0,0,0,0,0],
+    ['Ursus / Piastów / Pruszków',0,0,0,0,0],
+    ['Raszyn / Michałowice',0,0,0,0,0],
+    ['Ożarów / Bemowo',0,0,0,0,0],
+    ['Piaseczno / południe',0,0,0,0,0],
+    ['Łomianki / północ',0,0,0,0,0]
+  ],
+  hours:[
+    ['Poniedziałek','09:00–12:00',0,0,'do pomiaru'],
+    ['Wtorek','12:00–16:00',0,0,'do pomiaru'],
+    ['Środa','09:00–15:00',0,0,'do pomiaru'],
+    ['Czwartek','10:00–15:00',0,0,'do pomiaru'],
+    ['Piątek','09:00–17:00',0,0,'do pomiaru'],
+    ['Sobota','09:00–15:00',0,0,'do pomiaru']
+  ],
+  phrases:[
+    'płytki Warszawa','salon płytek Warszawa','salon łazienek Warszawa',
+    'Tubądzin Warszawa','płytki włoskie Warszawa','płytki wielkoformatowe Warszawa',
+    'gres Warszawa','sklep z płytkami Warszawa','płytki Aleje Jerozolimskie',
+    'showroom płytek Warszawa'
+  ]
+};
+
+const GBP_AUTO_BRANDS={
+ 'Tubądzin':{source:'https://www.tubadzin.pl/kolekcje',collections:['Grand Cave','River Crown MBL','River Cliff MBL','Albiano MBL','Altino PGC','Echo Antico','Echo Celio','Echo Tivoli','Groove','Misano PGC','Modular Glitch','Palomino MBL','Perosa PGC']},
+ 'NovaBell':{source:'https://www.novabell.it/en/collections/',collections:['Noor','Canvë','Dusk','Deepstone','Glow','Thermae Verso','Atelier','Khroma','Keystone','Le Briccole','Open','Landstone','Thermae','Nordic Wood','Wonderspace','Aspen','Extra','Eiche','Davos','Fusion','Brickup','Lumière','Norgestone','Stone Box','Artwood','Lounge','Materia']},
+ 'Italgraniti':{source:'https://www.italgranitigroup.com/en/porcelain-stoneware/collections/italgraniti',collections:['Palladio','Natural','Marble Touch','Calcis','Essence Select','I Travertini','I Cementi','Dorset','Origins','Shale','Silver Grain & Ceppo di Gré','Nuances','Terre','Essence','Charm Experience','Lux Experience','Marble Experience','Nordic stone','Metaline','Allure','Alnus','Stone mix']},
+ 'Vives':{source:'https://www.vivesceramica.com/productos/colecciones/',collections:['Sicilia','Surf','Tandem','Dúo','Zero','Micra','Attico','Ritmo','In Out In','Marblelous','Stravaganza','Rúbrica','Pangea AB|C','Amazonia 90TILE','ExtraOrdinary Ceramic Wood','Metropoli','Poptile','Les Ponts De La Seine','Hanami','RESORT','XTRA','BASIC','Dolce Vita','Cottage']},
+ 'DNA Tiles':{source:'https://dnatiles.com/en/downloads/',collections:['Vitria','Mixtura','Bow','Stone Dust','Mistral','Calema','Mediterraneo','Plinto','Safi','Enamel','Pietra','Candy','Saten','Match','Clay','Chalk','Osaka']}
+};
+let gbpAutoQueue=JSON.parse(localStorage.getItem('jurko_gbp_auto_queue')||'[]').map(x=>({...x,status:normalizeGbpStatus(x.status)}));
+function saveGbpAuto(){localStorage.setItem('jurko_gbp_auto_queue',JSON.stringify(gbpAutoQueue))}
+function initGbpAutoControls(){
+ const p=document.getElementById('autoProducer'), c=document.getElementById('autoCollection'); if(!p||!c)return;
+ if(!p.options.length)p.innerHTML=Object.keys(GBP_AUTO_BRANDS).map(x=>`<option>${x}</option>`).join('');
+ const refresh=()=>{const b=GBP_AUTO_BRANDS[p.value];c.innerHTML=b.collections.map(x=>`<option>${x}</option>`).join('');const links=document.getElementById('autoSourceLinks');if(links)links.innerHTML=`<a class="btn" href="${b.source}" target="_blank" rel="noopener">Oficjalne kolekcje ${p.value}</a><span class="tag blue">źródło producenta</span>`};
+ p.onchange=refresh; refresh();
+ const add=document.getElementById('autoAddQueue'); if(add)add.onclick=()=>{const name=(document.getElementById('autoCollectionCustom').value||c.value).trim();if(!name)return;gbpAutoQueue.push({id:Date.now(),profile:gbpSelectedProfile,producer:p.value,collection:name,drive:(document.getElementById('autoDriveLink').value||'').trim(),status:'Do przygotowania'});saveGbpAuto();document.getElementById('autoCollectionCustom').value='';renderGbpAutoQueue()};
+ const use=document.getElementById('autoUseDrive'); if(use)use.onclick=()=>{const v=(document.getElementById('autoDriveLink').value||'').trim();if(!v){alert('Wklej link do folderu lub pliku na Drive.');return}alert('Link Drive zapisany jako materiał źródłowy dla wybranej kolekcji.')};
+ renderGbpAutoQueue();
+}
+function renderGbpAutoQueue(){const box=document.getElementById('autoPublishQueue');if(!box)return;const list=gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile);box.innerHTML=list.length?list.map((x,i)=>`<div class="action"><span><b>${i+1}. ${x.producer} — ${x.collection}</b><br><span class="small muted">${x.drive?'Drive podłączony':'bez linku Drive'} • ${normalizeGbpStatus(x.status)}</span></span><button class="btn" onclick="workflowSetStage('${normalizeGbpStatus(x.status)}');openGbpTab('posts')">Pokaż w obiegu</button></div>`).join(''):'<div class="empty">Kolejka pusta — dodaj kolekcję lub pozwól automatowi dobrać kolejną.</div>'}
+const COLLECTION_PUBLISHED=new Set(['Tubądzin|Grand Cave','Tubądzin|River Crown MBL','Tubądzin|River Cliff MBL']);
+function collectionStatus(producer,collection){if(COLLECTION_PUBLISHED.has(producer+'|'+collection))return 'Opublikowano';if(gbpAutoQueue.some(x=>x.producer===producer&&x.collection===collection))return 'W kolejce';return 'Do przygotowania'}
+function addCollectionToQueue(producer,collection){if(!producer||!collection)return;if(!gbpAutoQueue.some(x=>x.producer===producer&&x.collection===collection)){gbpAutoQueue.push({id:Date.now(),profile:gbpSelectedProfile,producer,collection,drive:'',status:'Do przygotowania'});saveGbpAuto()}renderGbpAutoQueue();renderCollectionCatalog()}
+function renderCollectionCatalog(){const rows=document.getElementById('collectionCatalogRows'),filter=document.getElementById('collectionFactoryFilter'),search=document.getElementById('collectionCatalogSearch');if(!rows)return;if(filter&&!filter.dataset.ready){filter.innerHTML='<option value="">Wszystkie fabryki</option>'+Object.keys(GBP_AUTO_BRANDS).map(x=>`<option>${x}</option>`).join('');filter.dataset.ready='1';filter.onchange=renderCollectionCatalog}if(search&&!search.dataset.ready){search.dataset.ready='1';search.oninput=renderCollectionCatalog}const f=filter?filter.value:'';const q=(search?.value||'').trim().toLowerCase();const data=[];Object.entries(GBP_AUTO_BRANDS).forEach(([producer,b])=>b.collections.forEach(collection=>{if(f&&producer!==f)return;if(q&&!(producer+' '+collection).toLowerCase().includes(q))return;data.push({producer,collection,source:b.source,status:collectionStatus(producer,collection)})}));rows.innerHTML=data.map(x=>{const cls=x.status==='Opublikowano'?'ok':x.status==='W kolejce'?'warn':'blue';const phrase=`${x.producer} ${x.collection} Warszawa`;const action=x.status==='Opublikowano'?'<span class="small muted">historia</span>':`<button class="btn" onclick="addCollectionToQueue('${x.producer.replaceAll("'","\\'")}','${x.collection.replaceAll("'","\\'")}')">Dodaj do kolejki</button>`;return `<tr><td><b>${x.producer}</b></td><td>${x.collection}</td><td><a href="${x.source}" target="_blank" rel="noopener">oficjalna strona</a></td><td>${phrase}</td><td><span class="tag ${cls}">${x.status}</span></td><td>${action}</td></tr>`}).join('')||'<tr><td colspan="6" class="empty">Brak kolekcji dla filtra.</td></tr>'}
+
+
+const ADS_HISTORY_MONTHLY=[
+['2025-07','Tubadzin',379364,372,285.316751,0],
+['2025-07','Tubadzin jeden',8915,167,250.832056,2],
+['2025-08','Tubadzin',595184,536,456.351369,0],
+['2025-08','Tubadzin jeden',2874,155,532.686588,5],
+['2025-09','Tubadzin',528761,398,406.291192,0],
+['2025-09','Tubadzin jeden',17001,195,674.411502,5],
+['2025-11','Tubadzin jeden',57,1,0.79375,0],
+['2026-02','Tubadzin jeden',13221,163,234.508043,3],
+['2026-03','Tubadzin jeden',5873,171,760.868121,11],
+['2026-04','Tubadzin',492535,423,419.679038,0],
+['2026-04','Tubadzin jeden',3859,159,706.562389,9],
+['2026-05','Tubadzin',113,0,0.102351,0]
+];
+
+const ADS_HISTORY_DEVICES=[
+['Telefon',1597907,2538,4276.403875,35],
+['Komputer',394814,132,409.951913,0],
+['Tablet',53357,67,40.743525,0],
+['Inne',1401,3,1.076522,0],
+['Connected TV',278,0,0.227315,0]
+];
+
+const ADS_HISTORY_HOURS=[
+['Poniedziałek',10,46,179.676409,3.833334],
+['Środa',9,32,132.071918,2.666667],
+['Poniedziałek',11,36,81.070817,2],
+['Wtorek',13,31,68.394419,2],
+['Środa',13,28,46.172056,2],
+['Środa',11,21,43.199372,2],
+['Poniedziałek',12,32,51.547547,1.666666],
+['Wtorek',16,23,97.145571,1.333333],
+['Poniedziałek',9,49,126.374797,1.166666],
+['Piątek',9,40,113.620817,1],
+['Sobota',9,38,151.163607,1],
+['Czwartek',11,37,90.934251,1],
+['Czwartek',10,36,136.135789,1],
+['Wtorek',9,27,132.162072,1],
+['Środa',10,27,98.032993,1],
+['Wtorek',14,25,39.9332,1],
+['Czwartek',14,23,60.76076,1],
+['Środa',12,21,36.660826,1],
+['Wtorek',12,18,37.633025,1],
+['Środa',14,15,41.705313,1],
+['Czwartek',15,13,16.472513,1],
+['Piątek',16,11,11.528143,1],
+['Środa',15,10,28.370788,1],
+['Piątek',17,9,15.743764,1],
+['Sobota',15,19,22.637403,0.99935]
+];
+
+const ADS_HISTORY_SEARCH_TERMS=[
+['tubądzin','Tubadzin jeden',623,13,35.081151,0],
+['tubadzin','Tubadzin jeden',331,7,29.48557,0.333333],
+['tubądzin sklep firmowy warszawa','Tubadzin jeden',211,38,138.687034,3.25],
+['tubądzin warszawa','Tubadzin jeden',140,10,81.826047,0],
+['płytki tubądzin warszawa','Tubadzin jeden',137,16,100.449069,1],
+['tubądzin bartycka','Tubadzin jeden',134,11,56.171764,0],
+['tubądzin płytki','Tubadzin jeden',128,7,10.118178,1],
+['tubądzin sklep firmowy','Tubadzin jeden',102,4,5.716588,0],
+['bartycka tubądzin','Tubadzin jeden',77,11,43.677604,0],
+['bartycka płytki','Tubadzin jeden',76,2,22.621199,0],
+['płytki tubądzin','Tubadzin jeden',72,7,16.781849,1],
+['tubadzin warszawa','Tubadzin jeden',65,9,36.31,0],
+['tubadzin bartycka','Tubadzin jeden',63,2,23.86545,0],
+['tubądzin warszawa sklepy','Tubadzin jeden',57,8,21.694389,0],
+['salon tubądzin warszawa bartycka','Tubadzin jeden',53,7,60.105212,2],
+['tubądzin kontakt','Tubadzin jeden',48,4,31.482551,1],
+['bartycka płytki tubądzin','Tubadzin jeden',47,1,4.12,0],
+['ceramika tubądzin','Tubadzin jeden',47,2,5.750846,0]
+];
+
+const ADS_HISTORY_KEYWORDS=[
+['Tubadzin','BROAD',8576,566,2537.434364,32],
+['bartycka płytki tubądzin','BROAD',1351,58,129.335435,3],
+['tubadzin bartycka','BROAD',189,9,43.213884,0],
+['bartycka tubądzin','EXACT',66,10,42.515901,0],
+['tubadzin warszawa','EXACT',65,9,36.31,0],
+['ceramika tubądzin','EXACT',43,2,5.750846,0],
+['tubadzin łazienka aranzacje','BROAD',24,0,0,0],
+['tubadzin kolekcja','BROAD',16,2,31.926122,0],
+['tubadzin salon','BROAD',16,0,0,0],
+['gres tubadzin','BROAD',10,0,0,0],
+['tubadzin torano grey lappato','BROAD',2,0,0,0],
+['tubadzin torano white lappato','BROAD',2,0,0,0],
+['tubadzin reflection navy','BROAD',2,0,0,0],
+['tubadzin torano white mat','BROAD',1,0,0,0]
+];
+
+const ADS_VISIBLE_SEARCH_TERMS=[
+'tubadzin','tubądzin','tubądzin sklep firmowy warszawa','tubądzin warszawa','tubądzin bartycka',
+'płytki tubądzin warszawa','tubądzin płytki','tubądzin sklep firmowy','bartycka tubądzin','płytki tubądzin',
+'tubadzin bartycka','tubadzin warszawa','bartycka płytki','płytki łazienkowe','tubądzin warszawa sklepy','opoczno',
+'salon tubądzin warszawa bartycka','tubądzin kontakt','bartycka płytki tubądzin','ceramika tubądzin',
+'tubądzin monolith','salon tubądzin warszawa','tubądzin sklep firmowy godziny otwarcia','tubądzin płytki katalog',
+'tubądzin salon warszawa','płytki do łazienki','płytki ceramiczne','sklep z płytkami warszawa',
+'płytki tubądzin warszawa sklep','hurtownia płytek warszawa','płytki warszawa','tubądzin salon',
+'glazura do łazienki','tubądzin showroom warszawa','tubądzin salon firmowy','paradyż','płytki aleje jerozolimskie',
+'sklep firmowy tubądzin','ceramika paradyż','salon płytek tubądzin','salon łazienek','sklep tubądzin warszawa',
+'fabryka tubądzin','płytki paradyż','tubądzin outlet','sklep z płytkami','tubądzin fabryka płytek',
+'tubądzin gdzie kupić','tubądzin płytki łazienkowe','płytki tubądzin stare kolekcje','rockwool','tubądzin ozorków',
+'cedrowice płytki','jurko warszawa','tubądzin bartycka 24 26','tubądzin pl','tubądzin sklep internetowy',
+'bartycka 24 26 płytki','bartycka sklepy z płytkami','nexterio warszawa','seto trade','tubądzin sklep',
+'tubądzin ashen 1','tubądzin cadence stone','tubądzin grand cave white str','tubądzin salon firmowy warszawa',
+'ceramika tubądzin sieradz','projekt łazienki','salon firmowy tubądzin','sklep tubądzin','tubądzin showroom',
+'tubądzin sklepy','tubądzin tartan 7','leg sanit sochaczewska','płytki bartycka','płytki massa tubądzin',
+'salon płytek','sandio beige mat 120x60 tubądzin','tubądzin cedrowice salon','tubądzin massa'
+];
+
+
+let area='tiles', editingId=null, historyPeriod='quarter', factoryGroup='all', factorySearch='', selectedFactory='Tubądzin';
+const starterKeywords=[
+{id:1,area:'tiles',phrase:'tubądzin',brand:'Tubądzin',decision:'SEO + Ads',priority:'A',source:'GBP',match:'EXACT',adStatus:'ENABLED',warsaw:1385,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Markowa',landing:'Producent Tubądzin',note:'GBP Jan–Sep 2026'},
+{id:2,area:'tiles',phrase:'tubadzin',brand:'Tubądzin',decision:'SEO + Ads',priority:'A',source:'GBP',match:'EXACT',adStatus:'ENABLED',warsaw:1430,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Markowa',landing:'Producent Tubądzin',note:'GBP Jan–Sep 2026'},
+{id:3,area:'tiles',phrase:'salon łazienek warszawa',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:217,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Lokalna zakupowa',landing:'Salon łazienek Warszawa',note:''},
+{id:4,area:'tiles',phrase:'płytki do łazienki',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:96,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Płytki do łazienki',note:''},
+{id:5,area:'tiles',phrase:'płytki',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:311,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Ogólna zakupowa',landing:'Płytki Warszawa',note:''},
+{id:6,area:'tiles',phrase:'tubądzin płytki',brand:'Tubądzin',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:157,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Markowa zakupowa',landing:'Tubądzin',note:''},
+{id:7,area:'tiles',phrase:'paradyż',brand:'Paradyż',decision:'SEO + Ads',priority:'B',source:'GBP',match:'EXACT',adStatus:'PAUSED',warsaw:67,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Markowa',landing:'Paradyż',note:''},
+{id:71,area:'tiles',phrase:'tubądzin warszawa',brand:'Tubądzin',decision:'SEO + Ads',priority:'A',source:'GBP',match:'EXACT',adStatus:'ENABLED',warsaw:39,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Lokalna markowa',landing:'Tubądzin Warszawa',note:'GBP Jan–Sep 2026'},
+{id:72,area:'tiles',phrase:'glazura',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:156,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Glazura Warszawa',note:'GBP Jan–Sep 2026'},
+{id:73,area:'tiles',phrase:'salon łazienek warszawa aleje jerozolimskie',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:120,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Lokalna zakupowa',landing:'Salon łazienek Warszawa',note:'GBP Jan–Sep 2026'},
+{id:74,area:'tiles',phrase:'płytki łazienkowe',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:96,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Płytki łazienkowe',note:'GBP Jan–Sep 2026'},
+{id:75,area:'tiles',phrase:'salon łazienek',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:219,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Salon łazienek',note:'GBP Jan–Sep 2026'},
+
+{id:8,area:'tiles',phrase:'płytki włoskie',brand:'Włoskie',decision:'SEO + Ads',priority:'A',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Premium zakupowa',landing:'Płytki włoskie',note:''},
+{id:9,area:'tiles',phrase:'italgraniti',brand:'Italgraniti',decision:'SEO + Ads',priority:'B',source:'Plan SEO',match:'EXACT',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Markowa premium',landing:'Italgraniti',note:''},
+{id:10,area:'tiles',phrase:'novabell',brand:'NovaBell',decision:'SEO + Ads',priority:'B',source:'Plan SEO',match:'EXACT',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Markowa',landing:'NovaBell',note:''},
+{id:11,area:'tiles',phrase:'wizualizacja łazienki',brand:'Projekty',decision:'SEO + Ads',priority:'A',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Lead',landing:'Projekt i wizualizacja łazienki',note:''},
+{id:12,area:'tiles',phrase:'castorama płytki',brand:'Konkurencja',decision:'Wyklucz',priority:'C',source:'Ręczne',match:'BROAD',adStatus:'PAUSED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Konkurencyjna',landing:'',note:'Wykluczyć z kampanii ogólnych'},
+{id:101,area:'building',phrase:'sklep budowlany',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:613,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Lokalna zakupowa',landing:'Sklep budowlany Warszawa',note:''},
+{id:102,area:'building',phrase:'skład budowlany',brand:'Ogólna',decision:'SEO + Ads',priority:'A',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:168,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Lokalna zakupowa',landing:'Skład budowlany Warszawa',note:''},
+{id:103,area:'building',phrase:'hurtownia budowlana',brand:'Ogólna',decision:'SEO + Ads',priority:'B',source:'GBP',match:'PHRASE',adStatus:'ENABLED',warsaw:71,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Lokalna zakupowa',landing:'Hurtownia budowlana Warszawa',note:''},
+{id:104,area:'building',phrase:'wełna mineralna rockwool',brand:'Rockwool',decision:'SEO + Ads',priority:'A',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Wełna mineralna Rockwool',note:''},
+{id:105,area:'building',phrase:'frontrock',brand:'Rockwool',decision:'SEO + Ads',priority:'A',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Rockwool Frontrock',note:''},
+{id:106,area:'building',phrase:'wełna mineralna 15 cm',brand:'Izolacje',decision:'SEO + Ads',priority:'A',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Parametryczna',landing:'Wełna mineralna 15 cm',note:''},
+{id:107,area:'building',phrase:'styropian elewacyjny',brand:'Termo Organika',decision:'SEO + Ads',priority:'A',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Styropian elewacyjny',note:''},
+{id:108,area:'building',phrase:'płyta g-k',brand:'Norgips',decision:'SEO + Ads',priority:'B',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Płyty g-k',note:''},
+{id:109,area:'building',phrase:'papa fundamentowa',brand:'BMI Icopal',decision:'SEO + Ads',priority:'B',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Hydroizolacja fundamentów',note:''},
+{id:110,area:'building',phrase:'kołki do termoizolacji',brand:'Klimas / Rawlplug',decision:'SEO + Ads',priority:'B',source:'Plan SEO',match:'PHRASE',adStatus:'ENABLED',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'Zakupowa',landing:'Kołki do termoizolacji',note:''}
+];
+const manufacturers=[{"name":"Tubądzin","country":"Polska","type":"Płytki","status":"partner","group":["partner","poland"],"potential":"A","decision":"Rozwijaj","note":"Silny popyt brandowy w GBP.","source":"JURKO"},{"name":"Paradyż","country":"Polska","type":"Płytki","status":"partner","group":["partner","poland"],"potential":"A","decision":"Rozwijaj","note":"","source":"JURKO"},{"name":"Cerrad","country":"Polska","type":"Płytki","status":"partner","group":["partner","poland"],"potential":"B","decision":"Obserwuj","note":"","source":"JURKO"},{"name":"Stargres","country":"Polska","type":"Płytki","status":"partner","group":["partner","poland"],"potential":"B","decision":"Obserwuj","note":"","source":"JURKO"},{"name":"Italgraniti","country":"Włochy","type":"Płytki","status":"partner","group":["partner","italy","cersaie"],"potential":"A","decision":"Rozwijaj","note":"Premium / architekci.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"NovaBell","country":"Włochy","type":"Płytki","status":"partner","group":["partner","italy","cersaie"],"potential":"B","decision":"Rozwijaj","note":"","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Cerdomus","country":"Włochy","type":"Płytki","status":"partner","group":["partner","italy","cersaie"],"potential":"B","decision":"Obserwuj","note":"","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Marazzi","country":"Włochy","type":"Płytki","status":"partner","group":["partner","italy","cersaie"],"potential":"A","decision":"Rozwijaj","note":"","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Supergres","country":"Włochy","type":"Płytki","status":"partner","group":["partner","italy","cersaie"],"potential":"B","decision":"Obserwuj","note":"","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Equipe","country":"Hiszpania","type":"Płytki","status":"partner","group":["partner","spain"],"potential":"A","decision":"Rozwijaj","note":"","source":"JURKO"},{"name":"Peronda","country":"Hiszpania","type":"Płytki","status":"partner","group":["partner","spain","cersaie"],"potential":"B","decision":"Obserwuj","note":"","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Museum","country":"Hiszpania","type":"Płytki","status":"partner","group":["partner","spain"],"potential":"B","decision":"Obserwuj","note":"","source":"JURKO"},{"name":"41zero42","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"ABK","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Alfa Lux","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Alaplana / Nueva Alaplana","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Ariostea","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Armonie Ceramiche","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"ARPA Ceramiche","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Arcana Tiles","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Arklam","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Arklam / ITT Ceramic","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Artistica 3 / Cerart","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Atlas Concorde","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Azuvi","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Azulejos Benadresa (AB)","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Baldocer","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"CEDIR","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Ceramica Cielo","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Cercom – Gruppo Romani","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Century – Fincibec Group","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"CIPA Gres","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"CIR – Gruppo Romani","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Cifre Group","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Codicer","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Cotto Petrus","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Del Conca","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"DIAGO Cerámicas","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"DNA Tiles","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Durstone","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Edimax Ceramiche / EdimaxAstor","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Equipe Cerámicas","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"FAP Ceramiche","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Fanal","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Fioranese","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Florim","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Gayaflores","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"GranitiFiandre","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Gres Aragón","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Grespania","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Gruppo Romani","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Impronta","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Iris Ceramica","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Italceramik","country":"Polska","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","poland"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Casalgrande Padana","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"ITT Ceramic","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Keralife","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Keros Ceramica","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"La Faenza","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Laminam","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Love Tiles","country":"Portugalia","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","portugal"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Marca Corona","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Mariner Ceramiche","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Mirage","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Monocibec – Fincibec Group","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Monopole Ceramica","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Natucer Cerámica Natural","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Naxos – Fincibec Group","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Nuova Neon Group /szafy","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Nuovocorso / Big Slabs","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"OPERA","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Pamesa Cerámica","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Panaria","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Pastorelli","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Pecasa","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Peronda Harmony","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Peronda Museum","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Porcelanite / Porcelanite Gres","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Pavigres","country":"Portugalia","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","portugal"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"RAKO","country":"Czechy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Ragno – Marazzi Group","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Realonda","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Refin Ceramiche","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Saime","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Saloni","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Sanycces","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Serenissima – Gruppo Romani","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Settecento","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Sichenia","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"SICIS","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Tagina","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Tonino Lamborghini Tiles / GS Luxury Group","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Arkana Equipe","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Unicomstarker","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Valmora","country":"Indie","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Veneto Ceramicas","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Venus Ceramica","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Verde","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Versace Tiles","country":"Włochy","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","italy"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Vives","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"WOW Design / WOW Ceramiche","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Zirconio S.A.","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Tau ceramika","country":"—","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Aparici","country":"Hiszpania","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie","spain"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Lea ceramiche ( panaria)","country":"—","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Tonalite","country":"—","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Vouge","country":"—","type":"Płytki","status":"Cersaie 2026 / kontakt","group":["cersaie"],"potential":"?","decision":"Sprawdź wolumen","note":"Źródło: arkusz kontaktów Cersaie 2026.","source":"01 Kontakty fabryki włoskie Cersait 2026"},{"name":"Rockwool","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"A","decision":"Rozwijaj","note":"Wełna i systemy ociepleń."},{"name":"Saint-Gobain","country":"Francja","type":"Materiały budowlane","status":"partner","group":["partner","building"],"potential":"A","decision":"Rozwijaj","note":"Systemy budowlane."},{"name":"Termo Organika","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"A","decision":"Rozwijaj","note":"Styropian / hydroizolacje."},{"name":"Aluthermo","country":"Belgia","type":"Materiały budowlane","status":"partner","group":["partner","building"],"potential":"B","decision":"Obserwuj","note":"Izolacje refleksyjne."},{"name":"Norgips","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"A","decision":"Rozwijaj","note":"Sucha zabudowa."},{"name":"FAS","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"B","decision":"Obserwuj","note":"Tynki / farby."},{"name":"URSA","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"A","decision":"Rozwijaj","note":"Izolacje."},{"name":"BMI Icopal","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"A","decision":"Rozwijaj","note":"Hydroizolacje / papa."},{"name":"Klimas Wkręt-met","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"B","decision":"Rozwijaj","note":"Systemy zamocowań."},{"name":"Rawlplug","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"A","decision":"Rozwijaj","note":"Systemy zamocowań."},{"name":"Tyvek","country":"USA","type":"Materiały budowlane","status":"partner","group":["partner","building"],"potential":"B","decision":"Obserwuj","note":"Membrany / dach."},{"name":"Tytan Professional","country":"Polska","type":"Materiały budowlane","status":"partner","group":["partner","building","poland"],"potential":"A","decision":"Rozwijaj","note":"Chemia i akcesoria."}];
+const DEFAULT_CAMPAIGNS=[{name:'Płytki Włoskie',status:'ENABLED',impressions:0,clicks:0,cost:0},{name:'Tubadzin jeden',status:'ENABLED',impressions:0,clicks:0,cost:0},{name:'Tubadzin - Zień',status:'ENABLED',impressions:0,clicks:0,cost:0},{name:'Tubadzin',status:'ENABLED',impressions:0,clicks:0,cost:0},{name:'Paradyz',status:'PAUSED',impressions:0,clicks:0,cost:0},{name:'wełna do ocieplania',status:'PAUSED',impressions:0,clicks:0,cost:0},{name:'Wełna rockwool',status:'PAUSED',impressions:0,clicks:0,cost:0}];
+let campaigns=JSON.parse(localStorage.getItem('jurkoCampaigns_v1')||'null')||structuredClone(DEFAULT_CAMPAIGNS);
+let history=JSON.parse(localStorage.getItem('jurkoHistory_v1')||'[]');
+let syncMeta=JSON.parse(localStorage.getItem('jurkoSyncMeta_v1')||'{}');
+let senutoSnapshots=JSON.parse(localStorage.getItem('jurkoSenutoSnapshots_v1')||'[]');
+const SENUTO_TILES=[
+'Tubądzin','Paradyż','Cerrad','Stargres','Italgraniti','NovaBell','Cerdomus','Marazzi','Supergres','Equipe','Peronda','Museum','Gardenia Orchidea','Atlas Concorde'
+];
+const SENUTO_BUILDING=[
+'Rockwool','URSA','Termo Organika','Norgips','Rawlplug','Tytan Professional','Saint-Gobain','BMI Icopal','Klimas Wkręt-met','Tyvek','Aluthermo','FAS'
+];
+const SENUTO_PHRASE_GROUPS={
+ tiles:[
+  ['Marka + Warszawa','np. Tubądzin Warszawa, Italgraniti Warszawa, Marazzi Warszawa'],
+  ['Kolekcja + Warszawa','nazwa kolekcji + Warszawa / salon / sklep'],
+  ['Kategoria','płytki Warszawa, gres Warszawa, płytki łazienkowe Warszawa'],
+  ['Premium','płytki włoskie Warszawa, płytki hiszpańskie Warszawa, spieki Warszawa'],
+  ['Format','płytki 120x120 Warszawa, wielki format, 120x260'],
+  ['Zastosowanie','łazienka, salon, taras, elewacja + Warszawa']
+ ],
+ building:[
+  ['Marka + Warszawa','Rockwool Warszawa, URSA Warszawa, Norgips Warszawa, Rawlplug Warszawa'],
+  ['Ocieplenia','wełna mineralna Warszawa, styropian Warszawa, ocieplenia Warszawa'],
+  ['Sucha zabudowa','płyta g-k Warszawa, profile g-k Warszawa, Norgips Warszawa'],
+  ['Zamocowania','kołki do termoizolacji Warszawa, Rawlplug Warszawa, Klimas Warszawa'],
+  ['Chemia','Tytan Warszawa, klej do ociepleń Warszawa, piany montażowe Warszawa'],
+  ['Hydroizolacje / dach','papa Warszawa, Icopal Warszawa, membrana dachowa Warszawa']
+ ]
+};
+const contentQueue=[['Płytki do łazienki — poradnik wyboru','WWW','Do napisania'],['Tubądzin Warszawa — salon i kolekcje','Landing','Do napisania'],['Wełna mineralna 15 cm — jak dobrać','WWW','Do napisania'],['Rockwool Frontrock — zastosowanie i ceny','WWW','Do napisania']];
+const integrations=[['Google Business Profile API','Połączono','greenDot'],['Google Ads API','Połączono — Explorer','greenDot'],['Google Drive','Połączono','greenDot'],['Senuto API','Połączono przez Make — autoryzowane','greenDot'],['Search Console','Przygotowane — podłączymy po uruchomieniu nowej strony','orangeDot'],['Localo','Do połączenia','orangeDot'],['Meta / Facebook / Instagram','Do połączenia','orangeDot'],['TikTok','Do połączenia','orangeDot'],['Newsletter / E-mail','Planowane','grayDot']];
+function migrate(){try{const old=JSON.parse(localStorage.getItem(OLD));if(Array.isArray(old)){return old.map(x=>({...x,warsaw:x.warsaw??x.impressions??0,poland:x.poland??0}))}}catch(e){}return structuredClone(starterKeywords)}
+let keywords;try{keywords=JSON.parse(localStorage.getItem(STORAGE))||migrate()}catch(e){keywords=migrate()}
+function save(){localStorage.setItem(STORAGE,JSON.stringify(keywords));localStorage.setItem('jurkoCampaigns_v1',JSON.stringify(campaigns));localStorage.setItem('jurkoHistory_v1',JSON.stringify(history));localStorage.setItem('jurkoSyncMeta_v1',JSON.stringify(syncMeta));localStorage.setItem('jurkoSenutoSnapshots_v1',JSON.stringify(senutoSnapshots));document.getElementById('saveInfo').textContent='Zapisano '+new Date().toLocaleTimeString('pl-PL')}
+function current(){return keywords.filter(x=>x.area===area)}
+function n(v){return Number(v)||0} function money(v){return n(v).toLocaleString('pl-PL',{maximumFractionDigits:2})+' zł'}
+function decClass(d){return d==='SEO'?'seo':d==='Ads'?'ads':d==='SEO + Ads'?'both':d==='Wyklucz'?'exclude':'blue'}
+function score(x){let s=x.priority==='A'?30:x.priority==='B'?15:5;s+=Math.min(30,(n(x.warsaw)+n(x.poland))/50);if(n(x.conversions)>0)s+=25;if(n(x.position)>3&&n(x.position)<=12)s+=15;if(x.decision==='SEO + Ads')s+=10;if(x.decision==='Wyklucz')s=-20;return s}
+function recommendations(list=current()){const r=[];list.forEach(x=>{if(x.decision==='Wyklucz')r.push({level:'high',title:'Wyklucz: '+x.phrase,text:'Dodaj do listy wykluczeń w odpowiednich kampaniach.',why:x.note||'Ograniczenie niepotrzebnego kosztu.'});if((x.decision==='SEO'||x.decision==='SEO + Ads')&&n(x.warsaw)>=100&&(!n(x.position)||n(x.position)>3))r.push({level:'high',title:'Wzmocnij SEO: '+x.phrase,text:'Fraza ma realny popyt lokalny. Zbuduj lub popraw landing: '+(x.landing||'dedykowana strona')+'.',why:'Warszawa: '+n(x.warsaw)+'; pozycja: '+(n(x.position)||'brak danych')});if((x.decision==='Ads'||x.decision==='SEO + Ads')&&x.match==='BROAD'&&x.adStatus==='ENABLED')r.push({level:'',title:'Sprawdź BROAD: '+x.phrase,text:'Rozważ PHRASE / EXACT i sprawdź raport wyszukiwanych haseł.',why:'BROAD może łapać nieprecyzyjne zapytania.'});if(n(x.clicks)>=10&&n(x.conversions)===0&&n(x.cost)>0)r.push({level:'high',title:'Koszt bez konwersji: '+x.phrase,text:'Obniż stawkę, zmień dopasowanie albo popraw stronę docelową.',why:'Koszt '+money(x.cost)+', kliknięcia '+n(x.clicks)});if(n(x.conversions)>=2)r.push({level:'good',title:'Skaluj: '+x.phrase,text:'Fraza konwertuje. Zwiększ udział w Ads i równolegle wzmacniaj SEO.',why:'Konwersje: '+n(x.conversions)});if(n(x.warsaw)===0&&n(x.poland)===0&&x.source==='Plan SEO')r.push({level:'',title:'Zweryfikuj wolumen: '+x.phrase,text:'Nie mamy jeszcze prawdziwego wolumenu. Pobierz Warszawę i Polskę z Keyword Planner / Search Console / Localo.',why:'Nie podejmujemy decyzji na wymyślonych liczbach.'})});return r.sort((a,b)=>({high:3,good:2,'':1}[b.level]-({high:3,good:2,'':1}[a.level]))).slice(0,60)}
+function areaName(){return area==='tiles'?'Płytki ceramiczne':'Materiały budowlane'}
+function renderAll(){renderDashboard();renderMarketing();renderKeywords();renderHistory();renderFactories();renderAds();renderAdsHistory();renderMaps();renderSeo();renderSenuto();renderSearchConsole();renderContent();renderSocial();renderNewsletter();renderDesigners();renderCampaigns();renderCompetition();renderReports();renderDrive();renderIntegrations();renderSettings();renderAdvisor()}
+function renderDashboard(){const l=current(),w=l.reduce((a,b)=>a+n(b.warsaw),0),p=l.reduce((a,b)=>a+n(b.poland),0);document.getElementById('dashKpis').innerHTML=[['Frazy w bazie',l.length],['Warszawa — znany wynik',w.toLocaleString('pl-PL')],['Polska — znany wynik',p?p.toLocaleString('pl-PL'):'brak danych'],['Do SEO',l.filter(x=>/SEO/.test(x.decision)).length],['Do Ads',l.filter(x=>/Ads/.test(x.decision)).length]].map(a=>`<div class="card kpi"><div class="label">${a[0]}</div><div class="value">${a[1]}</div></div>`).join('');document.getElementById('dashTop').innerHTML=[...l].sort((a,b)=>score(b)-score(a)).slice(0,8).map(x=>`<div class="action"><span><b>${x.phrase}</b><br><span class="muted small">${x.brand||''} • Warszawa ${n(x.warsaw)||'—'}</span></span><span><span class="tag ${decClass(x.decision)}">${x.decision}</span> <span class="prio ${x.priority}">${x.priority}</span></span></div>`).join('');document.getElementById('dashAlerts').innerHTML=`<div class="statrow"><span>Brak danych PL</span><b>${l.filter(x=>!n(x.poland)).length}</b></div><div class="statrow"><span>Brak pozycji SEO</span><b>${l.filter(x=>/SEO/.test(x.decision)&&!n(x.position)).length}</b></div><div class="statrow"><span>BROAD aktywne</span><b>${l.filter(x=>x.match==='BROAD'&&x.adStatus==='ENABLED').length}</b></div><div class="statrow"><span>Frazy do wykluczenia</span><b>${l.filter(x=>x.decision==='Wyklucz').length}</b></div>`;document.getElementById('dashRecos').innerHTML=recommendations(l).slice(0,5).map(recoHtml).join('');document.getElementById('plan14').innerHTML=['Pobierz wolumen Warszawa + Polska dla TOP 50 fraz','Search Console: podłącz po uruchomieniu nowej strony','Podłącz Localo dla monitoringu tygodniowego','Zbuduj 2 landing pages SEO z TOP fraz','Przejrzyj aktywne kampanie Ads z zerowym ruchem'].map((x,i)=>`<div class="action"><span><b>${i+1}.</b> ${x}</span><span class="tag blue">plan</span></div>`).join('')}
+function renderMarketing(){const l=current();document.getElementById('marketingKpis').innerHTML=[['SEO + Ads',l.filter(x=>x.decision==='SEO + Ads').length],['Tylko SEO',l.filter(x=>x.decision==='SEO').length],['Tylko Ads',l.filter(x=>x.decision==='Ads').length],['Wyklucz',l.filter(x=>x.decision==='Wyklucz').length],['Do sprawdzenia',l.filter(x=>x.decision==='Do sprawdzenia').length]].map(a=>`<div class="card kpi"><div class="label">${a[0]}</div><div class="value">${a[1]}</div></div>`).join('');document.getElementById('marketingPriorities').innerHTML=[...l].filter(x=>x.priority==='A').slice(0,10).map(x=>`<div class="action"><span><b>${x.phrase}</b><br><span class="muted small">${x.intent||''}</span></span><span class="tag ${decClass(x.decision)}">${x.decision}</span></div>`).join('');document.getElementById('dataFunnel').innerHTML=[['GBP','Połączono'],['Google Ads','Połączono'],['Search Console','Gotowe — oczekuje na nową stronę'],['Localo','Do połączenia'],['AI rekomendacje','Działa na danych w aplikacji']].map(x=>`<div class="statrow"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}
+function renderKeywords(){let l=current();const q=document.getElementById('searchKw').value.toLowerCase(),d=document.getElementById('decisionFilter').value,p=document.getElementById('priorityFilter').value,s=document.getElementById('sourceFilter').value;if(q)l=l.filter(x=>(x.phrase+' '+x.brand+' '+x.landing).toLowerCase().includes(q));if(d)l=l.filter(x=>x.decision===d);if(p)l=l.filter(x=>x.priority===p);if(s)l=l.filter(x=>x.source===s);document.getElementById('keywordRows').innerHTML=l.map(x=>`<tr><td><b>${x.phrase}</b><br><span class="muted small">${x.intent||''}</span></td><td>${x.brand||'—'}</td><td><span class="tag ${decClass(x.decision)}">${x.decision}</span></td><td><span class="prio ${x.priority}">${x.priority}</span></td><td>${x.source}</td><td>${n(x.warsaw)||'—'}</td><td>${n(x.poland)||'—'}</td><td>${n(x.position)||'—'}</td><td>${money(x.cost)}</td><td>${n(x.conversions)}</td><td><button class="btn" onclick="editKeyword(${x.id})">Edytuj</button></td></tr>`).join('')||'<tr><td colspan="11" class="empty">Brak danych</td></tr>'}
+function renderHistory(){
+  const q=document.getElementById('historySearch').value.toLowerCase();
+  const geo=document.getElementById('geoFilter').value;
+  const periodMap={quarter:3,half:6,year:12};
+  const months=periodMap[historyPeriod];
+  const grouped={};
+  history.filter(h=>h.area===area && (geo==='all'||h.geo===geo) && (!q||(h.phrase+' '+(h.brand||'')).toLowerCase().includes(q))).forEach(h=>{
+    const key=h.phrase+'|'+h.geo; if(!grouped[key])grouped[key]=[]; grouped[key].push(h);
+  });
+  const rows=[];
+  Object.entries(grouped).forEach(([key,arr])=>{
+    arr.sort((a,b)=>String(b.month).localeCompare(String(a.month))); const latest=arr[0]; const slice=arr.slice(0,months);
+    const vals=slice.map(x=>n(x.value)).filter(x=>x>0); const avg=vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;
+    let trend='—'; if(slice.length>1&&n(slice[slice.length-1].value)>0){const ch=((n(slice[0].value)-n(slice[slice.length-1].value))/n(slice[slice.length-1].value))*100;trend=(ch>=0?'↑ ':'↓ ')+Math.abs(ch).toFixed(1)+'%'}
+    rows.push(`<tr><td><b>${latest.phrase}</b></td><td>${latest.brand||'—'}</td><td>${latest.geo}</td><td>${months} mies.</td><td>${avg||'<span class="muted">brak danych</span>'}</td><td>${trend}</td><td><span class="tag blue">${slice.length} pomiarów</span></td><td>${latest.source||'Import'}</td><td>${latest.decision||'Do sprawdzenia'}</td></tr>`)
+  });
+  if(!rows.length){let base=current();if(q)base=base.filter(x=>(x.phrase+' '+x.brand).toLowerCase().includes(q));base.forEach(x=>{const geos=geo==='all'?['Warszawa','Polska']:[geo];geos.forEach(g=>{const val=g==='Warszawa'?n(x.warsaw):n(x.poland);rows.push(`<tr><td><b>${x.phrase}</b></td><td>${x.brand||'—'}</td><td>${g}</td><td>${months} mies.</td><td>${val||'<span class="muted">brak danych</span>'}</td><td>—</td><td>${val?'<span class="tag blue">1 pomiar</span>':'<span class="tag">brak historii</span>'}</td><td>${x.source}</td><td>${x.decision}</td></tr>`)})})}
+  document.getElementById('historyRows').innerHTML=rows.join('')||'<tr><td colspan="9" class="empty">Brak danych</td></tr>'
+}
+
+const FACTORY_COLLECTIONS={
+ 'Tubądzin':GBP_AUTO_BRANDS['Tubądzin'].collections,
+ 'NovaBell':GBP_AUTO_BRANDS['NovaBell'].collections,
+ 'Italgraniti':GBP_AUTO_BRANDS['Italgraniti'].collections,
+ 'Vives':GBP_AUTO_BRANDS['Vives'].collections,
+ 'DNA Tiles':GBP_AUTO_BRANDS['DNA Tiles'].collections,
+ 'Porcelanite / Porcelanite Gres':['Empire','Anima','Dallas','Gre Lumen'],
+ 'Peronda':['Museum','Harmony']
+};
+function brandMatchesFactory(brand,name){
+ const b=(brand||'').toLowerCase(), nme=(name||'').toLowerCase();
+ if(!b||!nme)return false;
+ return b===nme||b.includes(nme)||nme.includes(b)
+   ||(nme.includes('equipe')&&b==='equipe')
+   ||(nme.includes('museum')&&b==='museum')
+   ||(nme.includes('novabell')&&b==='novabell');
+}
+function factoryMonthlyMetrics(m){
+ const ks=keywords.filter(x=>x.area===area&&brandMatchesFactory(x.brand,m.name));
+ const monthly=ks.filter(x=>/senuto|keyword planner/i.test(x.source||''));
+ return {
+   kw:ks,
+   warsaw:monthly.reduce((a,b)=>a+n(b.warsaw),0),
+   poland:monthly.reduce((a,b)=>a+n(b.poland),0),
+   gbp:ks.filter(x=>x.source==='GBP').reduce((a,b)=>a+n(b.warsaw),0),
+   gbpPeriod:ks.some(x=>x.source==='GBP')?'Jan–Sep 2026 • GBP suma':'—',
+   source:monthly.length?[...new Set(monthly.map(x=>x.source))].join(', '):'czeka na Senuto'
+ }
+}
+function showFactoryDetail(name){
+ selectedFactory=name;
+ document.querySelectorAll('#companyGrid .company').forEach(el=>el.classList.toggle('active',el.dataset.factory===name));
+ const m=manufacturers.find(x=>x.name===name); const box=document.getElementById('factoryDetail'); if(!m||!box)return;
+ const mm=factoryMonthlyMetrics(m);
+ const generic=[m.name,m.name+' Warszawa',m.name+' płytki',m.name+' sklep',m.name+' salon',m.name+' kolekcje'];
+ const actual=mm.kw.map(x=>x.phrase);
+ const phrases=[...new Set([...actual,...generic])].slice(0,16);
+ const cols=FACTORY_COLLECTIONS[m.name]||[];
+ box.innerHTML=`<div class="section-head"><div><div class="title">${m.name}</div><div class="muted small">${m.country} • ${m.status}</div></div><span class="tag ${m.potential==='A'?'ok':m.potential==='B'?'warn':'blue'}">Potencjał ${m.potential}</span></div>
+ <div class="factory-detail-grid" style="margin-top:10px">
+   <div><b>Słowa kluczowe fabryki</b><div class="factory-keywords">${phrases.map(p=>`<span>${p}</span>`).join('')}</div>
+   <div class="note" style="margin-top:9px"><b>Jak oceniamy inwestycję:</b> miesięczny wolumen Warszawa + Polska, trend 12M, TOP3/TOP10/TOP50 w Senuto, CPC/konkurencja w Google Ads i konwersje JURKO.</div></div>
+   <div><b>Kolekcje / linie do monitoringu</b>${cols.length?`<div class="factory-keywords">${cols.map(c=>`<span>${c}</span>`).join('')}</div>`:`<div class="note" style="margin-top:7px">Brak zweryfikowanej listy popularnych kolekcji w naszej bazie. Po działającym imporcie Senuto pokażemy tu kolekcje posortowane wg miesięcznej liczby wyszukiwań — bez zgadywania.</div>`}
+   <div class="statrow" style="margin-top:9px"><span>Warszawa / mies.</span><b>${mm.warsaw||'brak danych Senuto'}</b></div>
+   <div class="statrow"><span>Polska / mies.</span><b>${mm.poland||'brak danych Senuto'}</b></div>
+   <div class="statrow"><span>GBP Jan–Sep 2026</span><b>${mm.gbp||'—'}</b></div>
+   </div>
+ </div>`;
+}
+
+function renderFactories(){
+ let l=manufacturers.filter(m=>area==='tiles'?m.type==='Płytki':m.type==='Materiały budowlane');
+ if(factoryGroup!=='all')l=l.filter(m=>m.group.includes(factoryGroup));
+ if(factorySearch)l=l.filter(m=>(m.name+' '+m.country+' '+m.status).toLowerCase().includes(factorySearch.toLowerCase()));
+ document.getElementById('companyGrid').innerHTML=l.map(m=>`<div class="company ${selectedFactory===m.name?'active':''}" data-factory="${m.name.replaceAll('"','&quot;')}" onclick="showFactoryDetail('${m.name.replaceAll("'","\\'")}')"><b>${m.name}</b><div class="meta">${m.country} • ${m.type}</div><div class="meta">Status: ${m.status}</div><div style="margin-top:7px"><span class="tag ${m.potential==='A'?'ok':m.potential==='B'?'warn':'blue'}">Potencjał ${m.potential}</span></div></div>`).join('')||'<div class="empty">Brak fabryk dla tego filtra.</div>';
+
+ document.getElementById('factoryRows').innerHTML=l.map(m=>{
+   const mm=factoryMonthlyMetrics(m);
+   return `<tr onclick="showFactoryDetail('${m.name.replaceAll("'","\\'")}')" style="cursor:pointer"><td><b>${m.name}</b><br><span class="muted small">${m.note||''}</span></td><td>${m.country}</td><td>${m.status}</td><td>${mm.kw.length||'—'}</td><td>${mm.warsaw||'—'}</td><td>${mm.poland||'—'}</td><td>${mm.gbp||'—'}</td><td>${mm.warsaw||mm.poland?mm.source:mm.gbpPeriod}</td><td>brak danych Senuto</td><td><span class="prio ${m.potential==='A'?'A':m.potential==='B'?'B':'C'}">${m.potential}</span></td><td>${m.decision}</td></tr>`
+ }).join('');
+
+ const fd=document.getElementById('factoryDecisionRows');
+ if(fd){
+   const candidates=keywords.filter(x=>x.area===area&&x.brand).slice(0,30);
+   fd.innerHTML=candidates.length?candidates.map(x=>`<tr><td><b>${x.brand}</b></td><td>${x.phrase}</td><td>${x.source==='Senuto'||x.position?`wolumen / mies.: ${x.warsaw||'—'} • pozycja: ${x.position||'—'}`:'czeka na Senuto'}</td><td>${x.impressions||x.clicks||x.cost?`koszt: ${money(x.cost)} • kliknięcia: ${n(x.clicks)}`:'czeka na Google Ads'}</td><td>do wyliczenia z danych godzinowych Ads</td><td>${x.decision||'Do sprawdzenia'}</td><td><span class="prio ${x.priority||'B'}">${x.priority||'B'}</span></td></tr>`).join(''):`<tr><td colspan="7" class="empty">Brak połączonych danych dla fabryk. Po imporcie Senuto + Google Ads tabela wypełni się automatycznie.</td></tr>`
+ }
+ if(l.length){
+   if(!l.some(x=>x.name===selectedFactory))selectedFactory=l[0].name;
+   showFactoryDetail(selectedFactory);
+ }else{
+   const box=document.getElementById('factoryDetail'); if(box)box.innerHTML='<div class="empty">Wybierz inny filtr.</div>';
+ }
+}
+
+function renderAdsHistory(){
+ const d=document.getElementById('adsDeviceRows');
+ if(!d)return;
+ const totals=ADS_HISTORY_DEVICES.reduce((a,r)=>({impr:a.impr+r[1],clicks:a.clicks+r[2],cost:a.cost+r[3],conv:a.conv+r[4]}),{impr:0,clicks:0,cost:0,conv:0});
+ document.getElementById('adsHistoryKpis').innerHTML=[
+  ['Wyświetlenia',totals.impr.toLocaleString('pl-PL')],
+  ['Kliknięcia',totals.clicks.toLocaleString('pl-PL')],
+  ['Koszt',totals.cost.toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})+' zł'],
+  ['Konwersje',totals.conv.toLocaleString('pl-PL',{maximumFractionDigits:2})],
+  ['Śr. CPC',(totals.cost/Math.max(totals.clicks,1)).toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})+' zł'],
+  ['Udział mobile',((ADS_HISTORY_DEVICES[0][1]/totals.impr)*100).toFixed(1)+'%']
+ ].map(x=>`<div class="kpi"><div class="label">${x[0]}</div><div class="num">${x[1]}</div></div>`).join('');
+
+ d.innerHTML=ADS_HISTORY_DEVICES.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1].toLocaleString('pl-PL')}</td><td>${r[2].toLocaleString('pl-PL')}</td><td>${r[3].toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})} zł</td><td>${r[4]}</td></tr>`).join('');
+ document.getElementById('adsHourRows').innerHTML=ADS_HISTORY_HOURS.map(r=>`<tr><td>${r[0]}</td><td>${String(r[1]).padStart(2,'0')}:00</td><td>${r[2]}</td><td>${r[3].toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})} zł</td><td><b>${Number(r[4]).toLocaleString('pl-PL',{maximumFractionDigits:2})}</b></td></tr>`).join('');
+ document.getElementById('adsCampaignHistoryRows').innerHTML=ADS_HISTORY_MONTHLY.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2].toLocaleString('pl-PL')}</td><td>${r[3]}</td><td>${r[4].toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})} zł</td><td>${r[5]}</td></tr>`).join('');
+
+ const evalTerm=r=>{
+   const c=Number(r[5]), clicks=Number(r[3]), cost=Number(r[4]);
+   if(c>=1) return ['DOBRE','good'];
+   if(clicks>=8 && c===0) return ['DO OPTYMALIZACJI','warn'];
+   if(cost>=30 && c===0) return ['WYKLUCZ / SPRAWDŹ','bad'];
+   return ['OBSERWUJ',''];
+ };
+ document.getElementById('adsSearchTermRows').innerHTML=ADS_HISTORY_SEARCH_TERMS.map(r=>{
+   const ctr=r[2]?100*r[3]/r[2]:0, cpa=r[5]?r[4]/r[5]:0, e=evalTerm(r);
+   return `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${ctr.toFixed(1)}%</td><td>${r[4].toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})} zł</td><td>${Number(r[5]).toLocaleString('pl-PL',{maximumFractionDigits:2})}</td><td>${r[5]?cpa.toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})+' zł':'—'}</td><td><span class="tag ${e[1]}">${e[0]}</span></td></tr>`;
+ }).join('');
+
+ const actual=new Map(ADS_HISTORY_SEARCH_TERMS.map(r=>[r[0].toLowerCase(),r]));
+ document.getElementById('adsSearchCloud').innerHTML=ADS_VISIBLE_SEARCH_TERMS.map(t=>{
+   const r=actual.get(t.toLowerCase()), cls=r?(r[5]>=1?'good':(r[4]>=30?'bad':'warn')):'';
+   return `<span class="chip ${cls}" title="${r?`${r[2]} wyśw. • ${r[3]} klik. • ${r[5]} konw.`:'widoczne w Google Ads'}">${t}</span>`;
+ }).join('');
+
+ const winners=[...ADS_HISTORY_SEARCH_TERMS].filter(r=>Number(r[5])>0).sort((a,b)=>b[5]-a[5]).slice(0,8);
+ document.getElementById('adsSearchWinners').innerHTML=winners.map(r=>`<div class="action"><span><b>${r[0]}</b><br><span class="small muted">${r[3]} klik. • ${r[4].toFixed(2)} zł koszt</span></span><span class="tag ok">${Number(r[5]).toLocaleString('pl-PL',{maximumFractionDigits:2})} konw.</span></div>`).join('');
+
+ document.getElementById('adsKeywordHistoryRows').innerHTML=ADS_HISTORY_KEYWORDS.map(r=>{
+   const cpa=r[5]?r[4]/r[5]:0;
+   const verdict=r[5]>=1?'DOBRE':(r[4]>=30?'SPRAWDŹ / OGRANICZ':'OBSERWUJ');
+   const cls=r[5]>=1?'ok':(r[4]>=30?'warn':'');
+   return `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4].toFixed(2)} zł</td><td>${r[5]}</td><td><span class="tag ${cls}">${verdict}</span>${r[5]?`<br><span class="small muted">CPA ${cpa.toFixed(2)} zł</span>`:''}</td></tr>`;
+ }).join('');
+
+ document.getElementById('adsKeywordActions').innerHTML=[
+  ['Tubadzin — BROAD','32 konwersje. Zostawić, ale rozdzielić najlepsze zapytania do EXACT/PHRASE.','ok'],
+  ['bartycka płytki tubądzin','Ma konwersje, ale to fraza konkurencyjnej lokalizacji. Monitorować osobno.','warn'],
+  ['tubadzin warszawa','Dużo kosztu bez konwersji w historii. Nie podnosić stawki automatycznie.','warn'],
+  ['Frazy kolekcji','Mało danych. Testować w osobnych grupach z małym budżetem.','blue']
+ ].map(x=>`<div class="action"><span><b>${x[0]}</b><br><span class="small muted">${x[1]}</span></span><span class="tag ${x[2]}">AI</span></div>`).join('');
+}
+function renderAds(){const l=current().filter(x=>/Ads/.test(x.decision)||x.decision==='Wyklucz');document.getElementById('adsSummary').innerHTML=`<div class="statrow"><span>Połączenie API</span><b>OK</b></div><div class="statrow"><span>Poziom dostępu</span><b>Explorer</b></div><div class="statrow"><span>Słowa do Ads</span><b>${l.filter(x=>x.decision!=='Wyklucz').length}</b></div><div class="statrow"><span>Wykluczenia</span><b>${l.filter(x=>x.decision==='Wyklucz').length}</b></div>`;document.getElementById('campaignSummary').innerHTML=campaigns.filter(c=>area==='tiles'?!/wełna/i.test(c.name):/wełna/i.test(c.name)).map(c=>`<div class="statrow"><span>${c.name}</span><b>${c.status}</b></div>`).join('')||'<div class="empty">Brak kampanii</div>';document.getElementById('adsRows').innerHTML=l.map(x=>`<tr><td><b>${x.phrase}</b></td><td>${x.match||'—'}</td><td>${x.adStatus||'—'}</td><td>${n(x.impressions)}</td><td>${n(x.clicks)}</td><td>${money(x.cost)}</td><td>${n(x.conversions)}</td><td>${n(x.impressions)===0?'Brak ruchu':'Analizuj'}</td></tr>`).join('')}
+
+
+function openGbpTab(tab){
+ document.querySelectorAll('#gbpManageTabs button').forEach(b=>b.classList.toggle('active',b.dataset.gbpTab===tab));
+ document.querySelectorAll('.gbp-manage-panel').forEach(p=>p.classList.add('hidden'));
+ const p=document.getElementById('gbpTab_'+tab); if(p)p.classList.remove('hidden');
+}
+function renderGbpManager(){
+ const prof=document.getElementById('gbpProfileSelect');
+ if(prof){prof.value=gbpSelectedProfile;prof.onchange=()=>{gbpSelectedProfile=prof.value;saveGbpManager();renderGbpManager();renderGbpAutoQueue()}}
+ const isTiles=gbpSelectedProfile==='tiles';
+ const ps=document.getElementById('gbpProfileSummary');
+ if(ps)ps.innerHTML=[
+   ['Profil',isTiles?'JURKO — płytki / łazienki':'JURKO — materiały budowlane'],
+   ['Status API','Połączono'],
+   ['Zdjęcia w kolejce',gbpPhotoQueue.filter(x=>x.profile===gbpSelectedProfile).length],
+   ['Do przygotowania',gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile&&normalizeGbpStatus(x.status)==='Do przygotowania').length],
+   ['Do zatwierdzenia',gbpPostQueue.filter(x=>x.profile===gbpSelectedProfile&&normalizeGbpStatus(x.status)==='Do zatwierdzenia').length],
+   ['Zaplanowane',gbpPostQueue.filter(x=>x.profile===gbpSelectedProfile&&normalizeGbpStatus(x.status)==='Zaplanowane').length],
+   ['Publikacja automatyczna','PLAN — wymaga uruchomienia harmonogramu'],
+   ['Wizualizacje AI','fal.ai / Nano Banana 2'],
+   ['Branding','Canva — szablon JURKO'],
+   ['Analiza','co 10 opublikowanych postów']
+ ].map(x=>`<div class="statrow"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('');
+
+ const routine=document.getElementById('gbpRoutine');
+ if(routine)routine.innerHTML=[
+   ['Post automatyczny co 3 dni','rotacja: Tubądzin, NovaBell, Italgraniti, Vives, DNA Tiles'],
+   ['2–3 wizualizacje fal.ai','wybierana najlepsza aranżacja'],
+   ['Canva JURKO','branding, producent, kolekcja, CTA'],
+   ['SEO lokalne','2–4 frazy na post, naturalna rotacja'],
+   ['Analiza co 10 postów','telefony, trasy, WWW, wyświetlenia i najlepsze tematy']
+ ].map(x=>`<div class="action"><span><b>${x[0]}</b><br><span class="small muted">${x[1]}</span></span><span class="tag blue">SEO lokalne</span></div>`).join('');
+
+ const autoStatus=document.getElementById('gbpAutomationStatus');
+ if(autoStatus)autoStatus.innerHTML=[
+   ['Status','Do uruchomienia'],
+   ['Częstotliwość','co 3 dni'],
+   ['Zakres','5 producentów • kolekcje z oficjalnych stron'],
+   ['Wizualizacje','2–3 propozycje fal.ai / Nano Banana 2'],
+   ['Publikacja','Google Business Profile JURKO — po uruchomieniu harmonogramu'],
+   ['Kontrola','analiza po każdych 10 postach']
+ ].map(x=>`<div class="statrow"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('');
+ const autoFlow=document.getElementById('gbpAutomationFlow');
+ if(autoFlow)autoFlow.innerHTML=[
+   ['1','Drive — wybór kolejnej kolekcji'],
+   ['2','fal.ai — 2–3 wizualizacje'],
+   ['3','Canva — szablon JURKO'],
+   ['4','ChatGPT — tekst + frazy lokalne'],
+   ['5','Google — publikacja zdjęcia i wpisu'],
+   ['6','Drive — archiwum + numer posta']
+ ].map(x=>`<div class="action"><span><b>${x[0]}. ${x[1]}</b></span><span class="tag ok">AUTO</span></div>`).join('');
+ const kw=document.getElementById('gbpAutoKeywordCloud');
+ if(kw)kw.innerHTML=['Tubądzin Warszawa','płytki Tubądzin Warszawa','salon Tubądzin Warszawa','gres Tubądzin Warszawa','płytki do łazienki Warszawa','gres wielkoformatowy Warszawa','salon płytek Warszawa'].map(p=>`<span class="chip">${p}</span>`).join('');
+ const contact=document.getElementById('gbpAutoContact');
+ if(contact)contact.innerHTML=`<div class="statrow"><span>Salon</span><b>JURKO</b></div><div class="statrow"><span>Adres</span><b>Al. Jerozolimskie 229, 02-222 Warszawa</b></div><div class="statrow"><span>Telefon</span><b>22 662 16 10</b></div><div class="statrow"><span>E-mail</span><b>jurko@jurko.pl</b></div>`;
+ const ten=document.getElementById('gbpTenPostReview');
+ if(ten)ten.innerHTML=`<div class="statrow"><span>Licznik bieżącej serii</span><b>0 / 10</b></div><div class="statrow"><span>Po 10. poście</span><b>raport automatyczny</b></div><div class="note" style="margin-top:8px">Porównujemy dostępne dane: telefony, trasy, kliknięcia WWW, wyświetlenia profilu i inne interakcje. Najlepsze kolekcje i frazy są częściej używane w kolejnej serii.</div>`;
+ const arch=document.getElementById('gbpAutoArchive');
+ if(arch)arch.innerHTML=`<div class="statrow"><span>Źródła</span><b>01 Źródła</b></div><div class="statrow"><span>Wizualizacje</span><b>02 Wizualizacje AI</b></div><div class="statrow"><span>Gotowe posty</span><b>03 Posty social media</b></div><div class="statrow"><span>Filmy</span><b>04 Filmy</b></div>`;
+
+ const pq=document.getElementById('gbpPhotoQueue');
+ if(pq){
+   const list=gbpPhotoQueue.filter(x=>x.profile===gbpSelectedProfile);
+   pq.innerHTML=list.length?list.map(x=>`<div class="queue-item"><div class="qhead"><b>${x.title||'Zdjęcie bez tytułu'}</b><span class="tag warn">${x.status}</span></div><div class="qmeta">${x.category} • ${x.note||'bez opisu'}</div><div class="qmeta">${x.url?`<a href="${x.url}" target="_blank" rel="noopener">Otwórz na Drive</a>`:''}</div><div class="queue-actions"><button class="btn" onclick="approveGbpPhoto('${x.id}')">Zatwierdź</button><button class="btn" onclick="removeGbpPhoto('${x.id}')">Usuń</button></div></div>`).join(''):'<div class="empty">Brak zdjęć w kolejce.</div>';
+ }
+
+ renderGbpWorkflow();
+  const seo=document.getElementById('gbpSeoChecklist');
+ if(seo)seo.innerHTML=[
+   ['Główna kategoria firmy','sprawdzić czy najlepiej opisuje salon','A'],
+   ['Dodatkowe kategorie','uzupełnić bez przesady','B'],
+   ['Opis firmy','lokalizacja + oferta + marki, naturalnie','A'],
+   ['Produkty i usługi','dodać główne marki, formaty i usługi','A'],
+   ['Zdjęcia','regularne, własne, aktualne','A'],
+   ['Opinie','pozyskiwać po sprzedaży i odpowiadać','A'],
+   ['Wpisy','regularnie wspierać ofertę i aktualność profilu','B'],
+   ['NAP','nazwa, adres, telefon spójne w internecie','A'],
+   ['Landing pages','płytki Warszawa / Tubądzin / włoskie / wielki format','A']
+ ].map(x=>`<div class="action"><span><b>${x[0]}</b><br><span class="small muted">${x[1]}</span></span><span class="prio ${x[2]}">${x[2]}</span></div>`).join('');
+
+ const cp=document.getElementById('gbpSeoContentPlan');
+ if(cp)cp.innerHTML=[
+   ['Tydzień 1','Nowa kolekcja / ekspozycja','marka + Warszawa'],
+   ['Tydzień 2','Porada zakupowa','np. gres do łazienki / tarasu'],
+   ['Tydzień 3','Realizacja / inspiracja','zdjęcia + konkretny produkt'],
+   ['Tydzień 4','Duży format / premium','płytki włoskie / wielkoformatowe']
+ ].map(x=>`<div class="action"><span><b>${x[0]} — ${x[1]}</b></span><span class="tag blue">${x[2]}</span></div>`).join('');
+
+ const rs=document.getElementById('gbpReviewSummary');
+ if(rs)rs.innerHTML='<div class="statrow"><span>Nowe opinie</span><b>do podłączenia z GBP API</b></div><div class="statrow"><span>Odpowiedzi AI</span><b>gotowe do modułu zatwierdzania</b></div>';
+ const rr=document.getElementById('gbpReviewRules');
+ if(rr)rr.innerHTML=[
+   ['Pozytywna','podziękuj + odnieś się do zakupu / wizyty'],
+   ['Neutralna','podziękuj + dopytaj / wyjaśnij konkretnie'],
+   ['Negatywna','spokojnie, rzeczowo, bez danych klienta; zaproś do kontaktu']
+ ].map(x=>`<div class="action"><span><b>${x[0]}</b><br><span class="small muted">${x[1]}</span></span></div>`).join('');
+}
+function approveGbpPhoto(id){const x=gbpPhotoQueue.find(x=>x.id===id);if(x)x.status='Do zatwierdzenia';saveGbpManager();renderGbpManager()}
+function removeGbpPhoto(id){gbpPhotoQueue=gbpPhotoQueue.filter(x=>x.id!==id);saveGbpManager();renderGbpManager()}
+function workflowSetStage(stage){gbpWorkflowStage=stage;saveGbpManager();renderGbpWorkflow()}
+function workflowMove(kind,id,stage){
+ if(kind==='post'){const x=gbpPostQueue.find(x=>String(x.id)===String(id));if(x)x.status=stage}
+ if(kind==='auto'){const x=gbpAutoQueue.find(x=>String(x.id)===String(id));if(x)x.status=stage;saveGbpAuto()}
+ saveGbpManager();renderGbpManager();renderGbpAutoQueue();
+}
+function workflowArchive(kind,id){
+ let x=null;
+ if(kind==='post'){x=gbpPostQueue.find(q=>String(q.id)===String(id));gbpPostQueue=gbpPostQueue.filter(q=>String(q.id)!==String(id))}
+ if(kind==='auto'){x=gbpAutoQueue.find(q=>String(q.id)===String(id));gbpAutoQueue=gbpAutoQueue.filter(q=>String(q.id)!==String(id));saveGbpAuto()}
+ if(x)gbpArchive.unshift({...x,kind,status:'Archiwum',archived:new Date().toISOString(),profile:x.profile||gbpSelectedProfile});
+ gbpWorkflowStage='Archiwum';saveGbpManager();renderGbpManager();renderGbpAutoQueue();
+}
+function workflowRestore(index){const x=gbpArchive[index];if(!x)return;gbpArchive.splice(index,1);const restored={...x,status:'Do przygotowania'};delete restored.archived;if(x.kind==='auto'){gbpAutoQueue.unshift(restored);saveGbpAuto()}else{gbpPostQueue.unshift(restored)}gbpWorkflowStage='Do przygotowania';saveGbpManager();renderGbpManager();renderGbpAutoQueue()}
+function renderGbpWorkflow(){
+ const tabs=document.getElementById('gbpWorkflowTabs'),box=document.getElementById('gbpWorkflowList'),prof=document.getElementById('gbpWorkflowProfile');if(!tabs||!box)return;
+ const isTiles=gbpSelectedProfile==='tiles';if(prof)prof.textContent=isTiles?'JURKO — płytki / łazienki':'JURKO — materiały budowlane';
+ const auto=gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile).map(x=>({...x,kind:'auto',status:normalizeGbpStatus(x.status),title:`${x.producer} — ${x.collection}`,meta:'kolekcja do wpisu Google'}));
+ const posts=gbpPostQueue.filter(x=>x.profile===gbpSelectedProfile).map(x=>({...x,kind:'post',status:normalizeGbpStatus(x.status),meta:`${x.type||'Wpis'} • ${x.keyword||'bez frazy'}`}));
+ const published=isTiles?GBP_PUBLISHED_HISTORY.map(x=>({...x,kind:'published',status:'Opublikowane',meta:new Date(x.date).toLocaleString('pl-PL')})):[];
+ const archived=gbpArchive.map((x,i)=>({...x,archiveIndex:i})).filter(x=>(x.profile||'tiles')===gbpSelectedProfile).map(x=>({...x,status:'Archiwum',title:x.title||(`${x.producer||''} — ${x.collection||''}`),meta:'zarchiwizowano '+(x.archived?new Date(x.archived).toLocaleString('pl-PL'):'')}));
+ const all=[...auto,...posts,...published,...archived];
+ tabs.innerHTML=GBP_WORKFLOW_STAGES.map(st=>`<button class="gbp-stage ${gbpWorkflowStage===st?'active':''}" onclick="workflowSetStage('${st}')">${st}<span class="count">${all.filter(x=>x.status===st).length}</span></button>`).join('');
+ const list=all.filter(x=>x.status===gbpWorkflowStage);
+ if(!list.length){box.innerHTML=`<div class="workflow-empty">Brak pozycji w statusie „${gbpWorkflowStage}”.</div>`;return}
+ box.innerHTML=list.map(x=>{
+   if(x.kind==='published')return `<div class="workflow-card"><div class="workflow-kind">Wpis Google • opublikowany</div><div class="qhead"><b>${x.title}</b><span class="tag ok">LIVE</span></div><div class="qmeta">${x.meta}</div>${x.media?`<img src="${x.media}" alt="${x.title}" style="width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:8px">`:''}<div style="margin-top:7px">${x.summary||''}</div><div class="workflow-actions"><a class="btn" href="${x.url}" target="_blank" rel="noopener">Otwórz w Google</a></div></div>`;
+   if(x.status==='Archiwum')return `<div class="workflow-card"><div class="workflow-kind">Archiwum</div><div class="qhead"><b>${x.title||'Pozycja archiwalna'}</b><span class="tag">Archiwum</span></div><div class="qmeta">${x.meta||''}</div><div class="workflow-actions"><button class="btn" onclick="workflowRestore(${x.archiveIndex})">Przywróć do przygotowania</button></div></div>`;
+   const next=x.status==='Do przygotowania'?'Do zatwierdzenia':x.status==='Do zatwierdzenia'?'Zaplanowane':x.status==='Zaplanowane'?'Opublikowane':null;
+   return `<div class="workflow-card"><div class="workflow-kind">${x.kind==='auto'?'Kolekcja / automat':'Ręczny wpis'}</div><div class="qhead"><b>${x.title||'Wpis bez tytułu'}</b><span class="tag ${x.status==='Zaplanowane'?'blue':'warn'}">${x.status}</span></div><div class="qmeta">${x.meta||''}${x.drive?' • Drive podłączony':''}</div>${x.text?`<div style="margin-top:6px">${x.text.slice(0,260)}${x.text.length>260?'…':''}</div>`:''}<div class="workflow-actions">${next?`<button class="btn primary" onclick="workflowMove('${x.kind}','${x.id}','${next}')">Przenieś → ${next}</button>`:''}<button class="btn" onclick="workflowArchive('${x.kind}','${x.id}')">Archiwizuj</button></div></div>`
+ }).join('');
+}
+function approveGbpPost(id){workflowMove('post',id,'Zaplanowane')}
+function removeGbpPost(id){workflowArchive('post',id)}
+
+function renderMaps(){
+ renderGbpManager();
+ const k=document.getElementById('mapsKpis'); if(!k)return;
+ const t=MAPS_LOCAL_DATA.totals;
+ const actions=t.calls+t.directions+t.website;
+ k.innerHTML=[
+  ['Wyświetlenia',t.impressions||'brak danych'],
+  ['Telefony',t.calls||'brak danych'],
+  ['Trasy dojazdu',t.directions||'brak danych'],
+  ['Kliknięcia WWW',t.website||'brak danych'],
+  ['Koszt',t.cost?money(t.cost):'brak danych'],
+  ['Koszt / działanie',actions&&t.cost?money(t.cost/actions):'brak danych']
+ ].map(x=>`<div class="kpi"><div class="label">${x[0]}</div><div class="num">${x[1]}</div></div>`).join('');
+
+ document.getElementById('mapsGoals').innerHTML=[
+  ['Trasa do salonu','główny cel'],
+  ['Telefon','główny cel'],
+  ['Kliknięcie WWW','pomocniczy'],
+  ['Wizyta w salonie','docelowy'],
+  ['Opinie i zdjęcia','wspierające SEO Maps']
+ ].map(x=>`<div class="action"><span>${x[0]}</span><span class="tag ${x[1]==='główny cel'?'ok':'blue'}">${x[1]}</span></div>`).join('');
+
+ document.getElementById('mapsAreaRows').innerHTML=MAPS_LOCAL_DATA.areas.map(r=>{
+   const actions=r[2]+r[3]+r[4], cpa=actions&&r[5]?r[5]/actions:0;
+   return `<tr><td><b>${r[0]}</b></td><td>${r[1]||'—'}</td><td>${r[2]||'—'}</td><td>${r[3]||'—'}</td><td>${r[4]||'—'}</td><td>${r[5]?money(r[5]):'—'}</td><td>${cpa?money(cpa):'—'}</td></tr>`;
+ }).join('');
+
+ document.getElementById('mapsHourRows').innerHTML=MAPS_LOCAL_DATA.hours.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]||'—'}</td><td>${r[3]||'—'}</td><td><span class="tag">${r[4]}</span></td></tr>`).join('');
+
+ document.getElementById('mapsPhraseCloud').innerHTML=MAPS_LOCAL_DATA.phrases.map(p=>`<span class="chip">${p}</span>`).join('');
+
+ document.getElementById('mapsRecommendations').innerHTML=[
+  ['Profil płytek JURKO','Utrzymuj kompletne zdjęcia, godziny, telefon i opis salonu.','ok'],
+  ['Reklamy lokalne','Uruchomić po podłączeniu lokalizacji do Google Ads, ale mierzyć trasy i telefony — nie tylko kliknięcia.','blue'],
+  ['Podział Warszawy','Porównywać osobno Warszawę, Pruszków/Ursus, Piaseczno i zachód aglomeracji.','blue'],
+  ['Budżet startowy','30% budżetu lokalnego / Maps, 70% Search — potem przesuwać wg kosztu telefonu i trasy.','warn'],
+  ['Strona docelowa','Do czasu nowej strony wykorzystywać mocny Profil Firmy Google i lokalne landing pages, jeśli są dostępne.','warn']
+ ].map(x=>`<div class="action"><span><b>${x[0]}</b><br><span class="small muted">${x[1]}</span></span><span class="tag ${x[2]}">AI</span></div>`).join('');
+}
+
+function renderSeo(){const l=current().filter(x=>/SEO/.test(x.decision));document.getElementById('seoSummary').innerHTML=`<div class="statrow"><span>Frazy SEO</span><b>${l.length}</b></div><div class="statrow"><span>TOP 3</span><b>${l.filter(x=>n(x.position)>0&&n(x.position)<=3).length}</b></div><div class="statrow"><span>4–10</span><b>${l.filter(x=>n(x.position)>=4&&n(x.position)<=10).length}</b></div><div class="statrow"><span>Brak pozycji</span><b>${l.filter(x=>!n(x.position)).length}</b></div>`;document.getElementById('gbpTop').innerHTML=[...l].filter(x=>x.source==='GBP').sort((a,b)=>n(b.warsaw)-n(a.warsaw)).slice(0,8).map(x=>`<div class="action"><span><b>${x.phrase}</b></span><span>${n(x.warsaw)||'—'}</span></div>`).join('');document.getElementById('seoRows').innerHTML=l.map(x=>`<tr><td><b>${x.phrase}</b></td><td>${x.intent||'—'}</td><td>${x.landing||'—'}</td><td>${n(x.position)||'—'}</td><td>${n(x.warsaw)||n(x.poland)||'—'}</td><td><span class="prio ${x.priority}">${x.priority}</span></td><td>${n(x.warsaw)>=100?'Landing / optymalizacja':'Zweryfikuj wolumen'}</td></tr>`).join('')}
+function renderSearchConsole(){const l=current();const sc=l.filter(x=>n(x.scImpressions)>0||n(x.scClicks)>0);const clicks=sc.reduce((a,b)=>a+n(b.scClicks),0),impr=sc.reduce((a,b)=>a+n(b.scImpressions),0);const ctr=impr?clicks/impr*100:0;document.getElementById('scStatus').innerHTML=`<div class="statrow"><span>Status</span><b>Oczekuje na uruchomienie nowej strony</b></div><div class="statrow"><span>Domena docelowa</span><b>jurko.pl</b></div><div class="statrow"><span>Wymagane</span><b>Search Console + sitemap.xml + dostęp JURKO</b></div><div class="note" style="margin-top:8px">Moduł importu jest już gotowy. Po weryfikacji domeny nie trzeba przebudowywać aplikacji.</div>`;document.getElementById('scKpis').innerHTML=`<div class="statrow"><span>Frazy z Search Console</span><b>${sc.length}</b></div><div class="statrow"><span>Kliknięcia organiczne</span><b>${clicks}</b></div><div class="statrow"><span>Wyświetlenia organiczne</span><b>${impr}</b></div><div class="statrow"><span>CTR</span><b>${ctr?ctr.toFixed(2)+'%':'—'}</b></div>`;document.getElementById('scRows').innerHTML=sc.length?sc.sort((a,b)=>n(b.scImpressions)-n(a.scImpressions)).map(x=>{const c=n(x.scClicks),i=n(x.scImpressions),ctr=i?c/i*100:0,pos=n(x.position);let rec='Obserwuj';if(i>=100&&pos>10)rec='Wzmocnij SEO / landing';else if(i>=100&&pos>=4&&pos<=10)rec='Dociśnij do TOP 3';else if(c>0&&pos<=3)rec='Utrzymuj i skaluj';return `<tr><td><b>${x.phrase}</b></td><td>${c}</td><td>${i}</td><td>${ctr.toFixed(2)}%</td><td>${pos||'—'}</td><td><span class="tag ${decClass(x.decision)}">${x.decision}</span></td><td>${rec}</td></tr>`}).join(''):`<tr><td colspan="7" class="empty">Brak danych — to prawidłowe do czasu uruchomienia nowej strony i weryfikacji Search Console.</td></tr>`}
+function renderContent(){document.getElementById('contentQueue').innerHTML=contentQueue.map(x=>`<div class="action"><span><b>${x[0]}</b><br><span class="muted small">${x[1]}</span></span><span class="tag blue">${x[2]}</span></div>`).join('');document.getElementById('contentIdeas').innerHTML=[...current()].filter(x=>x.priority==='A'&&/SEO/.test(x.decision)).slice(0,8).map(x=>`<div class="action"><span>Artykuł / landing: <b>${x.phrase}</b></span><span class="tag seo">SEO</span></div>`).join('')}
+function renderSocial(){document.getElementById('socialCards').innerHTML=['Google Business Profile','Facebook / Instagram','TikTok'].map((x,i)=>`<div class="card"><div class="title">${x}</div><div class="statrow"><span>Status</span><b>${i===0?'Dane dostępne':'Do połączenia'}</b></div><div class="statrow"><span>Plan</span><b>2–3 / tydz.</b></div></div>`).join('');document.getElementById('socialPlan').innerHTML=['Nowa kolekcja / producent','Porada ekspercka','Realizacja / aranżacja','Promocja / oferta','Produkt tygodnia'].map((x,i)=>`<div class="action"><span>${i+1}. ${x}</span><span class="tag">co 3 dni</span></div>`).join('')}
+function renderNewsletter(){document.getElementById('newsletterStats').innerHTML=`<div class="statrow"><span>Projektanci</span><b>moduł gotowy do zasilenia</b></div><div class="statrow"><span>Architekci</span><b>do importu</b></div><div class="statrow"><span>Klienci</span><b>do importu</b></div>`;document.getElementById('newsletterQueue').innerHTML=['Nowości Tubądzin','Płytki wielkoformatowe','Promocja salon JURKO','Nowości Paradyż'].map(x=>`<div class="action"><span>${x}</span><span class="tag blue">zaplanować</span></div>`).join('')}
+function renderDesigners(){document.getElementById('designerStats').innerHTML=`<div class="statrow"><span>Kontakty</span><b>do importu z bazy</b></div><div class="statrow"><span>Newsletter branżowy</span><b>planowany</b></div><div class="statrow"><span>Rozliczenia projektantów</span><b>osobny moduł CRM</b></div>`;document.getElementById('designerActions').innerHTML=['Dodaj kontakt','Przypisz projektanta do kampanii','Wyślij newsletter','Zobacz aktywność / leady'].map(x=>`<div class="action"><span>${x}</span><button>→</button></div>`).join('')}
+function renderCampaigns(){document.getElementById('campaignsTable').innerHTML=`<div class="tablewrap"><table><thead><tr><th>Kampania</th><th>Kanał</th><th>Status</th><th>Budżet</th><th>Cel</th><th>Wynik</th></tr></thead><tbody>${campaigns.map(c=>`<tr><td><b>${c.name}</b></td><td>Google Ads</td><td>${c.status}</td><td>—</td><td>Sprzedaż / ruch</td><td>${c.impressions} wyśw.</td></tr>`).join('')}</tbody></table></div>`}
+
+function renderSenuto(){
+ const isTiles=area==='tiles';
+ const live=document.getElementById('liveSeedRows');
+ if(live){
+   const rows=keywords.filter(x=>x.area===area && (x.source==='GBP'||x.source==='Google Ads')).sort((a,b)=>n(b.warsaw)-n(a.warsaw)).slice(0,20);
+   live.innerHTML=rows.length?rows.map(x=>`<tr><td><b>${x.phrase}</b></td><td>${x.brand||'—'}</td><td>${x.source}</td><td>${n(x.warsaw)||n(x.impressions)||'—'}</td><td>${x.decision}</td><td><span class="prio ${x.priority}">${x.priority}</span></td></tr>`).join(''):`<tr><td colspan="6" class="empty">Brak danych źródłowych.</td></tr>`;
+ }
+ const brands=isTiles?SENUTO_TILES:SENUTO_BUILDING;
+ const snaps=senutoSnapshots.filter(x=>x.area===area);
+ document.getElementById('senutoTitle').textContent=isTiles?'Senuto — Płytki ceramiczne':'Senuto — Materiały budowlane';
+ document.getElementById('senutoAreaTag').textContent=isTiles?'Płytki — osobna baza':'Materiały budowlane — osobna baza';
+ document.getElementById('senutoNote').innerHTML=isTiles
+ ?'<b>Tu zapisujemy wyłącznie płytki.</b> Producenci, kolekcje, frazy i konkurencja płytek nie są łączone z materiałami budowlanymi.'
+ :'<b>Tu zapisujemy wyłącznie materiały budowlane.</b> Rockwool, URSA, Termo Organika, Norgips, Rawlplug, Tytan i pozostałe marki mają własną historię i własne frazy.';
+ document.getElementById('senutoStatus').innerHTML=[
+  ['Połączenie API','Senuto → Make: autoryzowane'],
+  ['Rynek',isTiles?'Płytki ceramiczne':'Materiały budowlane'],
+  ['Zakres lokalny','Warszawa'],
+  ['Liczba marek do monitoringu',brands.length],
+  ['Automatyczny harmonogram','do uruchomienia w Make']
+ ].map(x=>`<div class="statrow"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('');
+ document.getElementById('senutoScope').innerHTML=[
+  'TOP3 / TOP10 / TOP50',
+  'widoczność domen i marek',
+  'trend 3 / 6 / 12 miesięcy',
+  'frazy rosnące i spadające',
+  'wspólne frazy z konkurencją',
+  'luki SEO względem JURKO'
+ ].map(x=>`<div class="action"><span>${x}</span><span class="tag ok">zapisuj</span></div>`).join('');
+ document.getElementById('senutoProducerRows').innerHTML=brands.map(b=>{
+   const last=[...snaps].filter(x=>(x.brand||'').toLowerCase()===b.toLowerCase()).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+   return `<tr><td><b>${b}</b></td><td>Warszawa</td><td>${last?.phrases??'—'}</td><td>${last?.top3??'—'}</td><td>${last?.top10??'—'}</td><td>${last?.top50??'—'}</td><td>${last?.visibility??'—'}</td><td>${last?.trend3!=null?last.trend3+'%':'—'}</td><td>${last?.trend6!=null?last.trend6+'%':'—'}</td><td>${last?.trend12!=null?last.trend12+'%':'—'}</td><td>${last?.date?new Date(last.date).toLocaleDateString('pl-PL'):'brak danych'}</td></tr>`;
+ }).join('');
+ document.getElementById('senutoPhraseGroups').innerHTML=SENUTO_PHRASE_GROUPS[area].map(x=>`<div class="action"><span><b>${x[0]}</b><br><span class="small muted">${x[1]}</span></span><span class="tag blue">Senuto</span></div>`).join('');
+ document.getElementById('senutoHistoryBox').innerHTML=snaps.length
+ ? `<div class="statrow"><span>Liczba zapisanych rekordów</span><b>${snaps.length}</b></div><div class="statrow"><span>Ostatni zapis</span><b>${new Date(snaps.map(x=>x.date).sort().slice(-1)[0]).toLocaleString('pl-PL')}</b></div><div class="statrow"><span>Marki z danymi</span><b>${new Set(snaps.map(x=>x.brand)).size}</b></div>`
+ : '<div class="empty">Brak danych Senuto dla tego rynku. Po pierwszym imporcie historia zostanie zapisana.</div>';
+}
+
+
+const COMPETITORS_TILES=[
+  {tier:'A',name:'CRISTOPOL',focus:'płytki / marki / Warszawa zachodnia',phrases:['płytki Warszawa','salon płytek Warszawa','Tubądzin Warszawa','Paradyż Warszawa','Cerrad Warszawa'],seo:'Silne strony markowe i lokalne + szeroka oferta',gap:'marki polskie + lokalność',rec:'Monitorować co tydzień',domain:'cristopol.com.pl'},
+  {tier:'A',name:'Internity',focus:'premium / wnętrza / marki',phrases:['płytki Warszawa','płytki premium Warszawa','płytki wielkoformatowe','salon łazienek Warszawa'],seo:'Rozbudowane kategorie, treści i marki premium',gap:'content + premium + projektanci',rec:'Monitorować TOP3/TOP10 i content gap',domain:'internityhome.pl'},
+  {tier:'A',name:'Maxfliz',focus:'premium / kompleksowe wnętrza',phrases:['płytki Warszawa','salon łazienek Warszawa','gres Warszawa','płytki premium Warszawa'],seo:'Silna marka, duże salony, szerokie kategorie',gap:'premium + kompleksowość',rec:'Monitorować widoczność i Ads',domain:'maxfliz.pl'},
+  {tier:'A',name:'Romax',focus:'płytki + kompletna łazienka',phrases:['płytki ceramiczne Warszawa','salon łazienek Warszawa','płytki i wyposażenie łazienek'],seo:'Kilka salonów + strony usługowe i produktowe',gap:'kompleksowa łazienka / lokalne salony',rec:'Monitorować lokalnie',domain:'romaxceramika.pl'},
+  {tier:'A',name:'MIRAD',focus:'premium / włoskie / spieki',phrases:['salon płytek Warszawa','płytki premium Warszawa','spieki wielkoformatowe Warszawa','płytki włoskie Warszawa'],seo:'Mocne landing pages lokalne + marki premium',gap:'premium, włoskie marki, spieki',rec:'Monitorować frazy premium',domain:'mirad.pl'},
+  {tier:'A',name:'Elements',focus:'płytki / łazienki / projekt 3D',phrases:['płytki Warszawa','płytki łazienkowe Warszawa','płytki do łazienki Warszawa','płytki wielkoformatowe Warszawa'],seo:'Treści lokalne i zastosowaniowe',gap:'treści poradnikowe + projekt 3D',rec:'Monitorować treści i landing pages',domain:'elements-show.pl'},
+  {tier:'A',name:'Italceramik',focus:'włoskie premium / architekci / inwestycje',phrases:['płytki włoskie Warszawa','showroom płytek Warszawa','płytki premium Warszawa','gres włoski Warszawa'],seo:'Showroom Warszawa + architekci i inwestycje + marki włoskie',gap:'architekci / inwestycje / premium',rec:'Monitorować główną konkurencję',domain:'italceramik.pl'},
+  {tier:'A',name:'IT Ceramica',focus:'włoskie i hiszpańskie / Bartycka',phrases:['sklep z płytkami Warszawa','płytki włoskie Warszawa','płytki hiszpańskie Warszawa','Florim Warszawa'],seo:'Szeroka baza kolekcji i marek + Bartycka + detal/hurt',gap:'long-tail kolekcji + Bartycka',rec:'Monitorować TOP10 i marki premium',domain:'itceramica.pl'},
+  {tier:'B',name:'in360',focus:'płytki / łazienki / lokalne SEO',phrases:['płytki ceramiczne Warszawa','sklep z płytkami Warszawa','salon łazienek Warszawa'],seo:'Mocne lokalne landing pages',gap:'lokalne SEO',rec:'Monitorować',domain:'in360.pl'},
+  {tier:'B',name:'Euro-Ceramika',focus:'włoskie / hiszpańskie / style',phrases:['płytki włoskie Warszawa','płytki hiszpańskie Warszawa','gres Warszawa'],seo:'Kategorie stylów i zastosowań',gap:'premium + styl',rec:'Monitorować',domain:'euro-ceramika.pl'},
+  {tier:'B',name:'Glazomat',focus:'Pruszków / Tubądzin / Paradyż',phrases:['płytki Pruszków','Tubądzin Pruszków','Paradyż Pruszków','płytki Warszawa zachód'],seo:'Bliskość geograficzna + duża ekspozycja',gap:'zachodnia Warszawa / Pruszków',rec:'Monitorować lokalnie',domain:'glazomat.pl'},
+  {tier:'B',name:'Azulejos',focus:'włoskie i hiszpańskie premium',phrases:['płytki włoskie Warszawa','płytki hiszpańskie Warszawa','ekskluzywne płytki Warszawa'],seo:'Dużo kart produktów i long-tail',gap:'long-tail i szeroki indeks',rec:'Monitorować frazy premium',domain:'salonazulejos.pl'},
+  {tier:'B',name:'NEXTERIO Warszawa',focus:'cena / outlet / szeroki wybór',phrases:['płytki Warszawa','gres Warszawa','płytki podłogowe Warszawa','outlet płytek Warszawa'],seo:'Sieć + lokalne strony salonów + frazy cenowe',gap:'cena / outlet',rec:'Monitorować ruch cenowy',domain:'nexterio.pl'},
+  {tier:'B',name:'Aleotti',focus:'Tubądzin + wyposażenie łazienek',phrases:['Tubądzin Warszawa','Tubądzin sklep Warszawa','Tubądzin płytki Warszawa'],seo:'Landing pages producent + Warszawa',gap:'markowe landing pages',rec:'Monitorować Tubądzin',domain:'aleotti.pl'},
+  {tier:'B',name:'Decogres',focus:'włoskie marki / szeroki katalog',phrases:['płytki włoskie Warszawa','płytki łazienkowe Warszawa','gres wielkoformatowy Warszawa','Florim Warszawa'],seo:'Showroom Warszawa + szeroka baza włoskich marek',gap:'duży indeks produktów / kolekcji',rec:'Monitorować showroom + e-commerce',domain:'decogres.pl'},
+  {tier:'C',name:'Studio Galaktyka',focus:'lokalny salon / projekt',phrases:['salon płytek Warszawa','projekt łazienki Warszawa'],seo:'Do oceny po danych Senuto',gap:'lokalność',rec:'Obserwować',domain:'studiogalaktyka.pl'},
+  {tier:'C',name:'Greston',focus:'płytki / Ads',phrases:['płytki Warszawa','gres Warszawa'],seo:'Widoczność płatna + do weryfikacji organicznej',gap:'Ads',rec:'Obserwować',domain:'—'},
+  {tier:'C',name:'PHU IGOR',focus:'mozaiki / dekoracje / Home Concept',phrases:['mozaiki Warszawa','płytki dekoracyjne Warszawa'],seo:'Niszowe frazy dekoracyjne',gap:'mozaiki',rec:'Obserwować niszę',domain:'mozaiki-szklane.pl'},
+  {tier:'C',name:'Salon Mariusz Panek',focus:'łazienki / lokalny salon',phrases:['salon łazienek Warszawa','płytki Warszawa'],seo:'Do oceny po danych Senuto',gap:'lokalność',rec:'Obserwować',domain:'—'},
+  {tier:'C',name:'Aqua Piaseczno',focus:'Piaseczno / łazienki',phrases:['salon łazienek Piaseczno','płytki Piaseczno'],seo:'Konkurencja regionalna',gap:'południe aglomeracji',rec:'Obserwować regionalnie',domain:'aqua-lazienka.pl'},
+  {tier:'C',name:'Domus Ceramika',focus:'e-commerce / włoskie i hiszpańskie',phrases:['płytki włoskie','płytki hiszpańskie','Equipe','ABK','Emilceramica'],seo:'Mocny e-commerce i treści, bez salonu w Warszawie',gap:'SEO ogólnopolskie / e-commerce',rec:'Obserwować online',domain:'domus-sklep.pl'}
+];
+
+function renderCompetitorPanel(selectedName){
+ const panel=document.getElementById('competitorPanel'); if(!panel)return;
+ const selected=COMPETITORS_TILES.find(c=>c.name===selectedName)||COMPETITORS_TILES[0];
+ const groups=['A','B','C'];
+ panel.innerHTML=`<div class="title">Konkurencja — Warszawa</div>
+ <div class="note" style="margin-top:7px">Najedź lub kliknij firmę. Senuto pokaże nam docelowo frazy, TOP3/TOP10/TOP50 i szacowany ruch. <b>Dokładnych kliknięć konkurencji Google nie udostępnia</b>, więc nie będziemy ich wymyślać.</div>
+ ${groups.map(g=>`<div style="margin-top:10px"><b>Poziom ${g}</b>${COMPETITORS_TILES.filter(c=>c.tier===g).map(c=>`<div class="competitor-mini" data-comp="${c.name.replaceAll('"','&quot;')}"><div class="name">${c.name}</div><div class="meta">${c.focus}</div></div>`).join('')}</div>`).join('')}
+ <div id="competitorDetail"></div>`;
+ panel.querySelectorAll('.competitor-mini').forEach(el=>{
+   el.onmouseenter=()=>showCompetitorDetail(el.dataset.comp);
+   el.onclick=()=>showCompetitorDetail(el.dataset.comp);
+ });
+ showCompetitorDetail(selected.name);
+}
+function showCompetitorDetail(name){
+ const c=COMPETITORS_TILES.find(x=>x.name===name); const box=document.getElementById('competitorDetail'); if(!c||!box)return;
+ box.innerHTML=`<div class="comp-detail"><div class="section-head"><div class="title">${c.name}</div><span class="tier${c.tier}">${c.tier}</span></div>
+ <div class="statrow"><span>Domena</span><b>${c.domain}</b></div>
+ <div class="statrow"><span>Rynek</span><b>Warszawa — płytki</b></div>
+ <div class="statrow"><span>Szacowany ruch SEO</span><b>brak danych Senuto</b></div>
+ <div class="statrow"><span>TOP3 / TOP10 / TOP50</span><b>brak danych Senuto</b></div>
+ <div class="statrow"><span>Kliknięcia konkurenta</span><b>Google nie udostępnia</b></div>
+ <div class="statrow"><span>Mocna strona</span><b>${c.seo}</b></div>
+ <div class="statrow"><span>Luka JURKO</span><b>${c.gap}</b></div>
+ <div class="small muted" style="margin-top:8px">Frazy, które monitorujemy:</div>
+ <div class="chips">${c.phrases.map(p=>`<span>${p}</span>`).join('')}</div>
+ <div class="note" style="margin-top:9px"><b>Rekomendacja:</b> ${c.rec}</div></div>`;
+}
+
+function renderCompetition(){
+ const isTiles=area==='tiles';
+ document.getElementById('competitionAreaTag').textContent=isTiles?'Płytki ceramiczne — Warszawa':'Materiały budowlane — Warszawa';
+ document.getElementById('localoBox').innerHTML=`<div class="statrow"><span>Rynek bazowy</span><b>Warszawa בלבד</b></div><div class="statrow"><span>Senuto API</span><b>Połączono przez Make</b></div><div class="statrow"><span>Localo</span><b>Do połączenia — mapa lokalna</b></div><div class="statrow"><span>Częstotliwość docelowa</span><b>SEO tygodniowo / historia miesięcznie</b></div><div class="note" style="margin-top:8px">Konkurencję liczymy tylko dla Warszawy. Płytki i materiały budowlane pozostają całkowicie osobnymi rynkami.</div>`;
+ const tileCompetitors=COMPETITORS_TILES;
+ const rows=isTiles?[
+  ['JURKO','Płytki','punkt odniesienia','do zasilenia Senuto','—','GBP JURKO','Google Ads','marki + salon + doradztwo','—','Budować przewagę na markach, kolekcjach i lokalnym Warszawa'],
+  ...tileCompetitors.map(c=>[`<span style="cursor:pointer" onclick="showCompetitorDetail('${c.name.replaceAll("'","\\'")}');document.getElementById('competitorTab').click()"><span class="tier${c.tier}">${c.tier}</span> ${c.name}</span>`,'Płytki','Warszawa','SEO obserwowane — weryfikacja Senuto',c.phrases,'do zasilenia Localo','do sprawdzenia Ads',c.seo,c.gap,c.rec])
+ ]:[
+  ['JURKO','Materiały budowlane','punkt odniesienia','do zasilenia Senuto','—','GBP JURKO','Google Ads','lokalny skład + marki','—','Budować osobną przewagę rynku budowlanego'],
+  ['Konkurent: skład budowlany Warszawa','Materiały','Warszawa','brak danych','sklep budowlany Warszawa; skład budowlany Warszawa','do zasilenia Localo','do sprawdzenia','do analizy','do analizy','Uzupełnić po analizie Senuto'],
+  ['Konkurent: izolacje / ocieplenia','Materiały','Warszawa','brak danych','wełna mineralna Warszawa; styropian Warszawa; ocieplenia Warszawa','do zasilenia Localo','do sprawdzenia','do analizy','do analizy','Sprawdź Rockwool / URSA / Termo Organika'],
+  ['Konkurent: sucha zabudowa','Materiały','Warszawa','brak danych','płyta g-k Warszawa; profile g-k Warszawa; Norgips Warszawa','do zasilenia Localo','do sprawdzenia','do analizy','do analizy','Sprawdź Norgips / Saint-Gobain']
+ ];
+ document.getElementById('competitionRows').innerHTML=rows.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td><td>${r[7]}</td><td>${r[8]}</td><td>${r[9]}</td></tr>`).join('');
+ document.getElementById('marketSummary').innerHTML=isTiles?`<div class="statrow"><span>Segment</span><b>Płytki / gres / łazienki</b></div><div class="statrow"><span>Miasto</span><b>Warszawa</b></div><div class="statrow"><span>Konkurenci główni</span><b>6</b></div><div class="statrow"><span>Najważniejszy wzorzec SEO</span><b>marka/kategoria + Warszawa + mocne landing pages</b></div><div class="statrow"><span>Stan danych Senuto</span><b>połączone API — czeka na automatyczny import metryk</b></div>`:`<div class="statrow"><span>Segment</span><b>Materiały budowlane</b></div><div class="statrow"><span>Miasto</span><b>Warszawa</b></div><div class="statrow"><span>Stan konkurencji</span><b>do uzupełnienia z Senuto/Localo</b></div>`;
+ const watch=isTiles?tileCompetitors.map(c=>`[${c.tier}] ${c.name}: ${c.phrases}`):['Składy budowlane Warszawa','Ocieplenia / izolacje','Rockwool / URSA / Termo Organika — dystrybutorzy','Sucha zabudowa Norgips / Saint-Gobain','Hydroizolacje / systemy zamocowań'];
+ document.getElementById('competitorBox').innerHTML=watch.map(x=>`<div class="action"><span>${x}</span><span class="tag ${isTiles?'blue':''}">${isTiles?'frazy do śledzenia':'monitoruj'}</span></div>`).join('');
+ const gaps=isTiles?['Brakujące strony: producent + Warszawa','Brakujące strony: kolekcja + Warszawa','Frazy zastosowaniowe: łazienka / salon / taras / elewacja','Frazy formatów: 120x120, 120x260, wielki format','Frazy premium: włoskie / hiszpańskie / spieki','Frazy zakupowe: salon / sklep / ekspozycja / dostępność']:['Kategorie budowlane, gdzie konkurent jest przed JURKO','Marki budowlane z dużym popytem i słabą widocznością JURKO','Dzielnice Warszawy z luką w Google Maps','Frazy produktowe do Ads/SEO: wełna, styropian, hydroizolacje, GK'];
+ document.getElementById('marketGaps').innerHTML=gaps.map(x=>`<div class="action"><span>${x}</span><span class="tag warn">${isTiles?'porównaj z JURKO':'do wyliczenia'}</span></div>`).join('');
+}
+function renderReports(){document.getElementById('reportCards').innerHTML=[['Raport miesięczny SEO','frazy, pozycje, trendy'],['Raport Google Ads','koszt, kliknięcia, konwersje'],['Raport fabryk','Warszawa/Polska, trend 3/6/12M'],['Raport publikacji','WWW + social + GBP'],['Raport konkurencji','Localo / pozycje'],['Raport zarządczy','1 strona: co działa / co zmienić']].map(x=>`<div class="card"><div class="title">${x[0]}</div><div class="muted small">${x[1]}</div><div style="margin-top:9px"><button class="btn">Generuj</button></div></div>`).join('')}
+function renderDrive(){document.getElementById('driveStructure').innerHTML=['00_Aplikacja','01_Płytki ceramiczne','02_Materiały budowlane','03_SEO i słowa kluczowe','04_Linki sponsorowane Google Ads','05_Social Media','06_Artykuły i treści WWW','07_Newsletter i E-mail','08_Projektanci i biura projektowe','09_Konkurencja i Localo','10_Raporty i analityka','11_Materiały źródłowe','12_Do zatwierdzenia','13_Opublikowane','14_Archiwum','15_Ustawienia i integracje'].map(x=>`<div class="action"><span>📁 ${x}</span><span class="tag ok">Drive</span></div>`).join('')}
+function renderIntegrations(){document.getElementById('integrationRows').innerHTML=integrations.map(x=>`<div class="action"><span><span class="statusdot ${x[2]}"></span><b>${x[0]}</b></span><span>${x[1]}</span></div>`).join('');const f=d=>d?new Date(d).toLocaleString('pl-PL'):'nigdy';document.getElementById('syncStatus').innerHTML=`<div class="statrow"><span>Google Ads</span><b>${f(syncMeta.ads)}</b></div><div class="statrow"><span>GBP / SEO</span><b>${f(syncMeta.seo)}</b></div><div class="statrow"><span>Senuto</span><b>${f(syncMeta.senuto)}</b></div><div class="statrow"><span>Search Console</span><b>${f(syncMeta.searchConsole)}</b></div><div class="statrow"><span>Rekordy historii</span><b>${history.length}</b></div><div class="statrow"><span>Kampanie</span><b>${campaigns.length}</b></div>`}
+function renderSettings(){document.getElementById('settingsRows').innerHTML=[['Publikacje','po zatwierdzeniu'],['Localo','co tydzień'],['Raport SEO','miesięcznie'],['Artykuły WWW','2–4 / miesiąc'],['Posty Google','2–3 / tydzień'],['Social media','2–3 / tydzień / kanał'],['Obszary','płytki i budowlane osobno']].map(x=>`<div class="statrow"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}
+function recoHtml(r){return `<div class="reco ${r.level}"><div class="rtitle">${r.title}</div><div>${r.text}</div><div class="why">Dlaczego: ${r.why}</div></div>`}
+function renderAdvisor(){const r=recommendations().slice(0,7);document.getElementById('advisorPanel').innerHTML=`<div class="note">Doradca analizuje teraz: <b>${areaName()}</b>. Rekomendacje bazują wyłącznie na danych zapisanych w aplikacji.</div>`+r.map(recoHtml).join('');document.getElementById('quickPanel').innerHTML=['Dodaj słowo kluczowe','Sprawdź historię 3/6/12M','Porównaj producentów','Przejrzyj Ads','Utwórz plan treści','Przygotuj raport miesięczny'].map(x=>`<div class="action"><span>${x}</span><button>→</button></div>`).join('')}
+function goView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));const names={dashboard:'Pulpit',marketing:'Marketing / SEO',keywords:'Słowa MASTER',history:'Historia wyszukiwań',factories:'Fabryki i producenci',ads:'Google Ads',maps:'Google Firma / Maps',seo:'SEO / GBP',senuto:'Senuto',searchconsole:'Search Console',content:'Treści i artykuły',social:'Social Media',newsletter:'Newsletter / E-mail',designers:'Biura projektowe',campaigns:'Kampanie',competition:'Konkurencja / Localo',reports:'Raporty',drive:'Pliki / Google Drive',integrations:'Integracje',settings:'Ustawienia'};document.getElementById('pageTitle').textContent=names[id]||id}
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>goView(b.dataset.view));
+function setArea(a){area=a;document.getElementById('tilesBtn').classList.toggle('active',a==='tiles');document.getElementById('buildingBtn').classList.toggle('active',a==='building');renderAll()};document.getElementById('tilesBtn').onclick=()=>setArea('tiles');document.getElementById('buildingBtn').onclick=()=>setArea('building');
+['searchKw','decisionFilter','priorityFilter','sourceFilter'].forEach(id=>document.getElementById(id).addEventListener('input',renderKeywords));['historySearch','geoFilter'].forEach(id=>document.getElementById(id).addEventListener('input',renderHistory));document.querySelectorAll('#periodTabs button').forEach(b=>b.onclick=()=>{historyPeriod=b.dataset.period;document.querySelectorAll('#periodTabs button').forEach(x=>x.classList.toggle('active',x===b));renderHistory()});document.querySelectorAll('#factoryFilters button').forEach(b=>b.onclick=()=>{factoryGroup=b.dataset.group;document.querySelectorAll('#factoryFilters button').forEach(x=>x.classList.toggle('active',x===b));renderFactories()});
+const fs=document.getElementById('factorySearch');if(fs)fs.addEventListener('input',()=>{factorySearch=fs.value;renderFactories()});
+function openAdd(){editingId=null;document.getElementById('kwForm').reset();document.querySelector('[name=area]').value=area;document.getElementById('modalTitle').textContent='Dodaj słowo';document.getElementById('modal').classList.add('open')}document.getElementById('addKeyword').onclick=openAdd;
+function editKeyword(id){const x=keywords.find(y=>y.id===id);if(!x)return;editingId=id;const f=document.getElementById('kwForm');Object.entries(x).forEach(([k,v])=>{if(f.elements[k])f.elements[k].value=v??''});document.getElementById('modalTitle').textContent='Edytuj słowo';document.getElementById('modal').classList.add('open')}window.editKeyword=editKeyword;
+function closeModal(){document.getElementById('modal').classList.remove('open')}document.getElementById('closeModal').onclick=closeModal;document.getElementById('cancelModal').onclick=closeModal;document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')closeModal()};document.getElementById('kwForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),obj={};for(const [k,v] of fd.entries())obj[k]=v;['warsaw','poland','impressions','clicks','cost','conversions','position'].forEach(k=>obj[k]=n(obj[k]));if(editingId){const i=keywords.findIndex(x=>x.id===editingId);keywords[i]={...keywords[i],...obj}}else{obj.id=Date.now();keywords.push(obj)}save();closeModal();renderAll()};
+function download(name,type,content){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),300)}
+document.getElementById('exportCsv').onclick=()=>{const rows=[['Fraza','Marka','Obszar','Decyzja','Priorytet','Źródło','Warszawa','Polska','Dopasowanie','Status Ads','Wyświetlenia Ads','Kliknięcia','Koszt','Konwersje','SC kliknięcia','SC wyświetlenia','SC CTR','Pozycja','Intencja','Landing'],...keywords.map(x=>[x.phrase,x.brand,x.area,x.decision,x.priority,x.source,x.warsaw,x.poland,x.match,x.adStatus,x.impressions,x.clicks,x.cost,x.conversions,x.scClicks||0,x.scImpressions||0,x.scCtr||0,x.position,x.intent,x.landing])];download('JURKO_slowa_MASTER.csv','text/csv;charset=utf-8','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(';')).join('\n'))};document.getElementById('backupJson').onclick=()=>download('JURKO_Marketing_Hub_backup.json','application/json',JSON.stringify({keywords,manufacturers,campaigns,history,syncMeta},null,2));
+function flattenApiResults(obj){if(Array.isArray(obj))return obj.flatMap(x=>x&&Array.isArray(x.results)?x.results:[x]).filter(Boolean);if(obj&&Array.isArray(obj.results))return obj.results;return []}
+function normPhrase(s){return String(s||'').trim().toLowerCase()}
+function upsertKeywordFromAds(r){const phrase=r?.adGroupCriterion?.keyword?.text||r?.ad_group_criterion?.keyword?.text;if(!phrase)return 0;const match=r?.adGroupCriterion?.keyword?.matchType||r?.ad_group_criterion?.keyword?.match_type||'';const status=r?.adGroupCriterion?.status||r?.ad_group_criterion?.status||'';const m=r.metrics||{};let k=keywords.find(x=>normPhrase(x.phrase)===normPhrase(phrase));if(!k){k={id:Date.now()+Math.random(),area,phrase,brand:'',decision:'Do sprawdzenia',priority:'B',source:'Google Ads',match:'',adStatus:'',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'',landing:'',note:''};keywords.push(k)}k.source='Google Ads';k.match=match||k.match;k.adStatus=status||k.adStatus;k.impressions=n(m.impressions);k.clicks=n(m.clicks);k.cost=n(m.costMicros??m.cost_micros)/1000000;k.conversions=n(m.conversions);return 1}
+function bindGbpManagerControls(){
+document.querySelectorAll('#gbpManageTabs button').forEach(b=>b.onclick=()=>openGbpTab(b.dataset.gbpTab));
+const photoBtn=document.getElementById('gbpAddPhotoBtn');
+if(photoBtn)photoBtn.onclick=()=>{
+ const url=document.getElementById('gbpPhotoUrl').value.trim();
+ const title=document.getElementById('gbpPhotoTitle').value.trim();
+ if(!url){alert('Wklej link do zdjęcia z Google Drive.');return}
+ gbpPhotoQueue.unshift({
+   id:String(Date.now()),profile:gbpSelectedProfile,url,title,
+   category:document.getElementById('gbpPhotoCategory').value,
+   note:document.getElementById('gbpPhotoNote').value.trim(),
+   status:'Do zatwierdzenia',created:new Date().toISOString()
+ });
+ saveGbpManager();
+ ['gbpPhotoUrl','gbpPhotoTitle','gbpPhotoNote'].forEach(id=>document.getElementById(id).value='');
+ renderGbpManager();
+};
+const postBtn=document.getElementById('gbpAddPostBtn');
+if(postBtn)postBtn.onclick=()=>{
+ const title=document.getElementById('gbpPostTitle').value.trim();
+ const textv=document.getElementById('gbpPostText').value.trim();
+ if(!title&&!textv){alert('Dodaj tytuł lub treść wpisu.');return}
+ gbpPostQueue.unshift({
+   id:String(Date.now()),profile:gbpSelectedProfile,
+   type:document.getElementById('gbpPostType').value,
+   keyword:document.getElementById('gbpPostKeyword').value.trim(),
+   title,text:textv,image:document.getElementById('gbpPostImage').value.trim(),
+   cta:document.getElementById('gbpPostCta').value,
+   landing:document.getElementById('gbpPostLanding').value.trim(),
+   status:'Do zatwierdzenia',created:new Date().toISOString()
+ });
+ saveGbpManager();renderGbpManager();
+};
+const aiPostBtn=document.getElementById('gbpAiPostBtn');
+if(aiPostBtn)aiPostBtn.onclick=()=>{
+ const kw=document.getElementById('gbpPostKeyword').value.trim()||(gbpSelectedProfile==='tiles'?'płytki Warszawa':'materiały budowlane Warszawa');
+ const title=document.getElementById('gbpPostTitle');
+ const txt=document.getElementById('gbpPostText');
+ if(!title.value)title.value=`${kw} — zobacz ofertę JURKO`;
+ if(!txt.value)txt.value=`Szukasz ${kw.toLowerCase()}? W JURKO możesz zobaczyć produkty na żywo, porównać formaty i wykończenia oraz skonsultować wybór. Zapraszamy do salonu w Warszawie.`;
+};
+}
+function importAdsJson(){const info=document.getElementById('adsImportInfo');try{const obj=JSON.parse(document.getElementById('adsImport').value);const rows=flattenApiResults(obj);let kw=0,cp=0;rows.forEach(r=>{if(r?.adGroupCriterion?.keyword||r?.ad_group_criterion?.keyword)kw+=upsertKeywordFromAds(r);if(r?.campaign?.name){const m=r.metrics||{};let c=campaigns.find(x=>x.name===r.campaign.name);if(!c){c={name:r.campaign.name,status:r.campaign.status||'—',impressions:0,clicks:0,cost:0};campaigns.push(c)}c.status=r.campaign.status||c.status;c.impressions=n(m.impressions);c.clicks=n(m.clicks);c.cost=n(m.costMicros??m.cost_micros)/1000000;cp++}});syncMeta.ads=new Date().toISOString();save();
+
+
+renderAll();renderCompetitorPanel();info.textContent=`Zaimportowano: ${cp} kampanii, ${kw} słów.`}catch(e){info.textContent='Błąd JSON: '+e.message}}
+function extractSeoRows(obj){const out=[];const walk=x=>{if(Array.isArray(x)){x.forEach(walk);return}if(!x||typeof x!=='object')return;const phrase=x.searchKeyword||x.keyword||x.phrase||x.query;let value=x.insightsValue?.value??x.insightsValue?.threshold??x.value??x.count??x.impressions;if(phrase&&value!=null)out.push({phrase:String(phrase),value:n(value)});Object.values(x).forEach(v=>{if(v&&typeof v==='object')walk(v)})};walk(obj);const seen=new Set();return out.filter(r=>{const k=normPhrase(r.phrase);if(seen.has(k))return false;seen.add(k);return true})}
+function importSeoJson(){const info=document.getElementById('seoImportInfo');try{const obj=JSON.parse(document.getElementById('seoImport').value);const rows=extractSeoRows(obj);const geo=document.getElementById('seoImportGeo').value;const month=document.getElementById('seoImportMonth').value||new Date().toISOString().slice(0,7);let cnt=0;rows.forEach(r=>{let k=keywords.find(x=>normPhrase(x.phrase)===normPhrase(r.phrase));if(!k){k={id:Date.now()+Math.random(),area,phrase:r.phrase,brand:'',decision:'Do sprawdzenia',priority:'B',source:'GBP',match:'',adStatus:'',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'',landing:'',note:''};keywords.push(k)}k.source='GBP';if(geo==='Warszawa')k.warsaw=r.value;else k.poland=r.value;history.push({id:Date.now()+Math.random(),area,phrase:r.phrase,brand:k.brand||'',geo,month,value:r.value,source:'GBP / SEO',decision:k.decision});cnt++});syncMeta.seo=new Date().toISOString();save();renderAll();info.textContent=`Zaimportowano ${cnt} fraz do ${geo}, ${month}.`}catch(e){info.textContent='Błąd JSON: '+e.message}}
+function importScJson(){const info=document.getElementById('scImportInfo');try{const obj=JSON.parse(document.getElementById('scImport').value);const rows=Array.isArray(obj?.rows)?obj.rows:(Array.isArray(obj)?obj:[]);let cnt=0;rows.forEach(r=>{const phrase=Array.isArray(r.keys)?r.keys[0]:(r.query||r.keyword||r.phrase);if(!phrase)return;let k=keywords.find(x=>normPhrase(x.phrase)===normPhrase(phrase));if(!k){k={id:Date.now()+Math.random(),area,phrase:String(phrase),brand:'',decision:'SEO',priority:'B',source:'Search Console',match:'',adStatus:'',warsaw:0,poland:0,impressions:0,clicks:0,cost:0,conversions:0,position:0,intent:'',landing:'',note:''};keywords.push(k)}k.source=k.source&&k.source!=='Plan SEO'?k.source+' + Search Console':'Search Console';k.scClicks=n(r.clicks);k.scImpressions=n(r.impressions);k.scCtr=n(r.ctr);k.position=n(r.position);if(k.scImpressions>=100&&k.position>10)k.priority='A';cnt++});syncMeta.searchConsole=new Date().toISOString();save();renderAll();info.textContent=`Zaimportowano ${cnt} zapytań Search Console.`}catch(e){info.textContent='Błąd JSON: '+e.message}}
+document.getElementById('importAdsBtn').onclick=importAdsJson;document.getElementById('importSeoBtn').onclick=importSeoJson;
+document.getElementById('importSenutoBtn').onclick=()=>{
+ try{
+  const raw=JSON.parse(document.getElementById('senutoImport').value||'[]');
+  const arr=Array.isArray(raw)?raw:(raw.results||raw.data||[]);
+  if(!Array.isArray(arr)) throw new Error('Oczekuję tablicy JSON');
+  const now=new Date().toISOString(); let count=0;
+  arr.forEach(r=>{
+    if(!r.brand&&!r.name) return;
+    senutoSnapshots.push({area,date:r.date||now,brand:r.brand||r.name,phrases:r.phrases??r.keywords??null,top3:r.top3??null,top10:r.top10??null,top50:r.top50??null,visibility:r.visibility??r.visibility_index??null,trend3:r.trend3??null,trend6:r.trend6??null,trend12:r.trend12??null});count++;
+  });
+  syncMeta.senuto=now;save();renderSenuto();renderIntegrations();
+  document.getElementById('senutoImportInfo').textContent='Zapisano '+count+' rekordów do '+areaName();
+ }catch(e){document.getElementById('senutoImportInfo').textContent='Błąd: '+e.message}
+};
+
+document.getElementById('importScBtn').onclick=importScJson;document.getElementById('seoImportMonth').value=new Date().toISOString().slice(0,7);
+const at=document.getElementById('advisorTab'),qt=document.getElementById('quickTab'),ct=document.getElementById('competitorTab');at.onclick=()=>{at.classList.add('active');qt.classList.remove('active');ct.classList.remove('active');document.getElementById('advisorPanel').classList.remove('hidden');document.getElementById('quickPanel').classList.add('hidden');document.getElementById('competitorPanel').classList.add('hidden')};qt.onclick=()=>{qt.classList.add('active');at.classList.remove('active');ct.classList.remove('active');document.getElementById('quickPanel').classList.remove('hidden');document.getElementById('advisorPanel').classList.add('hidden');document.getElementById('competitorPanel').classList.add('hidden')};
+document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){goView('keywords');document.getElementById('searchKw').value=e.target.value;renderKeywords()}});
+bindGbpManagerControls();
+renderAll();
+initGbpAutoControls();
+renderCollectionCatalog();
+
+document.querySelectorAll('#adsTabs button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('#adsTabs button').forEach(x=>x.classList.toggle('active',x===b));
+ document.querySelectorAll('#ads .ads-panel').forEach(p=>p.classList.remove('active'));
+ const p=document.getElementById('adsTab_'+b.dataset.tab);if(p)p.classList.add('active');
+});
+
+
+document.getElementById('competitorTab').onclick=()=>{
+ document.getElementById('competitorTab').classList.add('active');
+ document.getElementById('advisorTab').classList.remove('active');
+ document.getElementById('quickTab').classList.remove('active');
+ document.getElementById('competitorPanel').classList.remove('hidden');
+ document.getElementById('advisorPanel').classList.add('hidden');
+ document.getElementById('quickPanel').classList.add('hidden');
+ renderCompetitorPanel();
+};
+
+</script>
+</body></html>
