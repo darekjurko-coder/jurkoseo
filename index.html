@@ -1414,7 +1414,7 @@ function commit(next){try{localStorage.setItem(key,JSON.stringify(next));gbpAuto
 function fields(card,x){const f=card.querySelector('form');return {...x,aiCount:Number(f.elements.aiCount.value),description:f.elements.description.value.trim(),keywords:f.elements.keywords.value.trim(),title:f.elements.title.value.trim(),cta:f.elements.cta.value.trim(),rawImages:f.elements.rawImages.value.split('\n').map(url).filter(Boolean).slice(0,6),finalImage:url(f.elements.finalImage.value),pdf:url(f.elements.pdf.value),drive:url(f.elements.drive.value),images:f.elements.images.value.split('\n').map(url).filter(Boolean).slice(0,6),note:f.elements.note.value.trim()}}
 function update(id,action,card){const x=gbpAutoQueue.find(q=>String(q.id)===id);if(!x)return;if(action==='prepare'){const draft=fields(card,x);if(!commit(gbpAutoQueue.map(q=>q===x?draft:q)))return;sendGbpPrep(id);return}if(action==='archive'){workflowArchive('auto',id);return}const form=card.querySelector('form');for(const name of ['images','rawImages']){const links=form.elements[name].value.split('\n').map(v=>v.trim()).filter(Boolean);if(links.length>6||links.some(v=>!url(v))){alert('Dodaj maksymalnie 6 poprawnych linków HTTPS do obrazów.');return}}for(const name of ['pdf','drive','finalImage']){const value=form.elements[name].value.trim();if(value&&!url(value)){alert('Link PDF, Drive lub zdjęcia musi być poprawnym adresem HTTPS.');return}}let next=fields(card,x);if(!Number.isInteger(next.aiCount)||next.aiCount<0||next.aiCount>6)return;
 if(action==='approve'){
- if(!next.description||!next.keywords||!next.cta){alert('Uzupełnij opis, słowa kluczowe i CTA przed zatwierdzeniem.');return}
+ if(!next.title||!next.description||!next.keywords||!next.cta){alert('Uzupełnij opis, słowa kluczowe i CTA przed zatwierdzeniem.');return}
  const sceneCheck=validateSceneSet(next);
  if(!sceneCheck.ok){alert('Do zatwierdzenia potrzebny jest komplet 6 różnych grafik z logo JURKO i nazwą kolekcji.');return}
  if(x.status==='Zaplanowane'){return}
@@ -1456,7 +1456,7 @@ window.renderGbpApprovalPanel=function(){
    <div style="white-space:pre-line;line-height:1.55;margin-top:8px">${esc(x.description||'Opis jeszcze niegotowy')}</div>
    <div class="small" style="margin-top:8px"><b>CTA:</b> ${esc(x.cta||'—')} &nbsp; • &nbsp; <b>Słowa:</b> ${esc(x.keywords||'—')}</div>
    <div class="toolbar" style="margin-top:12px">
-     <button class="btn" type="button" onclick="window.prepareMaterial&&window.prepareMaterial('${esc(x.id)}')">Przygotuj / odśwież materiały</button>
+     <button class="btn" type="button" onclick="window.prepareMaterial&&window.prepareMaterial('${esc(x.id)}')">Przygotuj / odśwież materiały</button>${x.jobId?`<button class="btn" type="button" onclick="window.checkMaterialResult('${esc(x.id)}')">Sprawdź wynik</button>`:''}
      <button class="btn primary" type="button" onclick="approveGbpMaterial('${esc(x.id)}')" ${x.status!=='Do zatwierdzenia'?'disabled title="Materiał musi najpierw mieć status Do zatwierdzenia"':''}>Zatwierdź i opublikuj za 3 dni</button>
      <button class="btn" type="button" onclick="returnGbpMaterial('${esc(x.id)}')">Popraw</button>
      <button class="btn" type="button" onclick="rejectGbpMaterial('${esc(x.id)}')">Odrzuć</button>
@@ -1478,21 +1478,106 @@ const add=()=>{const p=document.getElementById('autoProducer');const collection=
 window.addMaterialToQueue=add;
 const originalInit=initGbpAutoControls;initGbpAutoControls=function(){originalInit();document.getElementById('autoAddQueue').onclick=add;renderMaterialQueue()};
 const originalCatalog=addCollectionToQueue;addCollectionToQueue=function(p,c){originalCatalog(p,c);gbpAutoQueue=gbpAutoQueue.map(normalized);commit(gbpAutoQueue);renderMaterialQueue()};
-window.prepareMaterial=sendGbpPrep=async function(id){const x=gbpAutoQueue.find(q=>String(q.id)===String(id));if(!x)return;if(String(x.prepStatus||'').startsWith('Wysyłanie'))return;let next={...normalized(x),status:'Do przygotowania',prepStatus:'Wysyłanie do automatu Make…',approved:false,approvedAt:null,scheduledAt:null,publicationEnabled:false};commit(gbpAutoQueue.map(q=>q===x?next:q));renderMaterialQueue();try{const body=new URLSearchParams({producer:next.producer,collection:next.collection,profile:next.profile||'tiles',drive:next.drive||'',source:next.source||GBP_AUTO_BRANDS[next.producer]?.source||'',requestedAt:next.createdAt||new Date().toISOString(),ai_images_count:'6',scene_plan:JSON.stringify(SCENE_PLAN),branding_required:'true',overlay_title:(next.producer||'')+' — '+(next.collection||''),overlay_subtitle:'Salon JURKO Warszawa',scene_rules:'2 różne łazienki; salon; kuchnia; detal płytki; moodboard; każda scena inna; bez mieszania kolekcji',brand_rules:'logo JURKO + producent + nazwa kolekcji na każdej finalnej grafice',estimated_cost_level:'HIGH',drive_root_folder_id:GBP_AUTO_BRANDS[next.producer]?.driveRoot||'',action:'prepare_materials'});const r=await fetch(GBP_PREP_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body});
- if(r.ok){
-   let data=null;try{data=await r.json()}catch(e){}
-   if(data&&Array.isArray(data.finalImages)&&data.finalImages.length===6){
-     next={...next,finalImages:data.finalImages,status:'Do zatwierdzenia',prepStatus:'Gotowe do przejrzenia'};
-   }else{
-     next={...next,prepStatus:'Przekazano do przygotowania'};
-   }
- }else{
-   next={...next,prepStatus:'Błąd wysyłki do Make'};
+
+const MATERIAL_COPY={
+ 'Italgraniti|Shale':{
+  title:'Italgraniti Shale — gres inspirowany łupkiem w JURKO Warszawa',
+  description:'Shale od Italgraniti to gres porcelanowy inspirowany naturalnym łupkiem. Kolekcja obejmuje odcienie Moon, Sand, Taupe, Greige, Ash i Dark oraz rozwiązania do wnętrz i przestrzeni zewnętrznych. Szukasz włoskich płytek do łazienki, salonu lub kuchni? W JURKO w Warszawie pomożemy sprawdzić odpowiedni format, wykończenie, cenę i dostępność wybranego wariantu. Zobacz inspiracje i zapytaj o kolekcję Shale: jurko@jurko.pl.',
+  keywords:'Italgraniti Shale Warszawa, Italgraniti Warszawa, płytki włoskie Warszawa, gres imitujący łupek, płytki do łazienki Warszawa',
+  cta:'Zapytaj o Shale: jurko@jurko.pl lub odwiedź salon JURKO w Warszawie.',
+  source:'https://www.italgranitigroup.com/en/collections/italgraniti/shale',
+  pdf:'https://www.italgranitigroup.com/en/shale/shale_catalogue.pdf'
  }
- }catch(e){next={...next,prepStatus:'Błąd połączenia z Make'};}commit(gbpAutoQueue.map(q=>String(q.id)===String(id)?next:q));renderMaterialQueue();if(window.renderGbpApprovalPanel)window.renderGbpApprovalPanel()};
+};
+function materialCopy(x){
+ const p=MATERIAL_COPY[x.producer+'|'+x.collection];
+ return {...x,title:x.title||p?.title||(x.producer+' '+x.collection+' — poznaj kolekcję w JURKO Warszawa'),
+ description:x.description||p?.description||('Poznaj kolekcję '+x.collection+' marki '+x.producer+' w salonie JURKO w Warszawie. Pomożemy porównać warianty i dopasować płytki do Twojego projektu. Zapytaj o aktualną cenę, dostępność, formaty i wykończenia: jurko@jurko.pl. Przed wyborem sprawdź próbkę oraz dokumentację producenta.'),
+ keywords:x.keywords||p?.keywords||(x.producer+' '+x.collection+' Warszawa, '+x.producer+' Warszawa, płytki Warszawa, salon płytek JURKO'),
+ cta:x.cta||p?.cta||'Zapytaj o kolekcję: jurko@jurko.pl lub odwiedź salon JURKO w Warszawie.',
+ source:p?.source||x.source||GBP_AUTO_BRANDS[x.producer]?.source||'',pdf:x.pdf||p?.pdf||''};
+}
+const materialPolling=new Map();
+function saveMaterialJob(id,patch){
+ const current=gbpAutoQueue.find(q=>String(q.id)===String(id));
+ if(!current)return null;
+ const next={...current,...patch};
+ if(!commit(gbpAutoQueue.map(q=>q===current?next:q)))throw new Error('Nie udało się zapisać wyniku w przeglądarce.');
+ renderMaterialQueue();if(window.renderGbpApprovalPanel)window.renderGbpApprovalPanel();return next;
+}
+async function materialRequest(fields){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);
+ try{
+ const r=await fetch(GBP_PREP_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams(fields),signal:controller.signal});
+ const raw=await r.text();let data;try{data=JSON.parse(raw)}catch{throw new Error('Automat nie zwrócił prawidłowego wyniku. Sprawdź wynik ponownie.')}
+ if(!r.ok)throw new Error('Automat zgłosił błąd '+r.status);
+ return data;
+ }finally{clearTimeout(timer)}
+}
+async function pollMaterial(id){
+ if(materialPolling.has(String(id)))return materialPolling.get(String(id));
+ const task=(async()=>{
+ const started=Date.now();let failures=0;
+ while(Date.now()-started<15*60*1000){
+ const x=gbpAutoQueue.find(q=>String(q.id)===String(id));
+ if(!x?.jobId||x.approved||['Odrzucone','Archiwum','Opublikowane'].includes(x.status))return;
+ try{
+ const data=await materialRequest({action:'material_status',job_id:x.jobId});
+ failures=0;
+ if(data.status==='error')throw Object.assign(new Error(data.message||'Przygotowanie nie powiodło się.'),{terminal:true});
+ if(data.status==='ready'||Array.isArray(data.finalImages)){
+ const images=data.finalImages;
+ if(!Array.isArray(images)||images.length!==SCENE_PLAN.length||new Set(images.map(i=>i.sceneKey)).size!==SCENE_PLAN.length||SCENE_PLAN.some(s=>!images.some(i=>i.sceneKey===s.key&&url(i.finalUrl)))){
+ throw Object.assign(new Error('Wynik jest niekompletny. Brakuje poprawnych grafik dla wszystkich scen.'),{terminal:true});
+ }
+ const latest=gbpAutoQueue.find(q=>String(q.id)===String(id));
+ if(latest?.jobId!==x.jobId)return;
+ const draft=materialCopy(latest);
+ saveMaterialJob(id,{...draft,finalImages:images,images:images.map(i=>i.previewUrl||i.finalUrl),finalImage:images[0].finalUrl,status:'Do zatwierdzenia',prepStatus:'Gotowe do przejrzenia — grafiki, opis i słowa kluczowe',jobState:'ready',publicationEnabled:false,history:[...(latest.history||[]),{at:stamp(),status:'Pakiet przygotowany — oczekuje na zatwierdzenie'}]});return;
+ }
+ saveMaterialJob(id,{jobState:'processing',prepStatus:'Przygotowanie grafik w toku — wynik jest zapisany i zostanie odebrany automatycznie'});
+ }catch(e){
+ failures++;
+ if(e.terminal||failures>=3){saveMaterialJob(id,{jobState:e.terminal?'error':'interrupted',status:'Do poprawy',prepStatus:e.message+' Gotowe pliki pozostają na Dysku.'});return;}
+ }
+ await new Promise(resolve=>setTimeout(resolve,12000));
+ }
+ saveMaterialJob(id,{jobState:'interrupted',status:'Do poprawy',prepStatus:'Przygotowanie trwa dłużej niż zwykle. Kliknij „Sprawdź wynik”, aby odzyskać pakiet bez ponownego generowania.'});
+ })().finally(()=>materialPolling.delete(String(id)));
+ materialPolling.set(String(id),task);return task;
+}
+window.checkMaterialResult=function(id){return pollMaterial(id)};
+window.prepareMaterial=sendGbpPrep=async function(id){
+ let x=gbpAutoQueue.find(q=>String(q.id)===String(id));if(!x)return;
+ if(x.jobId&&['processing','interrupted'].includes(x.jobState)){return pollMaterial(id);}
+ if(materialPolling.has(String(id)))return;
+ const jobId=crypto.randomUUID();const copy=materialCopy(normalized(x));
+ x=saveMaterialJob(id,{...copy,jobId,jobState:'processing',jobStartedAt:new Date().toISOString(),status:'Do przygotowania',prepStatus:'Rozpoczynanie przygotowania…',approved:false,approvedAt:null,scheduledAt:null,publicationEnabled:false});
+ try{
+ const data=await materialRequest({producer:x.producer,collection:x.collection,profile:x.profile||'tiles',drive:x.drive||'',source:x.source,requestedAt:new Date().toISOString(),job_id:jobId,ai_images_count:'6',scene_plan:JSON.stringify(SCENE_PLAN),branding_required:'true',overlay_title:x.producer+' — '+x.collection,overlay_subtitle:'Salon JURKO Warszawa',scene_rules:'2 różne łazienki; salon; kuchnia; detal płytki; moodboard; każda scena inna; bez mieszania kolekcji',brand_rules:'logo JURKO + producent + nazwa kolekcji na każdej finalnej grafice',drive_root_folder_id:GBP_AUTO_BRANDS[x.producer]?.driveRoot||'1o4v4enMPMpERDWn7oi9Db4GF-u4_6B2g',action:'prepare_materials'});
+ if(data.status!=='processing'&&data.status!=='ready')throw new Error('Automat nie potwierdził rozpoczęcia zadania.');
+ saveMaterialJob(id,{prepStatus:'Przygotowanie grafik w toku — możesz odświeżyć stronę'});
+ }catch(e){
+ // An interrupted acknowledgement may still have started a paid job. Recover it instead of submitting again.
+ saveMaterialJob(id,{prepStatus:'Sprawdzanie wyniku po przerwanym połączeniu…'});
+ }
+ await pollMaterial(id);
+};
+let recoveredShale=false;
+gbpAutoQueue=gbpAutoQueue.map(x=>{
+ if(x.producer==='Italgraniti'&&x.collection==='Shale'&&!x.approved&&!x.jobId&&!['Odrzucone','Archiwum','Opublikowane'].includes(x.status)){
+ recoveredShale=true;return {...materialCopy(normalized(x)),jobId:'3afdf65f1d1d',jobState:'interrupted',prepStatus:'Odzyskiwanie gotowych materiałów Shale…'};
+ }
+ if(!x.jobId&&String(x.prepStatus||'').startsWith('Wysyłanie'))return {...x,prepStatus:'Poprzednie połączenie zostało przerwane. Ponów przygotowanie.',status:'Do poprawy'};
+ return x;
+});
+commit(gbpAutoQueue);
+setTimeout(()=>gbpAutoQueue.filter(x=>x.jobId&&['processing','interrupted'].includes(x.jobState)).forEach(x=>pollMaterial(x.id)),0);
+
 const oldMove=workflowMove;workflowMove=function(kind,id,stage){if(kind==='auto'){if(stage==='Zaplanowane'||stage==='Opublikowane'){alert('Zatwierdź materiał w karcie kolejki. Publikacja pozostaje wyłączona.');return}const x=gbpAutoQueue.find(q=>String(q.id)===String(id));if(x){x.approved=false;x.approvedAt=null;x.scheduledAt=null}}oldMove(kind,id,stage)};
 const oldRestore=workflowRestore;workflowRestore=function(index){const x=gbpArchive[index];if(x){x.approved=false;x.approvedAt=null;x.scheduledAt=null}oldRestore(index)};
 initGbpAutoControls();
 })();
 </script></body></html>
+
 
