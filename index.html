@@ -1362,6 +1362,30 @@ const url=v=>{try{const u=new URL(v);return u.protocol==='https:'?u.href:''}catc
 const stamp=()=>new Date().toISOString();
 function normalized(x){return {...x,status:statuses.includes(x.status)?x.status:'Nowe',aiCount:Number.isInteger(x.aiCount)&&x.aiCount>=0&&x.aiCount<=5?x.aiCount:2,images:Array.isArray(x.images)?x.images.slice(0,5):[],description:x.description||'',keywords:x.keywords||'',rawImages:Array.isArray(x.rawImages)?x.rawImages.slice(0,5):[],finalImage:x.finalImage||'',cta:x.cta||'',history:Array.isArray(x.history)?x.history:[]}}
 gbpAutoQueue=gbpAutoQueue.map(normalized);
+const ICEMENTI_PRESET={
+  title:'Italgraniti I Cementi — nowoczesny gres o efekcie betonu',
+  description:'I Cementi od Italgraniti to kolekcja gresu porcelanowego inspirowana surowym charakterem betonu. Głębokie, mineralne powierzchnie i szeroka paleta odcieni sprawdzają się w nowoczesnych łazienkach, salonach, kuchniach, przestrzeniach komercyjnych oraz na zewnątrz. Kolekcja dostępna jest m.in. w formatach 120×280 cm, 120×120 cm, 80×80 cm, 60×120 cm i 60×60 cm, także w wariantach 20 mm. W salonie JURKO w Warszawie pomożemy dobrać kolor, format i powierzchnię do projektu oraz sprawdzić aktualną dostępność.',
+  keywords:'Italgraniti Warszawa, I Cementi Warszawa, gres beton Warszawa, płytki włoskie Warszawa',
+  cta:'Odwiedź salon JURKO w Warszawie i zobacz kolekcję I Cementi',
+  pdf:'https://www.italgranitigroup.com/en/i-cementi/i_cementi.pdf',
+  source:'https://www.italgranitigroup.com/en/collections/italgraniti/i-cementi',
+  rawImages:[
+    'https://www.italgranitigroup.com/media/k2/items/cache/a7869d52404fd702fc548a5b18a8197d_XL.jpg',
+    'https://www.italgranitigroup.com/media/k2/items/cache/aadb86f1863232600e988ff374df22ef_S.jpg',
+    'https://www.italgranitigroup.com/media/k2/items/cache/ec0d7266e8fd8dce1681592f050d4ee5_S.jpg',
+    'https://www.italgranitigroup.com/media/k2/items/cache/0beec8a3c07f810af132f7222f579164_S.jpg',
+    'https://www.italgranitigroup.com/media/k2/items/cache/6c708d6c888e47baed2644b0e165e179_S.jpg'
+  ]
+};
+let migratedIcementi=false;
+gbpAutoQueue=gbpAutoQueue.map(x=>{
+ if(x.producer==='Italgraniti'&&x.collection==='I Cementi'&&!x.approved&&x.status!=='Opublikowane'&&x.status!=='Archiwum'&&x.status!=='Odrzucone'){
+   migratedIcementi=true;
+   return normalized({...x,...ICEMENTI_PRESET,aiCount:0,images:[],finalImage:ICEMENTI_PRESET.rawImages[0],status:'Do zatwierdzenia',prepStatus:'Gotowe do przejrzenia',drive:x.drive||'https://drive.google.com/drive/folders/1k2ZZPzXIfLhV3PQaDH1Gse5kDnO_5Ybm'});
+ }
+ return x;
+});
+if(migratedIcementi){try{localStorage.setItem(key,JSON.stringify(gbpAutoQueue))}catch(e){}}
 function commit(next){try{localStorage.setItem(key,JSON.stringify(next));gbpAutoQueue=next;return true}catch{alert('Nie udało się zapisać kolejki. Pobierz kopię danych lub zwolnij miejsce w przeglądarce.');return false}}
 function fields(card,x){const f=card.querySelector('form');return {...x,aiCount:Number(f.elements.aiCount.value),description:f.elements.description.value.trim(),keywords:f.elements.keywords.value.trim(),title:f.elements.title.value.trim(),cta:f.elements.cta.value.trim(),rawImages:f.elements.rawImages.value.split('\n').map(url).filter(Boolean).slice(0,5),finalImage:url(f.elements.finalImage.value),pdf:url(f.elements.pdf.value),drive:url(f.elements.drive.value),images:f.elements.images.value.split('\n').map(url).filter(Boolean).slice(0,5),note:f.elements.note.value.trim()}}
 function update(id,action,card){const x=gbpAutoQueue.find(q=>String(q.id)===id);if(!x)return;if(action==='prepare'){const draft=fields(card,x);if(!commit(gbpAutoQueue.map(q=>q===x?draft:q)))return;sendGbpPrep(id);return}if(action==='archive'){workflowArchive('auto',id);return}const form=card.querySelector('form');for(const name of ['images','rawImages']){const links=form.elements[name].value.split('\n').map(v=>v.trim()).filter(Boolean);if(links.length>5||links.some(v=>!url(v))){alert('Dodaj maksymalnie 5 poprawnych linków HTTPS do obrazów.');return}}for(const name of ['pdf','drive','finalImage']){const value=form.elements[name].value.trim();if(value&&!url(value)){alert('Link PDF, Drive lub zdjęcia musi być poprawnym adresem HTTPS.');return}}let next=fields(card,x);if(!Number.isInteger(next.aiCount)||next.aiCount<0||next.aiCount>5)return;
