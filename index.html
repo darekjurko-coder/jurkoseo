@@ -216,6 +216,13 @@
 
 
   <section id="maps" class="view">
+    <div class="toolbar" style="margin:0 0 10px;padding:0;background:transparent">
+      <a href="https://business.google.com/" target="_blank" rel="noopener">Otwórz Google Business</a>
+      <span>•</span>
+      <a href="https://drive.google.com/drive/folders/1_wOz68J5qPPkrR0QgpezQQPzW5PG9Ho9" target="_blank" rel="noopener">Otwórz Drive JURKO</a>
+      <span>•</span>
+      <a id="topProducerSource" href="#" target="_blank" rel="noopener">Źródło producenta</a>
+    </div>
     <div class="card">
       <div class="section-head">
         <div>
@@ -563,7 +570,7 @@ function saveGbpAuto(){localStorage.setItem('jurko_gbp_auto_queue',JSON.stringif
 function initGbpAutoControls(){
  const p=document.getElementById('autoProducer'), c=document.getElementById('autoCollection'); if(!p||!c)return;
  if(!p.options.length)p.innerHTML=Object.keys(GBP_AUTO_BRANDS).map(x=>`<option>${x}</option>`).join('');
- const refresh=()=>{const b=GBP_AUTO_BRANDS[p.value];c.innerHTML=b.collections.map(x=>`<option>${x}</option>`).join('');const links=document.getElementById('autoSourceLinks');if(links)links.innerHTML=`<a class="btn" href="${b.source}" target="_blank" rel="noopener">Oficjalne kolekcje ${p.value}</a><span class="tag blue">źródło producenta</span>`};
+ const refresh=()=>{const b=GBP_AUTO_BRANDS[p.value];c.innerHTML=b.collections.map(x=>`<option>${x}</option>`).join('');const links=document.getElementById('autoSourceLinks');if(links)links.innerHTML=`<a class="btn" href="${b.source}" target="_blank" rel="noopener">Oficjalne kolekcje ${p.value}</a><span class="tag blue">źródło producenta</span>`;const top=document.getElementById('topProducerSource');if(top){top.href=b.source;top.textContent='Źródło producenta — '+p.value}};
  p.onchange=refresh; refresh();
  const add=document.getElementById('autoAddQueue'); if(add)add.onclick=()=>{if(window.addMaterialToQueue)window.addMaterialToQueue()};
  const use=document.getElementById('autoUseDrive'); if(use)use.onclick=()=>{const v=(document.getElementById('autoDriveLink').value||'').trim();if(!v){alert('Wklej link do folderu lub pliku na Drive.');return}alert('Link Drive zapisany jako materiał źródłowy dla wybranej kolekcji.')};
