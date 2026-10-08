@@ -1384,6 +1384,14 @@ function validateSceneSet(x){
  return {ok:missing.length===0&&brand.length===0&&n.finalImages.length===6,missing,brand};
 }
 gbpAutoQueue=gbpAutoQueue.map(normalized);
+const ICEMENTI_GENERATED_IMAGES=[
+ {sceneKey:'bathroom_1',label:'Łazienka 1',previewUrl:'https://lh3.googleusercontent.com/drive-storage/AJQWtBPhlrpLuR0R8GAehWtGJa2_BT-pSHqyJGOhAfh7HlIwFGBKTVDrA9DfMp8eS79uboOL3v2PNI-58LoTLivLTI73b3If29mS3MQnucDMiBE5U1aU7Q=s220',finalUrl:'https://drive.google.com/file/d/1AlYAnSlc1Qv0EKu38M_bgtZ6cQTx-AuD/view?usp=drivesdk',hasJurkoLogo:true,hasCollectionName:true},
+ {sceneKey:'bathroom_2',label:'Łazienka 2',previewUrl:'https://lh3.googleusercontent.com/drive-storage/AJQWtBNsoaO5M5BuChAN-Vl1udJgdyIoHbPlYYX2BHA-SHOzwDrsZHm8f-LPsgskB4DR2msT5MKjLXOF7BGKj1W95qkqXQASjariogzTxhC6_FDW8nY_xg=s220',finalUrl:'https://drive.google.com/file/d/1jrZWVfWyo5Lf8bqPwRlM1u0c8wnjoD8a/view?usp=drivesdk',hasJurkoLogo:true,hasCollectionName:true},
+ {sceneKey:'living_room',label:'Salon',previewUrl:'https://lh3.googleusercontent.com/drive-storage/AJQWtBPHccJsehPe6ahpG8TA3w0SbPxfgIyxW3wTgxXdF1dCDb1xQ5eyN78v4bXGWDuGmB5YXURSmQMEcc0cJWCP-PANZOPGeQaga7e7e65jMazOvfvsWQ=s220',finalUrl:'https://drive.google.com/file/d/1l0h--wuCeGX10cJgTDXg7___4bDiNbbC/view?usp=drivesdk',hasJurkoLogo:true,hasCollectionName:true},
+ {sceneKey:'kitchen',label:'Kuchnia',previewUrl:'https://lh3.googleusercontent.com/drive-storage/AJQWtBPG4hWtgKSOzVT9-_ujaeS9M5JfzTltL9otKXwYI54P3q0QbVX17Ahw4Q6iec0-yYFZJ45YHvOzEDSvPxGfuCpakpguw7lxjlZCqUKjuPaIGm4-=s220',finalUrl:'https://drive.google.com/file/d/1hF8fK125q6OzH-G9AgebPAYueYXJHOcL/view?usp=drivesdk',hasJurkoLogo:true,hasCollectionName:true},
+ {sceneKey:'detail',label:'Detal płytki',previewUrl:'https://lh3.googleusercontent.com/drive-storage/AJQWtBNfmhU0BwMcYPBktRYJV_D5iZEhM8ORW4yfmFjRm20PETNE_zJhl94-IyzdteNcoXs4glwQAjv4P83HxmvazH4N87DrBCjRhRFS77wuRilvx4ulyQ=s220',finalUrl:'https://drive.google.com/file/d/10sVfJwMlJVRVW7mzOZtKHHf6UJDxiFVg/view?usp=drivesdk',hasJurkoLogo:true,hasCollectionName:true},
+ {sceneKey:'moodboard',label:'Moodboard',previewUrl:'https://lh3.googleusercontent.com/drive-storage/AJQWtBPYOEBQybeG8iYnwsa9HwcnUqyU3U37w14tRgZ7-AWQJVHA5T7TBNwmpwozcgmZRb7amAnPnI4WUVEeG_0szR1uu3ZuJ6ye6dOfVCl1j5cPw1fQCg=s220',finalUrl:'https://drive.google.com/file/d/1FhLlVTJFwKIPkPN7no5Q_VTZ9SncrSvY/view?usp=drivesdk',hasJurkoLogo:true,hasCollectionName:true}
+];
 const ICEMENTI_PRESET={
   title:'Italgraniti I Cementi — nowoczesny gres o efekcie betonu',
   description:'I Cementi od Italgraniti to kolekcja gresu porcelanowego inspirowana surowym charakterem betonu. Głębokie, mineralne powierzchnie i szeroka paleta odcieni sprawdzają się w nowoczesnych łazienkach, salonach, kuchniach, przestrzeniach komercyjnych oraz na zewnątrz. Kolekcja dostępna jest m.in. w formatach 120×280 cm, 120×120 cm, 80×80 cm, 60×120 cm i 60×60 cm, także w wariantach 20 mm. W salonie JURKO w Warszawie pomożemy dobrać kolor, format i powierzchnię do projektu oraz sprawdzić aktualną dostępność.',
@@ -1397,7 +1405,7 @@ let migratedIcementi=false;
 gbpAutoQueue=gbpAutoQueue.map(x=>{
  if(x.producer==='Italgraniti'&&x.collection==='I Cementi'&&!x.approved&&x.status!=='Opublikowane'&&x.status!=='Archiwum'&&x.status!=='Odrzucone'){
    migratedIcementi=true;
-   return normalized({...x,...ICEMENTI_PRESET,aiCount:6,images:[],rawImages:[],finalImage:'',finalImages:blankSceneSet(),status:'Do poprawy',prepStatus:'Wymaga 6 nowych, różnych grafik z logo JURKO i nazwą kolekcji',drive:x.drive||'https://drive.google.com/drive/folders/1k2ZZPzXIfLhV3PQaDH1Gse5kDnO_5Ybm'});
+   return normalized({...x,...ICEMENTI_PRESET,aiCount:6,images:[],rawImages:[],finalImage:ICEMENTI_GENERATED_IMAGES[0].finalUrl,finalImages:ICEMENTI_GENERATED_IMAGES,status:'Do zatwierdzenia',prepStatus:'Gotowe do przejrzenia — 6 grafik wygenerowanych w Make',drive:x.drive||'https://drive.google.com/drive/folders/1o4v4enMPMpERDWn7oi9Db4GF-u4_6B2g'});
  }
  return x;
 });
@@ -1448,6 +1456,7 @@ window.renderGbpApprovalPanel=function(){
    <div style="white-space:pre-line;line-height:1.55;margin-top:8px">${esc(x.description||'Opis jeszcze niegotowy')}</div>
    <div class="small" style="margin-top:8px"><b>CTA:</b> ${esc(x.cta||'—')} &nbsp; • &nbsp; <b>Słowa:</b> ${esc(x.keywords||'—')}</div>
    <div class="toolbar" style="margin-top:12px">
+     <button class="btn" type="button" onclick="window.prepareMaterial&&window.prepareMaterial('${esc(x.id)}')">Przygotuj / odśwież materiały</button>
      <button class="btn primary" type="button" onclick="approveGbpMaterial('${esc(x.id)}')" ${x.status!=='Do zatwierdzenia'?'disabled title="Materiał musi najpierw mieć status Do zatwierdzenia"':''}>Zatwierdź i opublikuj za 3 dni</button>
      <button class="btn" type="button" onclick="returnGbpMaterial('${esc(x.id)}')">Popraw</button>
      <button class="btn" type="button" onclick="rejectGbpMaterial('${esc(x.id)}')">Odrzuć</button>
