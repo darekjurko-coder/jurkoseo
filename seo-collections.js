@@ -26,7 +26,7 @@ const tubadzinCatalog=[{"name":"Abisso","slug":"abisso"},{"name":"Albiano MBL","
 tubadzinCatalog.forEach(item=>{if(!state.collections.some(c=>norm(c.brand)===norm('Tubądzin')&&norm(c.name)===norm(item.name))){const c=empty('Tubądzin',item.name);c.source='https://www.tubadzin.pl/kolekcja/'+item.slug;c.sourceDate='2026-10-11';state.collections.push(c)}});
 
 const tubGroups=['MBL','PGC','Domino','Arte'];
-const groupOf=c=>c.group || (/\\bMBL$/i.test(c.name)?'MBL':/\\bPGC$/i.test(c.name)?'PGC':'');
+const groupOf=c=>c.group || (/\bMBL$/i.test(c.name)?'MBL':/\bPGC$/i.test(c.name)?'PGC':'');
 const viewBrand=c=>norm(c.brand)===norm('Tubądzin')&&tubGroups.includes(groupOf(c))?'Tubądzin · '+groupOf(c):c.brand;
 const collectionsFor=b=>state.collections.filter(c=>viewBrand(c)===b);
 tubGroups.forEach(g=>{const b='Tubądzin · '+g;if(!state.brands[b])state.brands[b]={description:'',keywords:'',styles:'',target:'/plytki/tubadzin/'+slug(g)+'/'};});
