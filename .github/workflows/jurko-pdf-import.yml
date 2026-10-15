@@ -1,8 +1,13 @@
 name: JURKO PDF import
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '15 3 * * 0'
 permissions:
   contents: read
+concurrency:
+  group: jurko-pdf-import
+  cancel-in-progress: false
 jobs:
   import:
     runs-on: ubuntu-latest
@@ -12,8 +17,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install -r pdf-import/requirements.txt
-      - name: Download validate upload
+      - name: Check private Google Drive authorization
+        id: auth
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+        run: |
+          if [ -z "$GOOGLE_CLIENT_ID" ] || [ -z "$GOOGLE_CLIENT_SECRET" ] || [ -z "$GOOGLE_REFRESH_TOKEN" ]; then
+            echo "Drive authorization is not configured. Nothing will be downloaded or uploaded."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.auth.outputs.ready == 'true'
+        run: pip install -r pdf-import/requirements.txt
+      - name: Download, validate and upload
+        if: steps.auth.outputs.ready == 'true'
         working-directory: pdf-import
         env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
@@ -26,3 +46,4 @@ jobs:
         with:
           name: jurko-pdf-report
           path: pdf-import/report.csv
+          if-no-files-found: ignore
