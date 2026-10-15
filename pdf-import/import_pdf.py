@@ -92,6 +92,10 @@ def main():
         r.update(producent=item['manufacturer'],kolekcja=item['collection'],
           rodzaj_katalogu=item['kind'],adres_zrodlowy=item['url'],status='BLAD')
         try:
+            if item['kind'] not in ('general','collection','technical'):
+                r['status']='DO_PRZYPISANIA'
+                r['przyczyna_bledu']='Link wykryty, brak potwierdzonego rodzaju katalogu i kolekcji; pominięto zapis'
+                continue
             folder=item['folder_id'].strip();filename=item['filename'].strip()
             if not folder or not filename.lower().endswith('.pdf'):
                 raise ValueError('Nieprawidłowy folder lub nazwa PDF')
