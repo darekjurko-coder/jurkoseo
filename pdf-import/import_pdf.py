@@ -59,7 +59,7 @@ def items(api,folder):
     out=[];token=None
     while True:
         response=api.files().list(q="'"+folder+"' in parents and trashed=false",
-         fields='nextPageToken,files(id,name,md5Checksum,size)',pageToken=token,page_size=1000).execute()
+         fields='nextPageToken,files(id,name,md5Checksum,size)',pageToken=token,pageSize=1000).execute()
         out.extend(response.get('files',[]))
         token=response.get('nextPageToken')
         if not token: return out
