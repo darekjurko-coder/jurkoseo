@@ -67,6 +67,14 @@ def items(api,folder):
 def main():
     with (HERE/'catalogues.csv').open(encoding='utf-8-sig',newline='') as f:
         entries=list(csv.DictReader(f))
+    additional=HERE/'discovered.csv'
+    if additional.exists():
+        with additional.open(encoding='utf-8-sig',newline='') as f:
+            entries.extend(csv.DictReader(f))
+    unique={}
+    for e in entries:
+        unique.setdefault(e['url'].strip(),e)
+    entries=list(unique.values())
     rows=[]
     try: api=client()
     except RefreshError as exc:
