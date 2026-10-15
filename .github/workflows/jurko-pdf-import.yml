@@ -32,6 +32,10 @@ jobs:
           fi
       - if: steps.auth.outputs.ready == 'true'
         run: pip install -r pdf-import/requirements.txt
+      - name: Discover official catalogue PDF links
+        if: steps.auth.outputs.ready == 'true'
+        working-directory: pdf-import
+        run: python discover.py
       - name: Download, validate and upload
         if: steps.auth.outputs.ready == 'true'
         working-directory: pdf-import
@@ -45,5 +49,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jurko-pdf-report
-          path: pdf-import/report.csv
+          path: |
+            pdf-import/report.csv
+            pdf-import/discovered.csv
+            pdf-import/discovery_errors.csv
           if-no-files-found: ignore
