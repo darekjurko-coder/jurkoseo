@@ -1,4 +1,4 @@
-import csv, hashlib, io, os, pathlib, time, sys
+import csv, hashlib, io, os, pathlib, time, sys, re
 from urllib.parse import urlparse, urljoin
 import requests
 from pypdf import PdfReader
@@ -78,6 +78,7 @@ def main():
     except Exception as exc:
         print('Google Drive authentication failed: '+exc.__class__.__name__,flush=True)
         sys.exit(2)
+    failures=0
     for item in entries:
         r=dict.fromkeys(FIELDS,'')
         r.update(producent=item['manufacturer'],kolekcja=item['collection'],
@@ -115,9 +116,14 @@ def main():
                         raise ValueError('Błąd kontroli pliku po zapisie ID='+up['id'])
                     r.update(status='DRIVE_OK',link_PDF_Drive_lub_sciezka_lokalna='https://drive.google.com/file/d/'+up['id']+'/view',wynik_weryfikacji='PDF+SHA256; Drive MD5/size/folder OK')
         except Exception as exc:
-            r['przyczyna_bledu']=str(exc)[:400]
+            reason=str(exc)
+            reason=re.sub(r'(?i)(access_token|refresh_token|client_secret|authorization|api_key)=([^\\s&]+)',r'\\1=[REDACTED]',reason)
+            r['przyczyna_bledu']=(exc.__class__.__name__+': '+reason)[:350]
+            failures+=1
         finally:
             rows.append(r);record(rows)
-            print(r['producent'],r['kolekcja'],r['status'],flush=True)
+            print(r['producent'],r['kolekcja'],r['status'],r['przyczyna_bledu'],flush=True)
+    print('RESULT:',len(rows),'checked;',failures,'failed',flush=True)
+    if failures: sys.exit(1)
 
 if __name__=='__main__': main()
