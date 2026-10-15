@@ -92,7 +92,7 @@ def main():
         r.update(producent=item['manufacturer'],kolekcja=item['collection'],
           rodzaj_katalogu=item['kind'],adres_zrodlowy=item['url'],status='BLAD')
         try:
-            if item['kind'] not in ('general','collection','technical'):
+            if item['kind'] not in ('general','collection','technical') or (item['kind'] in ('collection','technical') and not item['collection'].strip()):
                 r['status']='DO_PRZYPISANIA'
                 r['przyczyna_bledu']='Link wykryty, brak potwierdzonego rodzaju katalogu i kolekcji; pominięto zapis'
                 continue
