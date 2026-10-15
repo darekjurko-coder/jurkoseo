@@ -1,8 +1,9 @@
-import csv, hashlib, io, os, pathlib, time
+import csv, hashlib, io, os, pathlib, time, sys
 from urllib.parse import urlparse, urljoin
 import requests
 from pypdf import PdfReader
 from google.oauth2.credentials import Credentials
+from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
@@ -68,9 +69,15 @@ def main():
         entries=list(csv.DictReader(f))
     rows=[]
     try: api=client()
+    except RefreshError as exc:
+        message=str(exc).lower()
+        code=next((k for k in ('invalid_grant','invalid_client','unauthorized_client','access_denied') if k in message),'unknown_refresh_failure')
+        print('Google Drive authentication failed: '+code,flush=True)
+        print('Verify OAuth client ID/secret pairing, refresh token, OAuth app testing expiry and consent screen.',flush=True)
+        sys.exit(2)
     except Exception as exc:
-        print('Google Drive authentication:',exc.__class__.__name__)
-        api=None
+        print('Google Drive authentication failed: '+exc.__class__.__name__,flush=True)
+        sys.exit(2)
     for item in entries:
         r=dict.fromkeys(FIELDS,'')
         r.update(producent=item['manufacturer'],kolekcja=item['collection'],
