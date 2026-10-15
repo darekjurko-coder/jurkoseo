@@ -124,6 +124,9 @@ def main():
             rows.append(r);record(rows)
             print(r['producent'],r['kolekcja'],r['status'],r['przyczyna_bledu'],flush=True)
     print('RESULT:',len(rows),'checked;',failures,'failed',flush=True)
-    if failures: sys.exit(1)
+    # Unavailable supplier catalogues are recorded but do not fail the entire batch.
+    # Keep the CSV as the authoritative per-file outcome.
+    if failures:
+        print('PARTIAL_IMPORT: unavailable catalogues listed in report.csv',flush=True)
 
 if __name__=='__main__': main()
