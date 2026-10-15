@@ -48,7 +48,7 @@ def main():
             link=urldefrag(link).url
             if not safe(link,base): continue
             title=' '.join(a.stripped_strings).strip()[:130]
-            if re.search(r'\\.pdf(?:$|\\?)',link,re.I):
+            if re.search(r'\.pdf(?:$|\?)',link,re.I):
               if link in seen_pdf:continue
               seen_pdf.add(link)
               parent=a.find_parent(['section','article','div'])
