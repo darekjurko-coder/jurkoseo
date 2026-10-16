@@ -4,8 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 
 ROOT=pathlib.Path(__file__).parent
-TIMEOUT=(6,12)
-MAX_PAGES=65
+TIMEOUT=(5,8)
+MAX_PAGES=18
 HEADERS={'User-Agent':'JURKO-PDF-Catalogue-Discovery/1.0 (catalogues for internal reference)'}
 LINK_TERMS=re.compile(r'catalog|download|scarica|pdf|collection|collezion|prodott|product|book|brochure',re.I)
 DOCUMENT_TERMS=re.compile(r'catalog|book|brochure|download|scarica|pdf',re.I)
@@ -27,12 +27,12 @@ def get_page(s,url):
     return BeautifulSoup(response.text,'html.parser')
 
 def main():
-    results=[];issues=[];seen_pdf=set()
+    results=[];issues=[]
     with (ROOT/'sources.csv').open(encoding='utf-8-sig',newline='') as f: sources=list(csv.DictReader(f))
     with requests.Session() as s:
       s.headers.update(HEADERS)
       for source in sources:
-        base=source['landing_url'];queue=[(base,0)];seen=set();page_count=0
+        base=source['landing_url'];queue=[(base,0)];seen=set();seen_pdf=set();page_count=0
         while queue and page_count<MAX_PAGES:
           page,depth=queue.pop(0)
           page=urldefrag(page).url
