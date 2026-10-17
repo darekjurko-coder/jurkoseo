@@ -1670,12 +1670,30 @@ render();
   restored.forEach(item=>{if(!gbpAutoQueue.some(x=>x.jobId===item.jobId||x.id===item.id))gbpAutoQueue.push(item)});
   try{saveGbpAuto();localStorage.setItem(seedKey,'1')}catch(e){console.error('Nie udało się zapisać odzyskanych pakietów')}
  }
+
+ const mergeKey='jurko_shale_merged_20261017';
+ if(!localStorage.getItem(mergeKey)){
+  const candidates=gbpAutoQueue.filter(x=>x.recovered&&x.producer==='Italgraniti'&&/^Shale(?: Bone)?$/.test(x.collection));
+  const canonical=candidates.find(x=>x.jobId==='3afdf65f1d1d')||candidates[0];
+  if(canonical){
+   const variants=candidates.flatMap(x=>(x.finalImages||[]).filter(i=>i.finalUrl).map(i=>({...i,variantCollection:x.collection,variantJobId:x.jobId,label:x.collection+' — '+i.label})));
+   canonical.collection='Shale';canonical.title='Italgraniti Shale — płytki do wnętrz w JURKO Warszawa';
+   canonical.imageVariants=variants;canonical.mergedJobIds=candidates.map(x=>x.jobId);
+   if(!canonical.description||canonical.description.startsWith('Poznaj kolekcję Shale'))canonical.description="Italgraniti Shale — płytki do łazienki, kuchni i salonu w JURKO Warszawa\n\nPlanujesz wykończenie wnętrza i chcesz porównać kolekcję Italgraniti Shale? W salonie JURKO w Warszawie pomożemy Ci przejść od inspiracji do konkretnego wyboru: zestawić próbki z kolorem mebli, armaturą i oświetleniem oraz sprawdzić dostępne warianty w dokumentacji producenta.\n\nPrzy wyborze płytek do łazienki warto osobno omówić ściany, podłogę i strefę prysznica. Liczą się nie tylko wygląd i format, ale również parametry konkretnego produktu, wykończenie powierzchni oraz sposób układania. Nie zakładamy, że każdy wariant kolekcji ma takie samo zastosowanie — potwierdzimy je dla wybranego indeksu.\n\nW kuchni i salonie pokażemy, jak porównać odcień płytki z frontami, blatem, drewnem i światłem dziennym. Do rozmowy możesz zabrać rzut pomieszczenia, wymiary albo zdjęcia inspiracji. Pomożemy ustalić potrzebną ilość materiału, zapas na docinki i liczbę opakowań.\n\nZapytaj o Italgraniti Shale w JURKO: sprawdzimy aktualną cenę, dostępność i termin dostawy dla wybranego wariantu. Cena i parametry wymagają potwierdzenia przed zamówieniem.\n\nSzukasz płytek w Warszawie? Odwiedź salon płytek JURKO lub napisz na jurko@jurko.pl. Prześlij nazwę kolekcji, orientacyjny metraż i planowany termin realizacji — przygotujemy informacje do Twojego projektu.";
+   canonical.keywords='Italgraniti Shale, JURKO Warszawa, płytki do łazienki, salon płytek JURKO';
+   canonical.prepStatus='Jedna karta kolekcji. Zachowano warianty zdjęć Shale / Shale Bone z wcześniejszych prób. Opis jest szkicem do sprawdzenia.';
+   const duplicates=candidates.filter(x=>x!==canonical);const previous=JSON.parse(localStorage.getItem('jurko_recovered_attempts_archive')||'[]');
+   localStorage.setItem('jurko_recovered_attempts_archive',JSON.stringify([...previous,...duplicates]));
+   gbpAutoQueue=gbpAutoQueue.filter(x=>!duplicates.includes(x));saveGbpAuto();
+  }
+  localStorage.setItem(mergeKey,'1');
+ }
  const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  window.previewJurkoPost=function(id){
   const x=gbpAutoQueue.find(q=>String(q.id)===String(id));if(!x)return;
   document.getElementById('jurkoPostPreview')?.remove();
   const dialog=document.createElement('dialog');dialog.id='jurkoPostPreview';dialog.style.cssText='width:min(820px,94vw);max-height:90vh;overflow:auto;border:1px solid #dfe7ef;border-radius:16px;padding:24px';
-  const images=(x.finalImages||[]).filter(i=>/^https:\/\//.test(i.finalUrl||''));
+  const images=(x.imageVariants||x.finalImages||[]).filter(i=>/^https:\/\//.test(i.finalUrl||''));
   const local=new Date(Date.now()+3*86400000);local.setMinutes(local.getMinutes()-local.getTimezoneOffset());
   dialog.innerHTML='<h2>Podgląd posta przed zatwierdzeniem</h2><p><b>Profil:</b> '+escape(x.profile==='building'?'JURKO — materiały budowlane':'JURKO — płytki / łazienki')+'</p><p>'+escape(x.producer)+' — '+escape(x.collection)+'</p>'+
   '<p style="background:#fff4dc;padding:12px">Publikacja Google nie jest jeszcze podłączona. Odzyskane pakiety są zapisane w Make. Zatwierdzenie i termin nie zostaną wysłane do publikacji, dopóki połączenie nie będzie gotowe.</p>'+
