@@ -102,6 +102,7 @@
 
 /* Readable regular text inside material editing fields. */
 #maps .material-grid input,#maps .material-grid select,#maps .material-grid textarea{font-weight:400;font-family:Arial,sans-serif;font-size:12px}
+.factory-fold>summary{cursor:pointer;font-size:16px;font-weight:400;color:var(--text)}.factory-fold-body{margin-top:12px}.factory-fold-body>.tag{margin-bottom:10px}#factoryDetail{width:100%;min-width:0}
 </style>
 <style>
 .material-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.material-grid label{display:block;font-size:12px;font-weight:700}.material-grid input,.material-grid textarea,.material-grid select{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;margin:5px 0 10px}.material-images{display:flex;gap:8px;flex-wrap:wrap}.material-images figure{margin:0;width:120px}.material-images img{width:120px;height:90px;object-fit:cover;border-radius:8px}.material-images figcaption{font-size:11px}.material-card{margin:8px 0;padding:8px 12px}.material-card summary{cursor:pointer;padding:4px 0;list-style:none}.material-card summary::-webkit-details-marker{display:none}.material-collapse>summary{display:flex;align-items:center;font-size:13px}.material-collapse>summary:before{content:'▸';margin-right:7px;font-size:11px}.material-collapse[open]>summary:before{content:'▾'}.material-body{padding-top:8px}.material-edit{margin-top:8px;border-top:1px solid var(--line);padding-top:6px}.material-edit>summary{font-weight:800;color:var(--blue);cursor:pointer}.catalog-collapse{border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:#fff}.catalog-collapse>summary{cursor:pointer;font-weight:800;list-style:none}.catalog-collapse>summary::-webkit-details-marker{display:none}.catalog-collapse>summary:before{content:'▸';margin-right:7px;font-size:11px}.catalog-collapse[open]>summary:before{content:'▾'}.material-card pre{white-space:pre-wrap;font:inherit}.material-full{grid-column:1/-1}@media(max-width:850px){.material-grid{grid-template-columns:1fr}.material-card .toolbar{display:flex;flex-direction:column;align-items:stretch}.material-card .toolbar .btn{width:100%;min-height:44px}.material-card details:not([open]){margin-top:8px}#collectionFactoryFilter,#collectionCatalogSearch{min-height:44px}}
@@ -168,13 +169,12 @@
 
   <section id="factories" class="view">
     <div class="toolbar"><input id="factorySearch" placeholder="Szukaj fabryki / marki..." style="max-width:420px"><span class="tag blue">Źródło: 01 Kontakty fabryki włoskie Cersait 2026</span></div>
-    <div class="split"><div class="filters" id="factoryFilters"><button class="active" data-group="all">Wszyscy</button><button data-group="partner">Współpracujemy</button><button data-group="cersaie">Cersaie 2026 / nowe</button><button data-group="poland">Polskie</button><button data-group="italy">Włoskie</button><button data-group="spain">Hiszpańskie</button><button data-group="portugal">Portugalskie</button><button data-group="building">Budowlane</button></div><div><div class="company-grid" id="companyGrid"></div><div id="factoryDetail" class="card" style="margin-top:10px"></div></div></div>
-    <div class="card" style="margin-top:10px"><div class="section-head"><div class="title">Porównanie producentów / fabryk</div><span class="tag blue">wolumen miesięczny tylko z Senuto / Keyword Planner</span></div>
+    <div class="split"><div class="filters" id="factoryFilters"><button class="active" data-group="all">Wszyscy</button><button data-group="partner">Współpracujemy</button><button data-group="cersaie">Cersaie 2026 / nowe</button><button data-group="poland">Polskie</button><button data-group="italy">Włoskie</button><button data-group="spain">Hiszpańskie</button><button data-group="portugal">Portugalskie</button><button data-group="building">Budowlane</button></div><div><div class="company-grid" id="companyGrid"></div></div></div><div id="factoryDetail" class="card" style="margin-top:10px"></div>
+    <details class="card factory-fold" style="margin-top:10px"><summary>Porównanie producentów / fabryk</summary><div class="factory-fold-body"><span class="tag blue">wolumen miesięczny tylko z Senuto / Keyword Planner</span>
       <div class="note"><b>Ważne:</b> dane GBP Jan–Sep 2026 są sumą zapytań do wizytówki w tym okresie, a nie miesięcznym wolumenem Google. Dlatego miesięczne kolumny są wypełniane tylko danymi porównywalnymi z Senuto / Keyword Planner.</div>
-      <div class="tablewrap"><table><thead><tr><th>Producent</th><th>Kraj</th><th>Status</th><th>Frazy</th><th>Warszawa / mies.</th><th>Polska / mies.</th><th>GBP / inne dane</th><th>Okres / źródło</th><th>Trend 12M</th><th>Potencjał</th><th>Decyzja</th></tr></thead><tbody id="factoryRows"></tbody></table></div></div>
+      <div class="tablewrap"><table><thead><tr><th>Producent</th><th>Kraj</th><th>Status</th><th>Frazy</th><th>Warszawa / mies.</th><th>Polska / mies.</th><th>GBP / inne dane</th><th>Okres / źródło</th><th>Trend 12M</th><th>Potencjał</th><th>Decyzja</th></tr></thead><tbody id="factoryRows"></tbody></table></div></div></details>
 
-    <div class="card" style="margin-top:10px">
-      <div class="section-head"><div class="title">Analiza fabryki: SEO + Google Ads</div><span class="tag blue">wspólny moduł decyzyjny</span></div>
+    <details class="card factory-fold" style="margin-top:10px"><summary>Analiza fabryki: SEO + Google Ads</summary><div class="factory-fold-body"><span class="tag blue">wspólny moduł decyzyjny</span>
       <div class="note"><b>Nie zapisujemy tego tylko w Senuto ani tylko w Google Ads.</b> Senuto dostarcza dane SEO, a Google Ads dane reklamowe. Wynik łączymy tutaj — przy konkretnej fabryce i kolekcji — żeby aplikacja mogła powiedzieć, co reklamować, jaką stawką startową i kiedy.</div>
       <div class="tablewrap" style="margin-top:9px"><table>
         <thead><tr><th>Fabryka / kolekcja</th><th>Fraza</th><th>Senuto: wolumen / trend / pozycja</th><th>Google Ads: konkurencja / CPC</th><th>Godziny i dni</th><th>Decyzja</th><th>Priorytet</th></tr></thead>
@@ -185,7 +185,7 @@
         <div class="note"><b>Źródło: Google Ads</b><br>stawki, konkurencja reklamowa, kliknięcia, koszt, konwersje, godzina i dzień.</div>
         <div class="note"><b>JURKO AI</b><br>łączy oba źródła i oznacza: reklamować / SEO / oba / obserwować.</div>
       </div>
-    </div>
+    </div></details>
   </section>
 
   <section id="ads" class="view">
