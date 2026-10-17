@@ -935,10 +935,10 @@ function renderCollectionKeywordDetails(brand,collection){
 }
 
 function renderFactoryPdfs(name){const files=factoryPdfs(name);if(!files.length)return '';return '<details open id="factoryPdfCatalogs" style="margin-top:16px"><summary style="cursor:pointer;font-weight:700">Katalogi PDF producenta · '+files.length+'</summary><div style="padding-top:10px"><p><a class="btn" target="_blank" rel="noopener noreferrer" href="'+FACTORY_PDF_FOLDERS[name]+'">Otwórz folder katalogów na Dysku Google ↗</a></p><div style="overflow:auto"><table><thead><tr><th>Kolekcja</th><th>Katalog</th><th></th></tr></thead><tbody>'+files.map(f=>'<tr><td>'+factoryPdfEsc(f.collection)+renderCollectionKeywordDetails(name,f.collection)+'</td><td>'+factoryPdfEsc(f.name)+'</td><td><a class="btn" href="'+factoryPdfEsc(f.url)+'" target="_blank" rel="noopener noreferrer">Otwórz PDF ↗</a></td></tr>').join('')+'</tbody></table></div>'+(name==='Italgraniti'?'<p class="muted small">Brak pobranych katalogów: Alnus i Stone Mix. Charm, Lux i Marble Experience korzystają ze wspólnego katalogu producenta.</p>':'')+'</div></details>';}
-function openFactoryPdfs(name){showFactoryDetail(name);document.getElementById('factoryPdfCatalogs')?.scrollIntoView({behavior:'smooth',block:'start'});}
+function openFactoryPdfs(name){showFactoryDetail(name,true);document.getElementById('factoryPdfCatalogs')?.scrollIntoView({behavior:'smooth',block:'start'});}
 
-function selectFactoryAndShow(name){showFactoryDetail(name);document.getElementById('factoryDetail')?.scrollIntoView({behavior:'smooth',block:'start'});}
-function showFactoryDetail(name){
+function selectFactoryAndShow(name){showFactoryDetail(name,true);document.getElementById('factoryDetail')?.scrollIntoView({behavior:'smooth',block:'start'});}
+function showFactoryDetail(name,expand=false){
  selectedFactory=name;
  document.querySelectorAll('#companyGrid .company').forEach(el=>el.classList.toggle('active',el.dataset.factory===name));
  const m=manufacturers.find(x=>x.name===name); const box=document.getElementById('factoryDetail'); if(!m||!box)return;
@@ -947,7 +947,7 @@ function showFactoryDetail(name){
  const actual=mm.kw.map(x=>x.phrase);
  const phrases=[...new Set([...actual,...generic])].slice(0,16);
  const cols=FACTORY_COLLECTIONS[m.name]||[];
- box.innerHTML=`<div class="section-head"><div><div class="title">${m.name}</div><div class="muted small">${m.country} • ${m.status}</div></div><span class="tag ${m.potential==='A'?'ok':m.potential==='B'?'warn':'blue'}">Potencjał ${m.potential}</span></div>
+ box.innerHTML=`<details class="factory-fold" ${expand?'open':''}><summary>${factoryPdfEsc(m.name)}</summary><div class="factory-fold-body"><div class="section-head"><div><div class="muted small">${m.country} • ${m.status}</div></div><span class="tag ${m.potential==='A'?'ok':m.potential==='B'?'warn':'blue'}">Potencjał ${m.potential}</span></div>
  <div class="factory-detail-grid" style="margin-top:10px">
    <div><b>Słowa kluczowe fabryki</b><div class="factory-keywords">${phrases.map(p=>`<span>${p}</span>`).join('')}</div>
    <div class="note" style="margin-top:9px"><b>Jak oceniamy inwestycję:</b> miesięczny wolumen Warszawa + Polska, trend 12M, TOP3/TOP10/TOP50 w Senuto, CPC/konkurencja w Google Ads i konwersje JURKO.</div></div>
@@ -956,7 +956,7 @@ function showFactoryDetail(name){
    <div class="statrow"><span>Polska / mies.</span><b>${mm.poland||'brak danych Senuto'}</b></div>
    <div class="statrow"><span>GBP Jan–Sep 2026</span><b>${mm.gbp||'—'}</b></div>
    </div>
- </div>${renderFactoryPdfs(name)}`;
+ </div>${renderFactoryPdfs(name)}</div></details>`;
 }
 
 function renderFactories(){
