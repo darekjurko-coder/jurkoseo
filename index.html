@@ -1444,11 +1444,8 @@ function commit(next){try{localStorage.setItem(key,JSON.stringify(next));gbpAuto
 function fields(card,x){const f=card.querySelector('form');return {...x,aiCount:Number(f.elements.aiCount.value),description:f.elements.description.value.trim(),keywords:f.elements.keywords.value.trim(),title:f.elements.title.value.trim(),cta:f.elements.cta.value.trim(),rawImages:f.elements.rawImages.value.split('\n').map(url).filter(Boolean).slice(0,6),finalImage:url(f.elements.finalImage.value),pdf:url(f.elements.pdf.value),drive:url(f.elements.drive.value),images:f.elements.images.value.split('\n').map(url).filter(Boolean).slice(0,6),note:f.elements.note.value.trim()}}
 function update(id,action,card){const x=gbpAutoQueue.find(q=>String(q.id)===id);if(!x)return;if(action==='prepare'){const draft=fields(card,x);if(!commit(gbpAutoQueue.map(q=>q===x?draft:q)))return;sendGbpPrep(id);return}if(action==='archive'){workflowArchive('auto',id);return}const form=card.querySelector('form');for(const name of ['images','rawImages']){const links=form.elements[name].value.split('\n').map(v=>v.trim()).filter(Boolean);if(links.length>6||links.some(v=>!url(v))){alert('Dodaj maksymalnie 6 poprawnych linków HTTPS do obrazów.');return}}for(const name of ['pdf','drive','finalImage']){const value=form.elements[name].value.trim();if(value&&!url(value)){alert('Link PDF, Drive lub zdjęcia musi być poprawnym adresem HTTPS.');return}}let next=fields(card,x);if(!Number.isInteger(next.aiCount)||next.aiCount<0||next.aiCount>6)return;
 if(action==='approve'){
- if(!next.title||!next.description||!next.keywords||!next.cta){alert('Uzupełnij opis, słowa kluczowe i CTA przed zatwierdzeniem.');return}
- const sceneCheck=validateSceneSet(next);
- if(!sceneCheck.ok){alert('Do zatwierdzenia potrzebny jest komplet 6 różnych grafik z logo JURKO i nazwą kolekcji.');return}
- if(x.status==='Zaplanowane'){return}
- const when=new Date();when.setDate(when.getDate()+3);next={...next,status:'Zaplanowane',approved:true,approvedAt:stamp(),scheduledAt:when.toISOString(),publicationEnabled:false};
+ if(!commit(gbpAutoQueue.map(q=>q===x?next:q)))return;
+ window.previewJurkoPost(id);return;
 }else{next.status=action==='reject'?'Odrzucone':action==='correct'?'Do poprawy':card.querySelector('[name=preparation]').value;next.approved=false;next.approvedAt=null;next.scheduledAt=null;next.publicationEnabled=false}
 next.history=[...x.history,{at:stamp(),action,status:next.status}];if(commit(gbpAutoQueue.map(q=>q===x?next:q)))renderMaterialQueue();
 }
@@ -1514,7 +1511,7 @@ document.getElementById('materialBackup').onclick=()=>{
 };
 document.getElementById('materialFilter').value=previousFilter;
 const render=()=>{const filter=document.getElementById('materialFilter').value;const list=gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile&&(!filter||x.status===filter));
-document.getElementById('materialCards').innerHTML=list.map(x=>`<article class="card material-card" data-id="${esc(x.id)}"><details class="material-collapse"><summary><b>${esc(x.producer)} — ${esc(x.collection)}</b></summary><div class="material-body"><div class="small muted">${x.scheduledAt?'Termin: '+esc(new Date(x.scheduledAt).toLocaleString('pl-PL',{timeZone:'Europe/Warsaw'}))+' • oczekuje na integrację publikacji':'Brak zatwierdzonego terminu'}</div><div class="small muted">Etap: ${esc(x.prepStatus||'Oczekuje na przygotowanie')} • obrazy AI: ${x.images.length}/${x.aiCount}</div><div class="toolbar" style="margin-top:8px">${url(x.source)?`<a class="btn" href="${esc(url(x.source))}" target="_blank" rel="noopener noreferrer">Oficjalne kolekcje</a><a class="btn" href="${esc(new URL(url(x.source)).origin+'/')}" target="_blank" rel="noopener noreferrer">Źródło producenta</a>`:''}</div><div class="toolbar" style="margin-top:10px"><button class="btn primary" type="button" data-action="prepare" ${String(x.prepStatus||'').startsWith('Wysyłanie')?'disabled':''}>${String(x.prepStatus||'').startsWith('Wysyłanie')?'Wysyłanie…':String(x.prepStatus||'').startsWith('Przekazano')?'Wyślij ponownie do Make':'Przygotuj materiały'}</button>${url(x.drive)?`<a class="btn" href="${esc(url(x.drive))}" target="_blank" rel="noopener noreferrer">Otwórz folder Drive</a>`:''}</div><details><summary>Karta podglądu materiałów</summary><div class="material-images">${x.rawImages.map((u,i)=>url(u)?`<figure><img src="${esc(url(u))}" alt="Zdjęcie źródłowe ${i+1}" loading="lazy" referrerpolicy="no-referrer"><figcaption>Źródło ${i+1}</figcaption></figure>`:'').join('')}${url(x.finalImage)?`<figure><img src="${esc(url(x.finalImage))}" alt="Finalne zdjęcie" loading="lazy" referrerpolicy="no-referrer"><figcaption>Finalne zdjęcie</figcaption></figure>`:''}</div><div class="material-images">${x.images.map((u,i)=>url(u)?`<figure><a href="${esc(url(u))}" target="_blank" rel="noopener noreferrer"><img src="${esc(url(u))}" alt="Obraz AI ${i+1}" loading="lazy" referrerpolicy="no-referrer"></a><figcaption>Obraz AI ${i+1}</figcaption></figure>`:'').join('')||'<p class="muted">Brak gotowych obrazów.</p>'}</div>${url(x.pdf)?`<p><a class="btn" href="${esc(url(x.pdf))}" target="_blank" rel="noopener noreferrer">Otwórz PDF</a></p>`:'<p class="small muted">PDF nie został dodany.</p>'}<b>${esc(x.title||'Tytuł do przygotowania')}</b><pre>${esc(x.description||'Opis do przygotowania')}</pre><div class="small">CTA: ${esc(x.cta||'do przygotowania')}</div><div class="small">Słowa kluczowe: ${esc(x.keywords||'do przygotowania')}</div></details><details class="material-edit"><summary>Edytuj / pokaż wszystkie pola</summary><form class="material-grid"><label>Status przygotowania<select name="preparation">${['Nowe','Materiały zapisane na Drive','Do zatwierdzenia','Do poprawy'].map(t=>`<option ${x.status===t?'selected':''}>${t}</option>`).join('')}</select></label><label>Zestaw grafik<select name="aiCount"><option value="6" selected>6 — 2 łazienki + salon + kuchnia + detal + moodboard</option></select></label><label>PDF — link HTTPS<input name="pdf" type="url" value="${esc(x.pdf)}" placeholder="https://…"></label><label class="material-full">Gotowe obrazy — maks. 6 linków HTTPS, po jednym w wierszu<textarea name="images" rows="3">${esc(x.images.join('\n'))}</textarea></label><label class="material-full">Opis<textarea name="description" rows="4">${esc(x.description)}</textarea></label><label>Tytuł posta<input name="title" value="${esc(x.title)}"></label><label>CTA<input name="cta" value="${esc(x.cta)}"></label><label>Finalne zdjęcie HTTPS<input name="finalImage" type="url" value="${esc(x.finalImage)}"></label><label class="material-full">Zdjęcia źródłowe — maks. 6 linków HTTPS<textarea name="rawImages" rows="3">${esc(x.rawImages.join('\n'))}</textarea></label><label>Słowa kluczowe<input name="keywords" value="${esc(x.keywords)}"></label><label>Materiały na Drive<input name="drive" type="url" value="${esc(x.drive)}"></label><label class="material-full">Uwagi do poprawy<textarea name="note" rows="2">${esc(x.note)}</textarea></label><div class="toolbar material-full"><button class="btn" type="button" data-action="prepare">Przygotuj materiały</button><button class="btn" type="button" data-action="archive">Archiwizuj</button><button class="btn" disabled type="button" title="Publikacja nie jest podłączona">Opublikuj teraz</button><button class="btn" type="button" data-action="save">Zapisz materiał</button><button class="btn primary" type="button" data-action="approve" ${x.status==='Zaplanowane'?'disabled':''}>Zatwierdź i opublikuj za 3 dni</button><button class="btn" type="button" data-action="correct">Popraw</button><button class="btn" type="button" data-action="reject">Odrzuć</button></div></form></details><details><summary>Historia przygotowania (${x.history.length})</summary>${x.history.map(h=>`<div class="small">${esc(h.at)} — ${esc(h.status)}</div>`).join('')}</details></div></details></article>`).join('')||'<div class="empty">Brak materiałów dla tego statusu.</div>';
+document.getElementById('materialCards').innerHTML=list.map(x=>`<article class="card material-card" data-id="${esc(x.id)}"><details class="material-collapse"><summary><b>${esc(x.producer)} — ${esc(x.collection)}</b></summary><div class="material-body"><div class="small muted">${x.scheduledAt?'Termin: '+esc(new Date(x.scheduledAt).toLocaleString('pl-PL',{timeZone:'Europe/Warsaw'}))+' • oczekuje na integrację publikacji':'Brak zatwierdzonego terminu'}</div><div class="small muted">Etap: ${esc(x.prepStatus||'Oczekuje na przygotowanie')} • obrazy AI: ${x.images.length}/${x.aiCount}</div><div class="toolbar" style="margin-top:8px">${url(x.source)?`<a class="btn" href="${esc(url(x.source))}" target="_blank" rel="noopener noreferrer">Oficjalne kolekcje</a><a class="btn" href="${esc(new URL(url(x.source)).origin+'/')}" target="_blank" rel="noopener noreferrer">Źródło producenta</a>`:''}</div><div class="toolbar" style="margin-top:10px"><button class="btn primary" type="button" data-action="prepare" ${String(x.prepStatus||'').startsWith('Wysyłanie')?'disabled':''}>${String(x.prepStatus||'').startsWith('Wysyłanie')?'Wysyłanie…':String(x.prepStatus||'').startsWith('Przekazano')?'Wyślij ponownie do Make':'Przygotuj materiały'}</button>${url(x.drive)?`<a class="btn" href="${esc(url(x.drive))}" target="_blank" rel="noopener noreferrer">Otwórz folder Drive</a>`:''}</div><details><summary>Karta podglądu materiałów</summary><div class="material-images">${x.rawImages.map((u,i)=>url(u)?`<figure><img src="${esc(url(u))}" alt="Zdjęcie źródłowe ${i+1}" loading="lazy" referrerpolicy="no-referrer"><figcaption>Źródło ${i+1}</figcaption></figure>`:'').join('')}${url(x.finalImage)?`<figure><img src="${esc(url(x.finalImage))}" alt="Finalne zdjęcie" loading="lazy" referrerpolicy="no-referrer"><figcaption>Finalne zdjęcie</figcaption></figure>`:''}</div><div class="material-images">${x.images.map((u,i)=>url(u)?`<figure><a href="${esc(url(u))}" target="_blank" rel="noopener noreferrer"><img src="${esc(url(u))}" alt="Obraz AI ${i+1}" loading="lazy" referrerpolicy="no-referrer"></a><figcaption>Obraz AI ${i+1}</figcaption></figure>`:'').join('')||'<p class="muted">Brak gotowych obrazów.</p>'}</div>${url(x.pdf)?`<p><a class="btn" href="${esc(url(x.pdf))}" target="_blank" rel="noopener noreferrer">Otwórz PDF</a></p>`:'<p class="small muted">PDF nie został dodany.</p>'}<b>${esc(x.title||'Tytuł do przygotowania')}</b><pre>${esc(x.description||'Opis do przygotowania')}</pre><div class="small">CTA: ${esc(x.cta||'do przygotowania')}</div><div class="small">Słowa kluczowe: ${esc(x.keywords||'do przygotowania')}</div></details><details class="material-edit"><summary>Edytuj / pokaż wszystkie pola</summary><form class="material-grid"><label>Status przygotowania<select name="preparation">${['Nowe','Materiały zapisane na Drive','Do zatwierdzenia','Do poprawy'].map(t=>`<option ${x.status===t?'selected':''}>${t}</option>`).join('')}</select></label><label>Zestaw grafik<select name="aiCount"><option value="6" selected>6 — 2 łazienki + salon + kuchnia + detal + moodboard</option></select></label><label>PDF — link HTTPS<input name="pdf" type="url" value="${esc(x.pdf)}" placeholder="https://…"></label><label class="material-full">Gotowe obrazy — maks. 6 linków HTTPS, po jednym w wierszu<textarea name="images" rows="3">${esc(x.images.join('\n'))}</textarea></label><label class="material-full">Opis<textarea name="description" rows="4">${esc(x.description)}</textarea></label><label>Tytuł posta<input name="title" value="${esc(x.title)}"></label><label>CTA<input name="cta" value="${esc(x.cta)}"></label><label>Finalne zdjęcie HTTPS<input name="finalImage" type="url" value="${esc(x.finalImage)}"></label><label class="material-full">Zdjęcia źródłowe — maks. 6 linków HTTPS<textarea name="rawImages" rows="3">${esc(x.rawImages.join('\n'))}</textarea></label><label>Słowa kluczowe<input name="keywords" value="${esc(x.keywords)}"></label><label>Materiały na Drive<input name="drive" type="url" value="${esc(x.drive)}"></label><label class="material-full">Uwagi do poprawy<textarea name="note" rows="2">${esc(x.note)}</textarea></label><div class="toolbar material-full"><button class="btn" type="button" data-action="prepare">Przygotuj materiały</button><button class="btn" type="button" data-action="archive">Archiwizuj</button><button class="btn" disabled type="button" title="Publikacja nie jest podłączona">Opublikuj teraz</button><button class="btn" type="button" data-action="save">Zapisz materiał</button><button class="btn primary" type="button" data-action="approve">Podgląd i zaplanowanie w Make</button><button class="btn" type="button" data-action="correct">Popraw</button><button class="btn" type="button" data-action="reject">Odrzuć</button></div></form></details><details><summary>Historia przygotowania (${x.history.length})</summary>${x.history.map(h=>`<div class="small">${esc(h.at)} — ${esc(h.status)}</div>`).join('')}</details></div></details></article>`).join('')||'<div class="empty">Brak materiałów dla tego statusu.</div>';
 box.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>update(b.closest('[data-id]').dataset.id,b.dataset.action,b.closest('[data-id]')));
 box.querySelectorAll('form').forEach(f=>f.onsubmit=e=>e.preventDefault());};
 document.getElementById('materialFilter').onchange=render;document.getElementById('materialStageCards').innerHTML=['Do przygotowania','Do zatwierdzenia','Zaplanowane','Odrzucone'].map(st=>`<button class="btn" data-stage="${st}">${st} (${gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile&&x.status===st).length})</button>`).join('');box.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{document.getElementById('materialFilter').value=b.dataset.stage;render()});render();if(window.renderGbpApprovalPanel)window.renderGbpApprovalPanel();
@@ -1706,16 +1703,16 @@ render();
   const images=(x.imageVariants||x.finalImages||[]).filter(i=>/^https:\/\//.test(i.finalUrl||''));
   const local=new Date(Date.now()+3*86400000);local.setMinutes(local.getMinutes()-local.getTimezoneOffset());
   dialog.innerHTML='<h2>Podgląd posta przed zatwierdzeniem</h2><p><b>Profil:</b> '+escape(x.profile==='building'?'JURKO — materiały budowlane':'JURKO — płytki / łazienki')+'</p><p>'+escape(x.producer)+' — '+escape(x.collection)+'</p>'+
-  '<p style="background:#fff4dc;padding:12px">Publikacja Google nie jest jeszcze podłączona. Odzyskane pakiety są zapisane w Make. Zatwierdzenie i termin nie zostaną wysłane do publikacji, dopóki połączenie nie będzie gotowe.</p>'+
+  '<p style="background:#fff4dc;padding:12px">Po sprawdzeniu zdjęcia i treści wybierz termin. Aplikacja potwierdzi zapis zatwierdzonej wersji we wspólnej kolejce Make.</p>'+
   (x.recovered?'<p><b>Odzyskane grafiki. Tekst odtworzony — sprawdź go przed zatwierdzeniem.</b></p>':'')+
   '<label>Zdjęcie główne <select id="postPreviewPhoto">'+images.map((i,n)=>'<option value="'+n+'">'+escape(i.label||i.sceneKey)+'</option>').join('')+'</select></label>'+
   '<div id="postPreviewImageBox"></div><label>Tytuł<input id="postPreviewTitle" style="width:100%" value="'+escape(x.title||'')+'"></label>'+
   '<label>Pełny tekst posta<textarea id="postPreviewDescription" style="width:100%;min-height:180px">'+escape(x.description||'')+'</textarea></label>'+
   '<label>Słowa kluczowe<input id="postPreviewKeywords" style="width:100%" value="'+escape(x.keywords||'')+'"></label>'+
   '<label>Wezwanie do działania<input id="postPreviewCta" style="width:100%" value="'+escape(x.cta||'')+'"></label>'+
-  '<p><label>Proponowany termin (czas tego urządzenia) <input id="postPreviewDate" type="datetime-local" value="'+local.toISOString().slice(0,16)+'"></label></p>'+
+  '<p><label>Termin publikacji (czas warszawski) <input id="postPreviewDate" type="datetime-local" value="'+local.toISOString().slice(0,16)+'"></label></p>'+
   '<p id="postPreviewStatus" role="status">Termin jest propozycją, dopóki Make nie potwierdzi zaplanowania.</p>'+
-  '<div class="toolbar"><button class="btn primary" id="postPreviewSave">Zapisz poprawki lokalnie</button><button class="btn" disabled>Zatwierdź i wyślij — wymaga połączenia Google</button><button class="btn" id="postPreviewClose">Zamknij</button></div>';
+  '<div class="toolbar"><button class="btn primary" id="postPreviewSave">Zapisz poprawki lokalnie</button><button class="btn primary" id="postPreviewApprove" disabled>Zatwierdź i zaplanuj w Make</button><button class="btn" id="postPreviewClose">Zamknij</button></div>';
   document.body.appendChild(dialog);
   const photo=dialog.querySelector('#postPreviewPhoto');
   const show=()=>{const i=images[Number(photo.value)];const id=i?.finalUrl?.match(/\/d\/([^/]+)/)?.[1];const box=dialog.querySelector('#postPreviewImageBox');box.innerHTML=i?'<figure>'+(id?'<iframe title="Podgląd: '+escape(i.label)+'" src="https://drive.google.com/file/d/'+encodeURIComponent(id)+'/preview" style="width:100%;height:440px;border:1px solid #dfe7ef;border-radius:10px" allow="fullscreen"></iframe>':'')+'<figcaption><a target="_blank" rel="noopener" href="'+escape(i.finalUrl)+'">Otwórz zdjęcie w pełnym rozmiarze na Dysku</a></figcaption></figure><p class="small">Jeżeli podgląd prosi o logowanie, otwórz zdjęcie na Dysku na koncie JURKO. Brak dostępu nie oznacza braku pliku.</p>':'<p>Brak zdjęcia — materiał wymaga uzupełnienia.</p>';};
@@ -1737,6 +1734,7 @@ photo.onchange=show;show();
    Object.assign(x,{title:dialog.querySelector('#postPreviewTitle').value,description:dialog.querySelector('#postPreviewDescription').value,keywords:dialog.querySelector('#postPreviewKeywords').value,cta:dialog.querySelector('#postPreviewCta').value,selectedImage:images[Number(photo.value)]?.finalUrl||'',proposedScheduledAt:dialog.querySelector('#postPreviewDate').value,approved:false,publicationEnabled:false});
    try{saveGbpAuto();dialog.querySelector('#postPreviewStatus').textContent='Poprawki zapisano na tym urządzeniu. Nie wysłano zatwierdzenia ani terminu do publikacji.'}catch(e){dialog.querySelector('#postPreviewStatus').textContent='Nie udało się zapisać poprawek.'}
   };
+  window.connectJurkoPreview?.(dialog,x,images);
   dialog.showModal();
  };
  window.approveGbpMaterial=window.previewJurkoPost;
@@ -1744,6 +1742,121 @@ photo.onchange=show;show();
  wrap('renderMaterialQueue');wrap('renderGbpApprovalPanel');
  window.renderMaterialQueue?.();window.renderGbpApprovalPanel?.();
 })();
+</script>
+<script>
+/* JURKO: approved snapshots are immutable; Google credentials remain in Make. */
+(()=>{
+ const API='https://hook.eu2.make.com/sq4wksdehte39vpsir5naof9py6o7jtq';
+ const WRITE_API='https://hook.eu2.make.com/3wtc6rnygl5tyu6qods8yohfpil3719o';
+ const KEY='jurko_queue_access_v1';
+ let records=[],refreshing=false;
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const time=v=>v?new Intl.DateTimeFormat('pl-PL',{timeZone:'Europe/Warsaw',dateStyle:'medium',timeStyle:'short'}).format(new Date(v)):'—';
+ async function request(action,fields={}){
+  const token=localStorage.getItem(KEY);if(!token)throw Error('Najpierw wczytaj plik połączenia kolejki.');
+  const body=new URLSearchParams({action,token,...fields});
+  const response=await fetch(action==='list'?API:WRITE_API,{method:'POST',body,signal:AbortSignal.timeout(45000),cache:'no-store'});
+  const raw=await response.text();
+  if(action!=='list'&&response.ok&&raw.trim()==='Accepted'){
+   for(let attempt=0;attempt<20;attempt++){
+    await new Promise(resolve=>setTimeout(resolve,1500));
+    const latest=await request('list');const found=latest.records.map(r=>{try{return JSON.parse(r.payload)}catch(e){return null}}).find(r=>r?.id===fields.id);
+    if(action==='submit'&&found)return {ok:true,record:found};
+    if(action==='cancel'&&found?.state==='cancelled')return {ok:true,record:found};
+    if(action==='cancel'&&found&&found.state!=='scheduled')throw Error('Post jest już przetwarzany lub opublikowany. Sprawdź jego status.');
+   }
+   throw Error('Żądanie przyjęto, ale zapis nie został jeszcze potwierdzony. Odśwież kolejkę przed ponowieniem.');
+  }
+  let data;try{data=JSON.parse(raw)}catch(e){throw Error('Make nie potwierdził wyniku. Odśwież kolejkę, zanim ponowisz wysyłkę.');}
+  if(!response.ok||!data.ok)throw Error(data.error||data.record?.error||data.record?.status||'Nie udało się wykonać operacji.');
+  return data;
+ }
+ function panel(){
+  if(document.getElementById('jurkoOnlineQueue'))return;
+  const anchor=document.getElementById('gbpApprovalMaterials');if(!anchor)return;
+  const box=document.createElement('section');box.id='jurkoOnlineQueue';box.className='card';
+  box.innerHTML='<h3>Wspólna kolejka online</h3><p>Zatwierdzone posty publikuje Make również po zamknięciu aplikacji. Profil: JURKO, Aleje Jerozolimskie 229, Warszawa — płytki i łazienki. Terminy: Europe/Warsaw.</p><div class="toolbar"><button class="btn" id="jurkoConnectQueue">Wczytaj plik połączenia</button><button class="btn" id="jurkoRefreshQueue">Odśwież kolejkę</button><button class="btn" id="jurkoDisconnectQueue">Odłącz to urządzenie</button><input type="file" accept=".json,application/json" id="jurkoQueueConfig" hidden></div><p id="jurkoQueueStatus" role="status">'+(localStorage.getItem(KEY)?'Połączenie zapisane — sprawdzam kolejkę.':'Wczytaj prywatny plik JURKO_polaczenie_kolejki.json. Ten sam plik łączy kolejne urządzenie.')+'</p><div id="jurkoOnlineRecords"></div>';
+  anchor.before(box);
+  const input=box.querySelector('#jurkoQueueConfig');
+  box.querySelector('#jurkoConnectQueue').onclick=()=>input.click();
+  input.onchange=async()=>{try{const c=JSON.parse(await input.files[0].text());if(c.schemaVersion!==1||c.service!=='JURKO wspólna kolejka'||!/^[-_a-zA-Z0-9]{40,80}$/.test(c.token))throw Error('To nie jest plik połączenia kolejki JURKO.');localStorage.setItem(KEY,c.token);input.value='';await refresh();}catch(e){status(e.message)}};
+  box.querySelector('#jurkoRefreshQueue').onclick=()=>refresh();
+  box.querySelector('#jurkoDisconnectQueue').onclick=()=>{localStorage.removeItem(KEY);records=[];render();status('Odłączono to urządzenie. Zaplanowane posty nadal pozostają w Make.');};
+ }
+ function status(message){const el=document.getElementById('jurkoQueueStatus');if(el)el.textContent=message;}
+ function render(){
+  const el=document.getElementById('jurkoOnlineRecords');if(!el)return;
+  const visible=records.filter(x=>x.state&&x.state!=='draft').sort((a,b)=>new Date(b.approvedAt||0)-new Date(a.approvedAt||0));
+  el.innerHTML=visible.length?'<div style="overflow:auto"><table style="width:100%"><thead><tr><th>Materiał</th><th>Termin warszawski</th><th>Status z Make / Google</th><th>Działanie</th></tr></thead><tbody>'+visible.map(x=>'<tr><td>'+esc(x.title)+'</td><td>'+esc(time(x.scheduledAt))+'</td><td>'+esc(x.status||x.state)+(x.error?'<br><small>'+esc(x.error)+'</small>':'')+'</td><td><button class="btn" data-view="'+esc(x.id)+'">Zobacz zatwierdzony post</button>'+(x.state==='scheduled'?'<button class="btn" data-cancel="'+esc(x.id)+'">Anuluj termin</button>':'')+(x.publicationUrl&&/^https:\/\/(local|www)\.google\.com\//.test(x.publicationUrl)?'<a target="_blank" rel="noopener" href="'+esc(x.publicationUrl)+'">Zobacz w Google</a>':'')+'</td></tr>').join('')+'</tbody></table></div>':'<p>Brak zatwierdzonych postów w kolejce online. Materiały poniżej wymagają podglądu i zatwierdzenia.</p>';
+  el.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await request('cancel',{id:b.dataset.cancel});await refresh();}catch(e){status(e.message);b.disabled=false;}});
+  el.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>view(records.find(x=>x.id===b.dataset.view)));
+ }
+ function view(x){
+  if(!x)return;document.getElementById('jurkoApprovedSnapshot')?.remove();
+  const d=document.createElement('dialog');d.id='jurkoApprovedSnapshot';d.style.cssText='width:min(820px,94vw);max-height:90vh;overflow:auto;border:1px solid #dfe7ef;border-radius:16px;padding:24px';
+  d.innerHTML='<h2>Zatwierdzona wersja posta</h2><p>'+esc(x.status)+' • '+esc(time(x.scheduledAt))+' (Warszawa)</p><p>Profil: JURKO — płytki i łazienki, Aleje Jerozolimskie 229, Warszawa</p><iframe title="Zatwierdzone zdjęcie" src="https://drive.google.com/file/d/'+encodeURIComponent(x.driveFileId)+'/preview" style="width:100%;height:360px;border:0"></iframe><pre style="white-space:pre-wrap;font:inherit">'+esc(x.summary)+'</pre><p>Przycisk Google: Dowiedz się więcej → https://jurko.pl</p><p>Frazy: '+esc(x.keywords)+'</p><p>Zmiana treści lub zdjęcia wymaga anulowania terminu i ponownego zatwierdzenia.</p><button class="btn">Zamknij</button>';
+  d.querySelector('button').onclick=()=>d.close();document.body.append(d);d.showModal();
+ }
+ async function refresh(){
+  panel();if(refreshing||!localStorage.getItem(KEY))return;refreshing=true;status('Odczytuję wspólną kolejkę…');
+  try{
+   const data=await request('list');if(!Array.isArray(data.records))throw Error('Make zwrócił niepełną kolejkę.');
+   records=data.records.map(r=>{try{return {...JSON.parse(r.payload),cloudKey:r.key}}catch(e){return null}}).filter(Boolean);
+   // Import recovered source packages once. Never overwrite local draft edits during refresh.
+   let imported=false;for(const x of records){if(!x.state&&x.status!=='Archiwum'&&x.jobId&&!gbpAutoQueue.some(q=>q.id===x.id||q.jobId===x.jobId)){gbpAutoQueue.push(x);imported=true;}}
+   if(imported){saveGbpAuto();window.renderMaterialQueue?.();window.renderGbpApprovalPanel?.();}
+   render();status('Kolejka potwierdzona przez Make: '+time(new Date().toISOString())+'. Sprawdzanie terminu co minutę.');return true;
+  }catch(e){status('Nie udało się odświeżyć: '+e.message+' Widoczny wynik może być nieaktualny.');return false;}finally{refreshing=false;}
+ }
+ function warsawDate(value){
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value))throw Error('Wybierz datę i godzinę.');
+  const utc=Date.parse(value+'Z');
+  const fmt=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Warsaw',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  const candidates=[1,2].map(h=>new Date(utc-h*3600000)).filter(d=>fmt.format(d).replace(' ','T')===value);
+  if(candidates.length!==1)throw Error('Ta godzina jest niejednoznaczna lub nie istnieje przy zmianie czasu. Wybierz inną godzinę.');
+  return candidates[0];
+ }
+ async function hash(value){const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value));return [...new Uint8Array(bytes)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+ window.connectJurkoPreview=function(d,x,images){
+  const save=d.querySelector('#postPreviewSave'),approve=d.querySelector('#postPreviewApprove');
+  const field=id=>d.querySelector('#'+id),message=text=>field('postPreviewStatus').textContent=text;
+  const selected=images.findIndex(i=>i.finalUrl===x.selectedImage);if(selected>=0){field('postPreviewPhoto').value=String(selected);field('postPreviewPhoto').dispatchEvent(new Event('change'));}
+  const fmt=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Warsaw',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  field('postPreviewDate').value=x.proposedScheduledAt||fmt.format(new Date(Date.now()+3*86400000)).replace(' ','T');
+  const details=document.createElement('section');details.innerHTML='<h3>Dokładna treść wysyłana do Google</h3><pre id="jurkoFinalSummary" style="white-space:pre-wrap;font:inherit;padding:14px;background:#f2f6fa"></pre><p id="jurkoSummaryCount"></p><p>Przycisk: <b>Dowiedz się więcej</b> → https://jurko.pl</p><label><input type="checkbox" id="jurkoConfirmPublic"> Obejrzałem wybrane zdjęcie i treść. Zatwierdzam ich publiczną publikację. Wybrane zdjęcie z Dysku zostanie udostępnione do odczytu przez link, aby Google mogło je pobrać.</label>';
+  field('postPreviewStatus').before(details);
+  const summary=()=>['postPreviewTitle','postPreviewDescription','postPreviewCta'].map(id=>field(id).value.trim()).filter(Boolean).join('\n\n');
+  const audit=()=>{d.querySelector('#jurkoFinalSummary').textContent=summary();d.querySelector('#jurkoSummaryCount').textContent=summary().length+' / 1500 znaków';};
+  ['postPreviewTitle','postPreviewDescription','postPreviewCta'].forEach(id=>field(id).addEventListener('input',audit));audit();
+  approve.disabled=false;approve.textContent='Zatwierdź i zaplanuj w Make';
+  message('Zatwierdzenie obejmuje dokładną treść powyżej, wybrane zdjęcie i termin warszawski.');
+  if(x.profile==='building'){approve.disabled=true;message('Ten profil wymaga osobnego wskazania wizytówki Google. Obecnie połączony jest salon płytek.');}
+  approve.onclick=async()=>{
+   approve.disabled=true;save.disabled=true;
+   try{
+    if(!localStorage.getItem(KEY))throw Error('Zamknij podgląd i wczytaj plik połączenia we Wspólnej kolejce online.');
+    if(!d.querySelector('#jurkoConfirmPublic').checked)throw Error('Obejrzyj zdjęcie i zaznacz potwierdzenie publikacji.');
+    const text=summary();if(text.length<11||text.length>1500)throw Error('Dokładna treść posta musi mieć od 11 do 1500 znaków.');
+    const image=images[Number(field('postPreviewPhoto').value)];const fileId=image?.finalUrl?.match(/\/d\/([A-Za-z0-9_-]+)/)?.[1];if(!fileId)throw Error('Wybierz zdjęcie z Dysku.');
+    const date=warsawDate(field('postPreviewDate').value);if(date.getTime()<Date.now()+120000)throw Error('Wybierz termin co najmniej 2 minuty od teraz.');
+    if(!await refresh())throw Error('Nie potwierdzono aktualnej kolejki. Poczekaj chwilę i odśwież ją przed zatwierdzeniem.');
+    const active=records.find(r=>r.sourceId===x.id&&['scheduled','publishing','google_review','published','needs_review'].includes(r.state));
+    if(active){view(active);throw Error('Ten materiał ma już zatwierdzoną wersję. Najpierw anuluj termin lub sprawdź istniejącą publikację.');}
+    const payload={sourceId:x.id,jobId:x.jobId||'',profile:'tiles',producer:x.producer||'',collection:x.collection||'',title:field('postPreviewTitle').value.trim(),description:field('postPreviewDescription').value.trim(),keywords:field('postPreviewKeywords').value.trim(),cta:field('postPreviewCta').value.trim(),summary:text,selectedImage:image.finalUrl,driveFileId:fileId,scheduledAt:date.toISOString(),dueEpoch:date.getTime(),confirmPublicImage:true};
+    const previous=records.filter(r=>r.sourceId===x.id&&r.state==='cancelled').sort((a,b)=>new Date(b.approvedAt)-new Date(a.approvedAt))[0];
+    const id='post-'+await hash(JSON.stringify([payload.sourceId,previous?.id||'first-approval']));
+    message('Wysyłam zatwierdzoną wersję do Make…');const result=await request('submit',{id,payload:JSON.stringify(payload)});
+    if(result.record?.state!=='scheduled')throw Error('Make nie potwierdził zaplanowania. Sprawdź wspólną kolejkę.');
+    Object.assign(x,{title:payload.title,description:payload.description,keywords:payload.keywords,cta:payload.cta,selectedImage:payload.selectedImage,cloudApprovalId:id,approved:true,publicationEnabled:true,scheduledAt:payload.scheduledAt,status:'Zaplanowane'});saveGbpAuto();
+    approve.textContent='Zaplanowano w Make';message('Make potwierdził zapis. Publikacja: '+time(payload.scheduledAt)+' (Warszawa). Możesz zamknąć aplikację.');await refresh();
+   }catch(e){message(e.message);approve.disabled=false;save.disabled=false;}
+  };
+ };
+ window.refreshJurkoOnlineQueue=refresh;
+ panel();if(localStorage.getItem(KEY))refresh();
+ setInterval(()=>{if(!document.hidden&&document.getElementById('jurkoOnlineQueue')&&localStorage.getItem(KEY))refresh();},60000);
+})();
+
 </script></body></html>
 
 
