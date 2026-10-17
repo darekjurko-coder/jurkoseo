@@ -1009,7 +1009,7 @@ function renderGbpManager(){
  const autoStatus=document.getElementById('gbpAutomationStatus');
  if(autoStatus)autoStatus.innerHTML=[
    ['Status','Make włączony — potwierdzenia we wspólnej kolejce'],
-   ['Częstotliwość','sprawdzanie zatwierdzonych terminów co minutę'],
+   ['Częstotliwość','raz dziennie o 9:00 czasu warszawskiego'],
    ['Zakres','zatwierdzone posty salonu płytek JURKO'],
    ['Wizualizacje','wybierasz konkretne zdjęcie w podglądzie'],
    ['Publikacja','Google Business Profile JURKO — według zapisanego terminu'],
@@ -1775,7 +1775,7 @@ photo.onchange=show;show();
   if(document.getElementById('jurkoOnlineQueue'))return;
   const anchor=document.getElementById('gbpApprovalMaterials');if(!anchor)return;
   const box=document.createElement('section');box.id='jurkoOnlineQueue';box.className='card';
-  box.innerHTML='<h3>Wspólna kolejka online</h3><p>Zatwierdzone posty publikuje Make również po zamknięciu aplikacji. Profil: JURKO, Aleje Jerozolimskie 229, Warszawa — płytki i łazienki. Terminy: Europe/Warsaw.</p><div class="toolbar"><button class="btn" id="jurkoConnectQueue">Wczytaj plik połączenia</button><button class="btn" id="jurkoRefreshQueue">Odśwież kolejkę</button><button class="btn" id="jurkoDisconnectQueue">Odłącz to urządzenie</button><input type="file" accept=".json,application/json" id="jurkoQueueConfig" hidden></div><p id="jurkoQueueStatus" role="status">'+(localStorage.getItem(KEY)?'Połączenie zapisane — sprawdzam kolejkę.':'Wczytaj prywatny plik JURKO_polaczenie_kolejki.json. Ten sam plik łączy kolejne urządzenie.')+'</p><div id="jurkoOnlineRecords"></div>';
+  box.innerHTML='<h3>Wspólna kolejka online</h3><p>Zatwierdzone posty publikuje Make również po zamknięciu aplikacji. Profil: JURKO, Aleje Jerozolimskie 229, Warszawa — płytki i łazienki. Sprawdzanie raz dziennie o 9:00 (Warszawa). Post z późniejszym terminem zostanie wysłany przy następnym dziennym sprawdzeniu.</p><div class="toolbar"><button class="btn" id="jurkoConnectQueue">Wczytaj plik połączenia</button><button class="btn" id="jurkoRefreshQueue">Odśwież kolejkę</button><button class="btn" id="jurkoDisconnectQueue">Odłącz to urządzenie</button><input type="file" accept=".json,application/json" id="jurkoQueueConfig" hidden></div><p id="jurkoQueueStatus" role="status">'+(localStorage.getItem(KEY)?'Połączenie zapisane — sprawdzam kolejkę.':'Wczytaj prywatny plik JURKO_polaczenie_kolejki.json. Ten sam plik łączy kolejne urządzenie.')+'</p><div id="jurkoOnlineRecords"></div>';
   anchor.before(box);
   const input=box.querySelector('#jurkoQueueConfig');
   box.querySelector('#jurkoConnectQueue').onclick=()=>input.click();
@@ -1813,7 +1813,7 @@ photo.onchange=show;show();
     if(Object.keys(changes).some(k=>local[k]!==changes[k])){Object.assign(local,changes);imported=true;}
    }
    if(imported){saveGbpAuto();window.renderMaterialQueue?.();window.renderGbpApprovalPanel?.();}
-   render();status('Kolejka potwierdzona przez Make: '+time(new Date().toISOString())+'. Sprawdzanie terminu co minutę.');return true;
+   render();status('Kolejka potwierdzona przez Make: '+time(new Date().toISOString())+'. Sprawdzanie terminów raz dziennie o 9:00 (Warszawa).');return true;
   }catch(e){status('Nie udało się odświeżyć: '+e.message+' Widoczny wynik może być nieaktualny.');return false;}finally{refreshing=false;}
  }
  function warsawDate(value){
@@ -1868,7 +1868,7 @@ photo.onchange=show;show();
  };
  window.refreshJurkoOnlineQueue=refresh;
  panel();if(localStorage.getItem(KEY))refresh();
- setInterval(()=>{if(!document.hidden&&document.getElementById('jurkoOnlineQueue')&&localStorage.getItem(KEY))refresh();},60000);
+ // Status odświeża się po otwarciu panelu i ręcznie, bez cyklicznego odpytywania Make.
 })();
 
 </script></body></html>
