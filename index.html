@@ -1690,8 +1690,20 @@ render();
   '<div class="toolbar"><button class="btn primary" id="postPreviewSave">Zapisz poprawki lokalnie</button><button class="btn" disabled>Zatwierdź i wyślij — wymaga połączenia Google</button><button class="btn" id="postPreviewClose">Zamknij</button></div>';
   document.body.appendChild(dialog);
   const photo=dialog.querySelector('#postPreviewPhoto');
-  const show=()=>{const i=images[Number(photo.value)];dialog.querySelector('#postPreviewImageBox').innerHTML=i?'<figure><img style="width:100%;max-height:380px;object-fit:contain" src="'+escape(i.previewUrl||i.finalUrl)+'" alt="'+escape(i.label)+'"><figcaption><a target="_blank" rel="noopener" href="'+escape(i.finalUrl)+'">Otwórz oryginalne zdjęcie na Dysku</a></figcaption></figure>':'<p>Brak zdjęcia — materiał wymaga uzupełnienia.</p>';};
-  photo.onchange=show;show();
+  const show=()=>{const i=images[Number(photo.value)];const id=i?.finalUrl?.match(/\/d\/([^/]+)/)?.[1];const box=dialog.querySelector('#postPreviewImageBox');box.innerHTML=i?'<figure>'+(id?'<iframe title="Podgląd: '+escape(i.label)+'" src="https://drive.google.com/file/d/'+encodeURIComponent(id)+'/preview" style="width:100%;height:440px;border:1px solid #dfe7ef;border-radius:10px" allow="fullscreen"></iframe>':'')+'<figcaption><a target="_blank" rel="noopener" href="'+escape(i.finalUrl)+'">Otwórz zdjęcie w pełnym rozmiarze na Dysku</a></figcaption></figure><p class="small">Jeżeli podgląd prosi o logowanie, otwórz zdjęcie na Dysku na koncie JURKO. Brak dostępu nie oznacza braku pliku.</p>':'<p>Brak zdjęcia — materiał wymaga uzupełnienia.</p>';};
+photo.onchange=show;show();
+ const audit=document.createElement('section');audit.id='postKeywordAudit';dialog.querySelector('#postPreviewKeywords').parentElement.after(audit);
+ const fold=v=>String(v||'').normalize('NFC').toLocaleLowerCase('pl-PL').replace(/\s+/g,' ').trim();
+ const auditWords=()=>{
+  const title=dialog.querySelector('#postPreviewTitle').value,body=dialog.querySelector('#postPreviewDescription').value,cta=dialog.querySelector('#postPreviewCta').value;
+  const count=(text,phrase)=>{const t=fold(text),p=fold(phrase);if(!p)return 0;let n=0,start=0,pos;while((pos=t.indexOf(p,start))!==-1){const before=t[pos-1]||'',after=t[pos+p.length]||'';if(!/[\p{L}\p{N}]/u.test(before)&&!/[\p{L}\p{N}]/u.test(after))n++;start=pos+p.length;}return n;};
+  const phrases=[...new Set(dialog.querySelector('#postPreviewKeywords').value.split(/[,;\n]/).map(v=>v.trim()).filter(Boolean))];
+  const words=body.match(/[\p{L}\p{N}]+/gu)||[];
+  const rows=phrases.map(p=>({p,t:count(title,p),b:count(body,p),c:count(cta,p)}));
+  audit.innerHTML='<h3>Słowa kluczowe — rzeczywiste użycie</h3><p>Liczymy całe frazy, bez rozróżniania wielkich liter. Odmiany i synonimy nie są liczone jako ta sama fraza. Lista propozycji sama nie trafia do treści posta.</p><table style="width:100%;border-collapse:collapse"><thead><tr><th>Fraza</th><th>Tytuł</th><th>Tekst</th><th>CTA</th><th>Ocena</th></tr></thead><tbody>'+rows.map(r=>'<tr><td>'+escape(r.p)+'</td><td>'+r.t+'</td><td>'+r.b+'</td><td>'+r.c+'</td><td>'+(r.b?'Użyta w tekście':'Brak w tekście')+'</td></tr>').join('')+'</tbody></table><p>Frazy w tekście: <b>'+rows.filter(r=>r.b>0).length+'/'+rows.length+'</b> • długość tekstu: '+words.length+' słów. Liczba użyć nie jest prognozą pozycji w Google.</p>';
+ };
+ ['postPreviewTitle','postPreviewDescription','postPreviewKeywords','postPreviewCta'].forEach(id=>dialog.querySelector('#'+id).addEventListener('input',auditWords));auditWords();
+
   dialog.querySelector('#postPreviewClose').onclick=()=>dialog.close();
   dialog.querySelector('#postPreviewSave').onclick=()=>{
    Object.assign(x,{title:dialog.querySelector('#postPreviewTitle').value,description:dialog.querySelector('#postPreviewDescription').value,keywords:dialog.querySelector('#postPreviewKeywords').value,cta:dialog.querySelector('#postPreviewCta').value,selectedImage:images[Number(photo.value)]?.finalUrl||'',proposedScheduledAt:dialog.querySelector('#postPreviewDate').value,approved:false,publicationEnabled:false});
@@ -1700,7 +1712,7 @@ render();
   dialog.showModal();
  };
  window.approveGbpMaterial=window.previewJurkoPost;
- const wrap=name=>{const original=window[name];if(typeof original!=='function')return;window[name]=function(){const result=original.apply(this,arguments);document.querySelectorAll('button[onclick*="approveGbpMaterial"]').forEach(b=>{b.textContent='Podgląd posta i termin';b.disabled=false;b.removeAttribute('title')});return result;};};
+ const wrap=name=>{const original=window[name];if(typeof original!=='function')return;window[name]=function(){const result=original.apply(this,arguments);document.querySelectorAll('button[onclick*="approveGbpMaterial"]').forEach(b=>{b.textContent='Podgląd posta i termin';b.disabled=false;b.removeAttribute('title')});document.querySelectorAll('#gbpApprovalMaterials .material-images figure').forEach(figure=>{const image=figure.querySelector('img');const link=figure.querySelector('a');if(image&&link){const note=document.createElement('span');note.textContent='Otwórz zdjęcie na Dysku';image.replaceWith(note);link.style.cssText='display:block;padding:20px 8px;background:#eef4ff;border:1px solid #dfe7ef;border-radius:8px';}});return result;};};
  wrap('renderMaterialQueue');wrap('renderGbpApprovalPanel');
  window.renderMaterialQueue?.();window.renderGbpApprovalPanel?.();
 })();
