@@ -280,7 +280,7 @@
     <div class="card">
       <div class="section-head">
         <div>
-          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div class="title">Google Firma / Maps — centrum zarządzania JURKO</div><label style="display:flex;align-items:center;gap:6px;margin:0;font-size:11px"><span class="small muted">Profil firmy</span><select id="gbpProfileSelect" style="box-sizing:border-box;width:205px;max-width:100%;min-width:0;height:28px;padding:3px 7px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#fff"><option value="tiles">JURKO — płytki / łazienki</option><option value="building">JURKO — materiały budowlane</option></select></label></div>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div class="title">Google Firma / Maps — centrum zarządzania JURKO</div><label style="display:flex;align-items:center;gap:6px;margin:0;font-size:11px"><span class="small muted">Promowany dział</span><select id="gbpProfileSelect" style="box-sizing:border-box;width:205px;max-width:100%;min-width:0;height:28px;padding:3px 7px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#fff"><option value="tiles">Płytki ceramiczne</option><option value="bathroom">Wyposażenie łazienek</option><option value="building">Materiały budowlane</option><option value="systems">Systemy budowlane</option></select></label></div>
           <div class="muted small">Profil Firmy Google • automat co 3 dni • fal.ai • Canva • wpisy • SEO lokalne • opinie • wyniki</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
@@ -659,13 +659,20 @@ const GBP_AUTO_BRANDS={
  'Vives':{source:'https://www.vivesceramica.com/productos/colecciones/',driveRoot:'1PMwR_a4PsXU0g8wtrdbJytLMUgb6kPIF',collections:['Sicilia','Surf','Tandem','Dúo','Zero','Micra','Attico','Ritmo','In Out In','Marblelous','Stravaganza','Rúbrica','Pangea AB|C','Amazonia 90TILE','ExtraOrdinary Ceramic Wood','Metropoli','Poptile','Les Ponts De La Seine','Hanami','RESORT','XTRA','BASIC','Dolce Vita','Cottage']},
  'DNA Tiles':{source:'https://dnatiles.com/en/downloads/',driveRoot:'1B1_MixXls1rzUzPbkluhb0PcoQO6tB9b',collections:['Vitria','Mixtura','Bow','Stone Dust','Mistral','Calema','Mediterraneo','Plinto','Safi','Enamel','Pietra','Candy','Saten','Match','Clay','Chalk','Osaka']}
 };
+function promotionBrands(selectedArea=area){
+ if(selectedArea==='tiles')return GBP_AUTO_BRANDS;
+ if(selectedArea==='systems')return Object.fromEntries(SYSTEM_CATALOG_GROUPS.map(g=>[g.name,{source:'https://drive.google.com/drive/folders/1BTaeJ_O4HTysLmpgSYnkx1mv5G5YCB8E',collections:g.items,driveRoot:'1BTaeJ_O4HTysLmpgSYnkx1mv5G5YCB8E'}]));
+ const type=selectedArea==='bathroom'?'Wyposażenie łazienek':'Materiały budowlane';
+ return Object.fromEntries(manufacturers.filter(m=>m.type===type).map(m=>[m.name,{source:m.officialUrl||m.driveUrl||'',collections:[],driveRoot:m.driveUrl?.match(/folders\/([^/?#]+)/)?.[1]||(selectedArea==='building'?'1zkjJUSfDSfmPZhAfFkyRgpcvFCNcPj3e':'1pSfCpFFW_nldW_M2-_DSr7hVzoj8VMVN')}]));
+}
+function promotionPhrases(){return {tiles:['płytki Warszawa','salon płytek Warszawa','gres wielkoformatowy Warszawa'],bathroom:['wyposażenie łazienek Warszawa','wanny Warszawa','kabiny prysznicowe Warszawa'],building:['materiały budowlane Warszawa','wełna mineralna Warszawa','styropian Warszawa'],systems:['systemy budowlane Warszawa','ocieplenie budynku Warszawa','izolacja fundamentów Warszawa']}[area]||[];}
 const GBP_PREP_WEBHOOK='https://hook.eu2.make.com/oriadbc1dbxzdsblx7ylgmt3if6re9dr';
 let gbpAutoQueue=JSON.parse(localStorage.getItem('jurko_gbp_auto_queue')||'[]').map(x=>({...x,status:normalizeGbpStatus(x.status)}));
 function saveGbpAuto(){localStorage.setItem('jurko_gbp_auto_queue',JSON.stringify(gbpAutoQueue))}
 function initGbpAutoControls(){
  const p=document.getElementById('autoProducer'), c=document.getElementById('autoCollection'); if(!p||!c)return;
- if(!p.options.length)p.innerHTML=Object.keys(GBP_AUTO_BRANDS).map(x=>`<option>${x}</option>`).join('');
- const refresh=()=>{const b=GBP_AUTO_BRANDS[p.value];c.innerHTML=b.collections.map(x=>`<option>${x}</option>`).join('');const links=document.getElementById('autoSourceLinks');if(links)links.innerHTML=`<a class="btn" href="${b.source}" target="_blank" rel="noopener">Oficjalne kolekcje ${p.value}</a><span class="tag blue">źródło producenta</span>`;const top=document.getElementById('topProducerSource');if(top){top.href=b.source;top.textContent='Źródło producenta — '+p.value}};
+ const brands=promotionBrands();if(p.dataset.area!==area){p.innerHTML=Object.keys(brands).map(x=>'<option>'+factoryPdfEsc(x)+'</option>').join('');p.dataset.area=area;for(const id of ['autoCollectionCustom','autoDriveLink','autoPromotedVariant','autoProductImageUrl']){const field=document.getElementById(id);if(field)field.value='';}}
+ const refresh=()=>{const b=brands[p.value]||{source:'',collections:[]};c.innerHTML=b.collections.length?b.collections.map(x=>'<option>'+factoryPdfEsc(x)+'</option>').join(''):'<option value="">Wpisz produkt / serię w polu obok</option>';const links=document.getElementById('autoSourceLinks');if(links)links.innerHTML=`<a class="btn" href="${b.source}" target="_blank" rel="noopener">Oficjalne kolekcje ${p.value}</a><span class="tag blue">źródło producenta</span>`;const top=document.getElementById('topProducerSource');if(top){top.hidden=!b.source;top.href=b.source;top.textContent='Źródło producenta — '+p.value}};
  p.onchange=refresh; refresh();
  const add=document.getElementById('autoAddQueue'); if(add)add.onclick=()=>{if(window.addMaterialToQueue)window.addMaterialToQueue()};
  const use=document.getElementById('autoUseDrive'); if(use)use.onclick=()=>{const v=(document.getElementById('autoDriveLink').value||'').trim();if(!v){alert('Wklej link do folderu lub pliku na Drive.');return}alert('Link Drive zapisany jako materiał źródłowy dla wybranej kolekcji.')};
@@ -679,7 +686,7 @@ function collectionStatus(producer,collection){if(COLLECTION_PUBLISHED.has(produ
 function selectCollectionForQueue(producer,collection){const p=document.getElementById('autoProducer'),c=document.getElementById('autoCollection'),custom=document.getElementById('autoCollectionCustom');if(p){p.value=producer;p.dispatchEvent(new Event('change'))}setTimeout(()=>{if(c&&[...c.options].some(o=>o.value===collection))c.value=collection;else if(custom)custom.value=collection;const b=document.getElementById('autoAddQueue');if(b)b.scrollIntoView({behavior:'smooth',block:'center'})},0)}
 window.selectCollectionForQueue=selectCollectionForQueue
 function addCollectionToQueue(producer,collection){if(!producer||!collection)return;if(!gbpAutoQueue.some(x=>x.producer===producer&&x.collection===collection)){gbpAutoQueue.push({id:Date.now(),profile:gbpSelectedProfile,producer,collection,drive:'',status:'Do przygotowania'});saveGbpAuto()}renderGbpAutoQueue();renderCollectionCatalog()}
-function renderCollectionCatalog(){const rows=document.getElementById('collectionCatalogRows'),filter=document.getElementById('collectionFactoryFilter'),search=document.getElementById('collectionCatalogSearch');if(!rows)return;if(filter&&!filter.dataset.ready){filter.innerHTML='<option value="">Wszystkie fabryki</option>'+Object.keys(GBP_AUTO_BRANDS).map(x=>`<option>${x}</option>`).join('');filter.dataset.ready='1';filter.onchange=renderCollectionCatalog}if(search&&!search.dataset.ready){search.dataset.ready='1';search.oninput=renderCollectionCatalog}const f=filter?filter.value:'';const q=(search?.value||'').trim().toLowerCase();const data=[];Object.entries(GBP_AUTO_BRANDS).forEach(([producer,b])=>b.collections.forEach(collection=>{if(f&&producer!==f)return;if(q&&!(producer+' '+collection).toLowerCase().includes(q))return;data.push({producer,collection,source:b.source,status:collectionStatus(producer,collection)})}));rows.innerHTML=data.map(x=>{const cls=x.status==='Opublikowano'?'ok':x.status==='W kolejce'?'warn':'blue';const phrase=`${x.producer} ${x.collection} Warszawa`;const action=`<button class="btn" onclick="selectCollectionForQueue('${x.producer.replaceAll("'","\\'")}','${x.collection.replaceAll("'","\\'")}')">Wybierz</button>`;return `<tr><td><b>${x.producer}</b></td><td>${x.collection}</td><td><a href="${x.source}" target="_blank" rel="noopener">oficjalna strona</a></td><td><span class="tag ${cls}">${x.status}</span></td><td>${action}</td></tr>`}).join('')||'<tr><td colspan="5" class="empty">Brak kolekcji dla filtra.</td></tr>'}
+function renderCollectionCatalog(){const rows=document.getElementById('collectionCatalogRows'),filter=document.getElementById('collectionFactoryFilter'),search=document.getElementById('collectionCatalogSearch');if(!rows)return;if(filter&&!filter.dataset.ready){filter.innerHTML='<option value="">Wszystkie fabryki</option>'+Object.keys(promotionBrands()).map(x=>`<option>${x}</option>`).join('');filter.dataset.ready='1';filter.onchange=renderCollectionCatalog}if(search&&!search.dataset.ready){search.dataset.ready='1';search.oninput=renderCollectionCatalog}const f=filter?filter.value:'';const q=(search?.value||'').trim().toLowerCase();const data=[];Object.entries(promotionBrands()).forEach(([producer,b])=>b.collections.forEach(collection=>{if(f&&producer!==f)return;if(q&&!(producer+' '+collection).toLowerCase().includes(q))return;data.push({producer,collection,source:b.source,status:collectionStatus(producer,collection)})}));rows.innerHTML=data.map(x=>{const cls=x.status==='Opublikowano'?'ok':x.status==='W kolejce'?'warn':'blue';const phrase=`${x.producer} ${x.collection} Warszawa`;const action=`<button class="btn" onclick="selectCollectionForQueue('${x.producer.replaceAll("'","\\'")}','${x.collection.replaceAll("'","\\'")}')">Wybierz</button>`;return `<tr><td><b>${x.producer}</b></td><td>${x.collection}</td><td><a href="${x.source}" target="_blank" rel="noopener">oficjalna strona</a></td><td><span class="tag ${cls}">${x.status}</span></td><td>${action}</td></tr>`}).join('')||'<tr><td colspan="5" class="empty">Brak kolekcji dla filtra.</td></tr>'}
 
 
 const ADS_HISTORY_MONTHLY=[
@@ -1087,12 +1094,13 @@ function openGbpTab(tab){
  if(tab==='approval'&&window.renderGbpApprovalPanel)window.renderGbpApprovalPanel();
 }
 function renderGbpManager(){
+ gbpSelectedProfile=area;
  const prof=document.getElementById('gbpProfileSelect');
- if(prof){prof.value=gbpSelectedProfile;prof.onchange=()=>{gbpSelectedProfile=prof.value;saveGbpManager();renderGbpManager();renderGbpAutoQueue()}}
+ if(prof){prof.value=gbpSelectedProfile;prof.onchange=()=>setArea(prof.value)}
  const isTiles=gbpSelectedProfile==='tiles';
  const ps=document.getElementById('gbpProfileSummary');
  if(ps)ps.innerHTML=[
-   ['Profil',isTiles?'JURKO — płytki / łazienki':'JURKO — materiały budowlane'],
+   ['Promowany dział',areaName()],
    ['Status API','Połączono'],
    ['Zdjęcia w kolejce',gbpPhotoQueue.filter(x=>x.profile===gbpSelectedProfile).length],
    ['Do przygotowania',gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile&&normalizeGbpStatus(x.status)==='Do przygotowania').length],
@@ -1106,7 +1114,7 @@ function renderGbpManager(){
 
  const routine=document.getElementById('gbpRoutine');
  if(routine)routine.innerHTML=[
-   ['Post automatyczny co 3 dni','rotacja: Tubądzin, NovaBell, Italgraniti, Vives, DNA Tiles'],
+   ['Dział do promocji',areaName()],
    ['2–3 wizualizacje fal.ai','wybierana najlepsza aranżacja'],
    ['Canva JURKO','branding, producent, kolekcja, CTA'],
    ['SEO lokalne','2–4 frazy na post, naturalna rotacja'],
@@ -1117,7 +1125,7 @@ function renderGbpManager(){
  if(autoStatus)autoStatus.innerHTML=[
    ['Status','Make włączony — potwierdzenia we wspólnej kolejce'],
    ['Częstotliwość','raz dziennie o 9:00 czasu warszawskiego'],
-   ['Zakres','zatwierdzone posty salonu płytek JURKO'],
+   ['Zakres',areaName()+' — zatwierdzone materiały'],
    ['Wizualizacje','wybierasz konkretne zdjęcie w podglądzie'],
    ['Publikacja','Google Business Profile JURKO — według zapisanego terminu'],
    ['Kontrola','status, błąd i link do publikacji we wspólnej kolejce']
@@ -1132,7 +1140,7 @@ function renderGbpManager(){
    ['6','Odczytaj status, błąd lub link Google']
  ].map(x=>`<div class="action"><span><b>${x[0]}. ${x[1]}</b></span><span class="tag ok">AUTO</span></div>`).join('');
  const kw=document.getElementById('gbpAutoKeywordCloud');
- if(kw)kw.innerHTML=['Tubądzin Warszawa','płytki Tubądzin Warszawa','salon Tubądzin Warszawa','gres Tubądzin Warszawa','płytki do łazienki Warszawa','gres wielkoformatowy Warszawa','salon płytek Warszawa'].map(p=>`<span class="chip">${p}</span>`).join('');
+ if(kw)kw.innerHTML=promotionPhrases().map(p=>`<span class="chip">${p}</span>`).join('');
  const contact=document.getElementById('gbpAutoContact');
  if(contact)contact.innerHTML=`<div class="statrow"><span>Salon</span><b>JURKO</b></div><div class="statrow"><span>Adres</span><b>Al. Jerozolimskie 229, 02-222 Warszawa</b></div><div class="statrow"><span>Telefon</span><b>22 662 16 10</b></div><div class="statrow"><span>E-mail</span><b>jurko@jurko.pl</b></div>`;
  const ten=document.getElementById('gbpTenPostReview');
@@ -1195,7 +1203,7 @@ function workflowArchive(kind,id){
 function workflowRestore(index){const x=gbpArchive[index];if(!x)return;gbpArchive.splice(index,1);const restored={...x,status:'Do przygotowania'};delete restored.archived;if(x.kind==='auto'){gbpAutoQueue.unshift(restored);saveGbpAuto()}else{gbpPostQueue.unshift(restored)}gbpWorkflowStage='Do przygotowania';saveGbpManager();renderGbpManager();renderGbpAutoQueue()}
 function renderGbpWorkflow(){
  const tabs=document.getElementById('gbpWorkflowTabs'),box=document.getElementById('gbpWorkflowList'),prof=document.getElementById('gbpWorkflowProfile');if(!tabs||!box)return;
- const isTiles=gbpSelectedProfile==='tiles';if(prof)prof.textContent=isTiles?'JURKO — płytki / łazienki':'JURKO — materiały budowlane';
+ const isTiles=gbpSelectedProfile==='tiles';if(prof)prof.textContent='JURKO — '+areaName();
  const auto=gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile).map(x=>({...x,kind:'auto',status:normalizeGbpStatus(x.status),title:`${x.producer} — ${x.collection}`,meta:'kolekcja do wpisu Google'}));
  const posts=gbpPostQueue.filter(x=>x.profile===gbpSelectedProfile).map(x=>({...x,kind:'post',status:normalizeGbpStatus(x.status),meta:`${x.type||'Wpis'} • ${x.keyword||'bez frazy'}`}));
  const published=isTiles?GBP_PUBLISHED_HISTORY.map(x=>({...x,kind:'published',status:'Opublikowane',meta:new Date(x.date).toLocaleString('pl-PL')})):[];
@@ -1392,7 +1400,7 @@ function goView(id){document.querySelectorAll('.view').forEach(v=>v.classList.re
 document.querySelectorAll('#nav [data-view]').forEach(b=>b.onclick=()=>{if(b.dataset.view==='factories'){selectedBuildingCategory='';selectedBathroomCategory='';renderFactories();}goView(b.dataset.view)});
 document.querySelectorAll('[data-material-category]').forEach(b=>b.onclick=()=>openBuildingCategory(b.dataset.materialCategory));
 document.querySelectorAll('[data-bathroom-category]').forEach(b=>b.onclick=()=>openBathroomCategory(b.dataset.bathroomCategory));
-function setArea(a){area=a;document.getElementById('systemsBtn').classList.toggle('active',a==='systems');selectedBuildingCategory='';selectedBathroomCategory='';document.getElementById('bathroomBtn').classList.toggle('active',a==='bathroom');factoryGroup='all';factorySearch='';document.getElementById('factorySearch').value='';document.querySelectorAll('#factoryFilters [data-group]').forEach(b=>b.classList.toggle('active',b.dataset.group==='all'));document.getElementById('tilesBtn').classList.toggle('active',a==='tiles');document.getElementById('buildingBtn').classList.toggle('active',a==='building');renderAll();if(document.getElementById('factories').classList.contains('active')){goView('factories');syncBuildingNavigation();}};document.getElementById('tilesBtn').onclick=()=>setArea('tiles');document.getElementById('buildingBtn').onclick=()=>setArea('building');document.getElementById('bathroomBtn').onclick=()=>setArea('bathroom');document.getElementById('systemsBtn').onclick=()=>setArea('systems');
+function setArea(a){area=a;gbpSelectedProfile=a;saveGbpManager();document.getElementById('systemsBtn').classList.toggle('active',a==='systems');selectedBuildingCategory='';selectedBathroomCategory='';document.getElementById('bathroomBtn').classList.toggle('active',a==='bathroom');factoryGroup='all';factorySearch='';document.getElementById('factorySearch').value='';document.querySelectorAll('#factoryFilters [data-group]').forEach(b=>b.classList.toggle('active',b.dataset.group==='all'));document.getElementById('tilesBtn').classList.toggle('active',a==='tiles');document.getElementById('buildingBtn').classList.toggle('active',a==='building');renderAll();initGbpAutoControls();const catalogFilter=document.getElementById('collectionFactoryFilter');if(catalogFilter){delete catalogFilter.dataset.ready;catalogFilter.value='';}renderCollectionCatalog();renderGbpAutoQueue();if(document.getElementById('factories').classList.contains('active')){goView('factories');syncBuildingNavigation();}};document.getElementById('tilesBtn').onclick=()=>setArea('tiles');document.getElementById('buildingBtn').onclick=()=>setArea('building');document.getElementById('bathroomBtn').onclick=()=>setArea('bathroom');document.getElementById('systemsBtn').onclick=()=>setArea('systems');
 ['searchKw','decisionFilter','priorityFilter','sourceFilter'].forEach(id=>document.getElementById(id).addEventListener('input',renderKeywords));['historySearch','geoFilter'].forEach(id=>document.getElementById(id).addEventListener('input',renderHistory));document.querySelectorAll('#periodTabs button').forEach(b=>b.onclick=()=>{historyPeriod=b.dataset.period;document.querySelectorAll('#periodTabs button').forEach(x=>x.classList.toggle('active',x===b));renderHistory()});document.querySelectorAll('#factoryFilters [data-group]').forEach(b=>b.onclick=()=>{factoryGroup=b.dataset.group;if(area==='bathroom'&&factoryGroup==='all')selectedBathroomCategory='';if(area==='building')selectedBuildingCategory='';document.querySelectorAll('#factoryFilters button').forEach(x=>x.classList.toggle('active',x===b));renderFactories();syncBuildingNavigation()});
 const fs=document.getElementById('factorySearch');if(fs)fs.addEventListener('input',()=>{factorySearch=fs.value;renderFactories()});
 function openAdd(){editingId=null;document.getElementById('kwForm').reset();document.querySelector('[name=area]').value=area;document.getElementById('modalTitle').textContent='Dodaj słowo';document.getElementById('modal').classList.add('open')}document.getElementById('addKeyword').onclick=openAdd;
@@ -1438,7 +1446,7 @@ if(postBtn)postBtn.onclick=()=>{
 };
 const aiPostBtn=document.getElementById('gbpAiPostBtn');
 if(aiPostBtn)aiPostBtn.onclick=()=>{
- const kw=document.getElementById('gbpPostKeyword').value.trim()||(gbpSelectedProfile==='tiles'?'płytki Warszawa':'materiały budowlane Warszawa');
+ const kw=document.getElementById('gbpPostKeyword').value.trim()||promotionPhrases()[0];
  const title=document.getElementById('gbpPostTitle');
  const txt=document.getElementById('gbpPostText');
  if(!title.value)title.value=`${kw} — zobacz ofertę JURKO`;
@@ -1626,7 +1634,7 @@ box.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>update(b.closest(
 box.querySelectorAll('form').forEach(f=>f.onsubmit=e=>e.preventDefault());};
 document.getElementById('materialFilter').onchange=render;document.getElementById('materialStageCards').innerHTML=['Do przygotowania','Do zatwierdzenia','Zaplanowane','Odrzucone'].map(st=>`<button class="btn" data-stage="${st}">${st} (${gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile&&x.status===st).length})</button>`).join('');box.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{document.getElementById('materialFilter').value=b.dataset.stage;render()});render();if(window.renderGbpApprovalPanel)window.renderGbpApprovalPanel();
 };
-const add=()=>{const p=document.getElementById('autoProducer');const collection=(document.getElementById('autoCollectionCustom').value||document.getElementById('autoCollection').value).trim();if(!collection)return;if(gbpAutoQueue.some(x=>(x.profile||'tiles')===gbpSelectedProfile&&x.producer===p.value&&x.collection===collection&&x.status!=='Odrzucone')){alert('Ta kolekcja jest już w kolejce.');return}const x=normalized({id:Date.now(),producer:p.value,collection,drive:url(document.getElementById('autoDriveLink').value),aiCount:6,profile:gbpSelectedProfile,source:GBP_AUTO_BRANDS[p.value]?.source||'',status:'Nowe',createdAt:stamp(),publicationEnabled:false});if(commit([...gbpAutoQueue,x]))renderMaterialQueue()};
+const add=()=>{const p=document.getElementById('autoProducer');const collection=(document.getElementById('autoCollectionCustom').value||document.getElementById('autoCollection').value).trim();if(!collection)return;if(gbpAutoQueue.some(x=>(x.profile||'tiles')===gbpSelectedProfile&&x.producer===p.value&&x.collection===collection&&x.status!=='Odrzucone')){alert('Ta kolekcja jest już w kolejce.');return}const x=normalized({id:Date.now(),producer:p.value,collection,drive:url(document.getElementById('autoDriveLink').value),aiCount:6,profile:gbpSelectedProfile,source:promotionBrands()[p.value]?.source||'',status:'Nowe',createdAt:stamp(),publicationEnabled:false});if(commit([...gbpAutoQueue,x]))renderMaterialQueue()};
 window.addMaterialToQueue=add;
 const originalInit=initGbpAutoControls;initGbpAutoControls=function(){originalInit();document.getElementById('autoAddQueue').onclick=add;renderMaterialQueue()};
 const originalCatalog=addCollectionToQueue;addCollectionToQueue=function(p,c){originalCatalog(p,c);gbpAutoQueue=gbpAutoQueue.map(normalized);commit(gbpAutoQueue);renderMaterialQueue()};
@@ -1710,7 +1718,7 @@ window.prepareMaterial=sendGbpPrep=async function(id){
  const jobId=crypto.randomUUID();const copy={...materialCopy(normalized(x)),promotedVariant,productImageUrl};
  x=saveMaterialJob(id,{...copy,jobId,jobState:'processing',jobStartedAt:new Date().toISOString(),status:'Do przygotowania',prepStatus:'Rozpoczynanie przygotowania…',approved:false,approvedAt:null,scheduledAt:null,publicationEnabled:false});
  try{
- const data=await materialRequest({producer:x.producer,collection:x.promotedVariant,product_image_url:x.productImageUrl,profile:x.profile||'tiles',drive:x.drive||'',source:x.source,requestedAt:new Date().toISOString(),job_id:jobId,ai_images_count:'6',scene_plan:JSON.stringify(SCENE_PLAN),branding_required:'true',overlay_title:x.producer+' — '+x.collection,overlay_subtitle:'Salon JURKO Warszawa',scene_rules:'2 różne łazienki; salon; kuchnia; detal płytki; moodboard; każda scena inna; bez mieszania kolekcji',brand_rules:'logo JURKO + producent + nazwa kolekcji na każdej finalnej grafice',drive_root_folder_id:GBP_AUTO_BRANDS[x.producer]?.driveRoot||'1o4v4enMPMpERDWn7oi9Db4GF-u4_6B2g',action:'prepare_materials'});
+ const data=await materialRequest({producer:x.producer,collection:x.promotedVariant,product_image_url:x.productImageUrl,profile:x.profile||'tiles',drive:x.drive||'',source:x.source,requestedAt:new Date().toISOString(),job_id:jobId,ai_images_count:'6',scene_plan:JSON.stringify(SCENE_PLAN),branding_required:'true',overlay_title:x.producer+' — '+x.collection,overlay_subtitle:'Salon JURKO Warszawa',scene_rules:'2 różne łazienki; salon; kuchnia; detal płytki; moodboard; każda scena inna; bez mieszania kolekcji',brand_rules:'logo JURKO + producent + nazwa kolekcji na każdej finalnej grafice',drive_root_folder_id:promotionBrands(x.profile||'tiles')[x.producer]?.driveRoot||'',action:'prepare_materials'});
  if(data.status!=='processing'&&data.status!=='ready')throw new Error('Automat nie potwierdził rozpoczęcia zadania.');
  saveMaterialJob(id,{prepStatus:'Przygotowanie grafik w toku — możesz odświeżyć stronę'});
  }catch(e){
@@ -1816,7 +1824,7 @@ render();
   const dialog=document.createElement('dialog');dialog.id='jurkoPostPreview';dialog.style.cssText='width:min(820px,94vw);max-height:90vh;overflow:auto;border:1px solid #dfe7ef;border-radius:16px;padding:24px';
   const images=(x.imageVariants||x.finalImages||[]).filter(i=>/^https:\/\//.test(i.finalUrl||''));
   const local=new Date(Date.now()+3*86400000);local.setMinutes(local.getMinutes()-local.getTimezoneOffset());
-  dialog.innerHTML='<h2>Podgląd posta przed zatwierdzeniem</h2><p><b>Profil:</b> '+escape(x.profile==='building'?'JURKO — materiały budowlane':'JURKO — płytki / łazienki')+'</p><p>'+escape(x.producer)+' — '+escape(x.collection)+'</p>'+
+  dialog.innerHTML='<h2>Podgląd posta przed zatwierdzeniem</h2><p><b>Profil:</b> '+escape('JURKO — '+({tiles:'Płytki ceramiczne',bathroom:'Wyposażenie łazienek',building:'Materiały budowlane',systems:'Systemy budowlane'}[x.profile||'tiles']))+'</p><p>'+escape(x.producer)+' — '+escape(x.collection)+'</p>'+
   '<p style="background:#fff4dc;padding:12px">Po sprawdzeniu zdjęcia i treści wybierz termin. Aplikacja potwierdzi zapis zatwierdzonej wersji we wspólnej kolejce Make.</p>'+
   (x.recovered?'<p><b>Odzyskane grafiki. Tekst odtworzony — sprawdź go przed zatwierdzeniem.</b></p>':'')+
   '<label>Zdjęcie główne <select id="postPreviewPhoto">'+images.map((i,n)=>'<option value="'+n+'">'+escape(i.label||i.sceneKey)+'</option>').join('')+'</select></label>'+
