@@ -1575,7 +1575,7 @@ async function pollMaterial(id){
  const latest=gbpAutoQueue.find(q=>String(q.id)===String(id));
  if(latest?.jobId!==x.jobId)return;
  const draft=materialCopy(latest);
- saveMaterialJob(id,{...draft,finalImages:images,images:images.map(i=>i.previewUrl||i.finalUrl),finalImage:images[0].finalUrl,status:'Do zatwierdzenia',prepStatus:'Gotowe do przejrzenia — grafiki, opis i słowa kluczowe',jobState:'ready',publicationEnabled:false,history:[...(latest.history||[]),{at:stamp(),status:'Pakiet przygotowany — oczekuje na zatwierdzenie'}]});return;
+ saveMaterialJob(id,{...draft,brandingVersion:data.brandingVersion||'',imageVariants:images,finalImages:images,images:images.map(i=>i.previewUrl||i.finalUrl),finalImage:images[0].finalUrl,status:'Do zatwierdzenia',prepStatus:'Gotowe do przejrzenia — grafiki, opis i słowa kluczowe',jobState:'ready',publicationEnabled:false,history:[...(latest.history||[]),{at:stamp(),status:'Pakiet przygotowany — oczekuje na zatwierdzenie'}]});return;
  }
  saveMaterialJob(id,{jobState:'processing',prepStatus:'Przygotowanie grafik w toku — wynik jest zapisany i zostanie odebrany automatycznie'});
  }catch(e){
@@ -1845,6 +1845,7 @@ photo.onchange=show;show();
    approve.disabled=false;approve.textContent='Zobacz zatwierdzoną wersję';approve.onclick=()=>view(current);
    message('Ten materiał ma zapisaną wersję w Make. Aby zmienić treść, zdjęcie lub termin, najpierw anuluj termin we wspólnej kolejce.');return;
   }
+  if(x.brandingVersion!=='jurko-company-v1'){approve.disabled=true;message('Grafiki wymagają podmiany logo JURKO SEO na logo firmy JURKO — Salon Łazienek. Odśwież materiały przed zatwierdzeniem.');return;}
   approve.onclick=async()=>{
    approve.disabled=true;save.disabled=true;
    try{
@@ -1856,7 +1857,7 @@ photo.onchange=show;show();
     if(!await refresh())throw Error('Nie potwierdzono aktualnej kolejki. Poczekaj chwilę i odśwież ją przed zatwierdzeniem.');
     const active=records.find(r=>r.sourceId===x.id&&['scheduled','publishing','google_review','published','needs_review','image_error'].includes(r.state));
     if(active){view(active);throw Error('Ten materiał ma już zatwierdzoną wersję. Najpierw anuluj termin lub sprawdź istniejącą publikację.');}
-    const payload={sourceId:x.id,jobId:x.jobId||'',profile:'tiles',producer:x.producer||'',collection:x.collection||'',title:field('postPreviewTitle').value.trim(),description:field('postPreviewDescription').value.trim(),keywords:field('postPreviewKeywords').value.trim(),cta:field('postPreviewCta').value.trim(),summary:text,selectedImage:image.finalUrl,driveFileId:fileId,scheduledAt:date.toISOString(),dueEpoch:date.getTime(),confirmPublicImage:true};
+    const payload={brandingVersion:x.brandingVersion,sourceId:x.id,jobId:x.jobId||'',profile:'tiles',producer:x.producer||'',collection:x.collection||'',title:field('postPreviewTitle').value.trim(),description:field('postPreviewDescription').value.trim(),keywords:field('postPreviewKeywords').value.trim(),cta:field('postPreviewCta').value.trim(),summary:text,selectedImage:image.finalUrl,driveFileId:fileId,scheduledAt:date.toISOString(),dueEpoch:date.getTime(),confirmPublicImage:true};
     const previous=records.filter(r=>r.sourceId===x.id&&r.state==='cancelled').sort((a,b)=>new Date(b.approvedAt)-new Date(a.approvedAt))[0];
     const id='post-'+await hash(JSON.stringify([payload.sourceId,previous?.id||'first-approval']));
     message('Wysyłam zatwierdzoną wersję do Make…');const result=await request('submit',{id,payload:JSON.stringify(payload)});
@@ -1871,6 +1872,18 @@ photo.onchange=show;show();
  // Status odświeża się po otwarciu panelu i ręcznie, bez cyklicznego odpytywania Make.
 })();
 
-</script></body></html>
+</script>
+<script>
+(()=>{
+ let changed=false;
+ for(const item of gbpAutoQueue){
+  if(item.brandingVersion!=='jurko-company-v1'&&(item.finalImages||[]).length&&!item.approved){
+   item.status='Do poprawy';item.prepStatus='Wymagana podmiana logo JURKO SEO na firmowe JURKO — Salon Łazienek. Generowanie w Make zwróciło błąd 402; starsze grafiki nie są zatwierdzone do publikacji.';changed=true;
+  }
+ }
+ if(changed){saveGbpAuto();window.renderMaterialQueue?.();window.renderGbpApprovalPanel?.();}
+})();
+</script>
+</body></html>
 
 
