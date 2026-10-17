@@ -58,6 +58,15 @@
 .gbp-source-grid{display:grid;grid-template-columns:1fr 1.1fr 1.4fr auto;gap:8px;align-items:end}.gbp-source-grid label{font-size:11px;font-weight:800}.gbp-source-grid select,.gbp-source-grid input{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:#fff}.gbp-pipeline{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.gbp-pipeline span{font-size:10px;padding:5px 8px;border-radius:999px;background:#eef4ff;color:#2456a8;font-weight:800}.source-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.queue-mini{margin-top:8px;border-top:1px solid var(--line);padding-top:8px}@media(max-width:900px){.gbp-source-grid{grid-template-columns:1fr}}
 
 .gbp-workflow{margin-top:10px}.gbp-workflow-head{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 10px}.gbp-stage{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;font-weight:800;font-size:12px;cursor:pointer}.gbp-stage.active{background:var(--blue);border-color:var(--blue);color:#fff}.gbp-stage .count{display:inline-block;margin-left:5px;min-width:20px;padding:1px 5px;border-radius:999px;background:#eef4ff;color:#2454a6;font-size:10px}.gbp-stage.active .count{background:rgba(255,255,255,.2);color:#fff}.workflow-note{font-size:11px;color:var(--muted);margin-bottom:7px}.workflow-card{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;background:#fff}.workflow-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.workflow-kind{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.workflow-empty{padding:18px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+
+.gbp-source-settings{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}
+.gbp-source-settings>summary{cursor:pointer;padding:11px 13px;font-size:12px;font-weight:700;background:#f6f9fd}
+.gbp-source-settings-body{padding:13px}
+.gbp-source-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
+.gbp-source-fields label{display:flex;flex-direction:column;gap:6px;margin:0;min-width:0;font-size:11px;color:var(--muted);font-weight:600}
+.gbp-source-fields input{box-sizing:border-box;display:block;width:100%;min-width:0;height:40px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;color:var(--text)}
+@media(max-width:900px){.gbp-source-fields{grid-template-columns:1fr}}
+
 </style>
 <style>
 .material-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.material-grid label{display:block;font-size:12px;font-weight:700}.material-grid input,.material-grid textarea,.material-grid select{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;margin:5px 0 10px}.material-images{display:flex;gap:8px;flex-wrap:wrap}.material-images figure{margin:0;width:120px}.material-images img{width:120px;height:90px;object-fit:cover;border-radius:8px}.material-images figcaption{font-size:11px}.material-card{margin:8px 0;padding:8px 12px}.material-card summary{cursor:pointer;padding:4px 0;list-style:none}.material-card summary::-webkit-details-marker{display:none}.material-collapse>summary{display:flex;align-items:center;font-size:13px}.material-collapse>summary:before{content:'▸';margin-right:7px;font-size:11px}.material-collapse[open]>summary:before{content:'▾'}.material-body{padding-top:8px}.material-edit{margin-top:8px;border-top:1px solid var(--line);padding-top:6px}.material-edit>summary{font-weight:800;color:var(--blue);cursor:pointer}.catalog-collapse{border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:#fff}.catalog-collapse>summary{cursor:pointer;font-weight:800;list-style:none}.catalog-collapse>summary::-webkit-details-marker{display:none}.catalog-collapse>summary:before{content:'▸';margin-right:7px;font-size:11px}.catalog-collapse[open]>summary:before{content:'▾'}.material-card pre{white-space:pre-wrap;font:inherit}.material-full{grid-column:1/-1}@media(max-width:850px){.material-grid{grid-template-columns:1fr}.material-card .toolbar{display:flex;flex-direction:column;align-items:stretch}.material-card .toolbar .btn{width:100%;min-height:44px}.material-card details:not([open]){margin-top:8px}#collectionFactoryFilter,#collectionCatalogSearch{min-height:44px}}
@@ -263,7 +272,18 @@
         </div>
         <div style="grid-column:1/-1;text-align:left"><button class="btn primary" id="autoAddQueue" style="width:auto;min-width:150px;padding:7px 14px;font-size:11px">Dodaj do kolejki</button></div>
       </div>
-      <div class="toolbar" style="margin-top:8px"><label style="flex:1;min-width:320px"><span class="small muted">Folder / plik na Google Drive</span><input id="autoDriveLink" placeholder="Wklej link do folderu kolekcji lub zdjęcia z Drive" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px"></label><button class="btn" id="autoUseDrive">Użyj materiałów z Drive</button><label>Płytka / kolor do promocji<input id="autoPromotedVariant" placeholder="np. Shale Cream, Shale Bone lub Shale Moon"></label><label>Bezpośredni link HTTPS do oryginalnego zdjęcia płytki<input id="autoProductImageUrl" type="url" placeholder="Zdjęcie produktu producenta, nie link do całej strony"></label><p class="small">Dla Italgraniti Shale Cream i Shale Bone próbka producenta dobiera się automatycznie. Pozostałe warianty wymagają zdjęcia referencyjnego. Aranżacje AI wymagają sprawdzenia koloru.</p></div>
+      <details class="gbp-source-settings" style="margin-top:10px">
+        <summary>Materiały źródłowe — Drive, płytka i zdjęcie</summary>
+        <div class="gbp-source-settings-body">
+          <div class="gbp-source-fields">
+            <label for="autoDriveLink">Folder / plik na Google Drive<input id="autoDriveLink" type="url" placeholder="Link do folderu kolekcji lub pliku"></label>
+            <label for="autoPromotedVariant">Płytka / kolor do promocji<input id="autoPromotedVariant" placeholder="np. Shale Cream, Bone lub Moon"></label>
+            <label for="autoProductImageUrl">Oryginalne zdjęcie płytki — link HTTPS<input id="autoProductImageUrl" type="url" placeholder="Bezpośredni link do zdjęcia producenta"></label>
+          </div>
+          <div style="margin-top:10px"><button class="btn" id="autoUseDrive" type="button">Użyj materiałów z Drive</button></div>
+          <p class="small muted" style="margin:10px 0 0;line-height:1.5">Dla Italgraniti Shale Cream i Shale Bone próbka producenta dobiera się automatycznie. Pozostałe warianty wymagają zdjęcia referencyjnego. Aranżacje AI wymagają sprawdzenia koloru.</p>
+        </div>
+      </details>
       <div class="source-links" id="autoSourceLinks"></div>
       <div class="gbp-pipeline"><span>1. źródła producenta</span><span>2. fal.ai / Nano Banana 2</span><span>3. Canva / JURKO</span><span>4. tekst + słowa kluczowe</span><span>5. Google Firma</span><span>6. analiza co 10 postów</span></div>
       <div class="queue-mini"><div class="small muted">Kolejka publikacji</div><div id="autoPublishQueue"></div></div>
