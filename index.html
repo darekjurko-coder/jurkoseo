@@ -907,7 +907,7 @@ function renderFactories(){
  let l=manufacturers.filter(m=>area==='tiles'?m.type==='Płytki':m.type==='Materiały budowlane');
  if(factoryGroup!=='all')l=l.filter(m=>m.group.includes(factoryGroup));
  if(factorySearch)l=l.filter(m=>(m.name+' '+m.country+' '+m.status).toLowerCase().includes(factorySearch.toLowerCase()));
- l.sort((a,b)=>a.name.localeCompare(b.name,'pl',{sensitivity:'base',numeric:true}));
+ l.sort((a,b)=>{if(factoryGroup==='italy'){const rank=name=>{const key=name.toLowerCase().replace(/[^a-z]/g,'');const priorities=['italgraniti','novabell','abk','unicomstarker'];const i=priorities.indexOf(key);return i<0?priorities.length:i;};const difference=rank(a.name)-rank(b.name);if(difference)return difference;}return a.name.localeCompare(b.name,'pl',{sensitivity:'base',numeric:true});});
  document.getElementById('companyGrid').innerHTML=l.map(m=>`<div class="company ${selectedFactory===m.name?'active':''}" data-factory="${m.name.replaceAll('"','&quot;')}" onclick="selectFactoryAndShow('${m.name.replaceAll("'","\\'")}')"><b>${m.name}</b><div class="meta">${m.country} • ${m.type}</div><div class="meta">Status: ${m.status}</div>${factoryPdfs(m.name).length?`<button class="btn" data-brand="${factoryPdfEsc(m.name)}" style="margin-top:7px" onclick="event.stopPropagation();openFactoryPdfs(this.dataset.brand)">Katalogi PDF · ${factoryPdfs(m.name).length}</button>`:""}<div style="margin-top:7px"><span class="tag ${m.potential==='A'?'ok':m.potential==='B'?'warn':'blue'}">Potencjał ${m.potential}</span></div></div>`).join('')||'<div class="empty">Brak fabryk dla tego filtra.</div>';
 
  document.getElementById('factoryRows').innerHTML=l.map(m=>{
