@@ -273,7 +273,7 @@
         </div>
         <div style="grid-column:1/-1;text-align:left"><button class="btn primary" id="autoAddQueue" style="width:auto;min-width:150px;padding:7px 14px;font-size:11px">Dodaj do kolejki</button></div>
       </div>
-      <div class="toolbar" style="margin-top:8px"><label style="flex:1;min-width:320px"><span class="small muted">Folder / plik na Google Drive</span><input id="autoDriveLink" placeholder="Wklej link do folderu kolekcji lub zdjęcia z Drive" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px"></label><button class="btn" id="autoUseDrive">Użyj materiałów z Drive</button></div>
+      <div class="toolbar" style="margin-top:8px"><label style="flex:1;min-width:320px"><span class="small muted">Folder / plik na Google Drive</span><input id="autoDriveLink" placeholder="Wklej link do folderu kolekcji lub zdjęcia z Drive" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px"></label><button class="btn" id="autoUseDrive">Użyj materiałów z Drive</button><label>Płytka / kolor do promocji<input id="autoPromotedVariant" placeholder="np. Shale Cream, Shale Bone lub Shale Moon"></label><label>Bezpośredni link HTTPS do oryginalnego zdjęcia płytki<input id="autoProductImageUrl" type="url" placeholder="Zdjęcie produktu producenta, nie link do całej strony"></label><p class="small">Dla Italgraniti Shale Cream i Shale Bone próbka producenta dobiera się automatycznie. Pozostałe warianty wymagają zdjęcia referencyjnego. Aranżacje AI wymagają sprawdzenia koloru.</p></div>
       <div class="source-links" id="autoSourceLinks"></div>
       <div class="gbp-pipeline"><span>1. źródła producenta</span><span>2. fal.ai / Nano Banana 2</span><span>3. Canva / JURKO</span><span>4. tekst + słowa kluczowe</span><span>5. Google Firma</span><span>6. analiza co 10 postów</span></div>
       <div class="queue-mini"><div class="small muted">Kolejka publikacji</div><div id="autoPublishQueue"></div></div>
@@ -1593,10 +1593,14 @@ window.prepareMaterial=sendGbpPrep=async function(id){
  let x=gbpAutoQueue.find(q=>String(q.id)===String(id));if(!x)return;
  if(x.jobId&&['processing','interrupted'].includes(x.jobState)){return pollMaterial(id);}
  if(materialPolling.has(String(id)))return;
- const jobId=crypto.randomUUID();const copy=materialCopy(normalized(x));
+ const promotedVariant=(document.getElementById('autoPromotedVariant')?.value||x.promotedVariant||x.collection||'').trim();
+ const shaleReferences={'shale cream':'https://www.italgranitigroup.com/media/k2/items/cache/5f8d07886f1f1808e8421c730397ece3_S.jpg','shale bone':'https://www.italgranitigroup.com/media/k2/items/cache/9b299f7dbd2b96202ef61cdbe6bdce1f_S.jpg'};
+ const productImageUrl=(document.getElementById('autoProductImageUrl')?.value||shaleReferences[promotedVariant.toLocaleLowerCase()]||x.productImageUrl||'').trim();
+ if(!promotedVariant||!url(productImageUrl)){alert('Wpisz konkretną płytkę/kolor do promocji i dodaj link HTTPS do jej oryginalnego zdjęcia. Dla Shale Cream i Shale Bone próbka jest dobierana automatycznie.');return;}
+ const jobId=crypto.randomUUID();const copy={...materialCopy(normalized(x)),promotedVariant,productImageUrl};
  x=saveMaterialJob(id,{...copy,jobId,jobState:'processing',jobStartedAt:new Date().toISOString(),status:'Do przygotowania',prepStatus:'Rozpoczynanie przygotowania…',approved:false,approvedAt:null,scheduledAt:null,publicationEnabled:false});
  try{
- const data=await materialRequest({producer:x.producer,collection:x.collection,profile:x.profile||'tiles',drive:x.drive||'',source:x.source,requestedAt:new Date().toISOString(),job_id:jobId,ai_images_count:'6',scene_plan:JSON.stringify(SCENE_PLAN),branding_required:'true',overlay_title:x.producer+' — '+x.collection,overlay_subtitle:'Salon JURKO Warszawa',scene_rules:'2 różne łazienki; salon; kuchnia; detal płytki; moodboard; każda scena inna; bez mieszania kolekcji',brand_rules:'logo JURKO + producent + nazwa kolekcji na każdej finalnej grafice',drive_root_folder_id:GBP_AUTO_BRANDS[x.producer]?.driveRoot||'1o4v4enMPMpERDWn7oi9Db4GF-u4_6B2g',action:'prepare_materials'});
+ const data=await materialRequest({producer:x.producer,collection:x.promotedVariant,product_image_url:x.productImageUrl,profile:x.profile||'tiles',drive:x.drive||'',source:x.source,requestedAt:new Date().toISOString(),job_id:jobId,ai_images_count:'6',scene_plan:JSON.stringify(SCENE_PLAN),branding_required:'true',overlay_title:x.producer+' — '+x.collection,overlay_subtitle:'Salon JURKO Warszawa',scene_rules:'2 różne łazienki; salon; kuchnia; detal płytki; moodboard; każda scena inna; bez mieszania kolekcji',brand_rules:'logo JURKO + producent + nazwa kolekcji na każdej finalnej grafice',drive_root_folder_id:GBP_AUTO_BRANDS[x.producer]?.driveRoot||'1o4v4enMPMpERDWn7oi9Db4GF-u4_6B2g',action:'prepare_materials'});
  if(data.status!=='processing'&&data.status!=='ready')throw new Error('Automat nie potwierdził rozpoczęcia zadania.');
  saveMaterialJob(id,{prepStatus:'Przygotowanie grafik w toku — możesz odświeżyć stronę'});
  }catch(e){
