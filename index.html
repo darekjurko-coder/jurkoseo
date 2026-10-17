@@ -302,7 +302,7 @@
         </div>
       </div>
       <div class="grid3">
-        <div class="card"><div class="title">Automatyzacja</div><div class="muted small">fal.ai → Drive → Canva → tekst SEO → Google. Publikacja co 3 dni.</div><div style="margin-top:9px"><button class="btn primary" onclick="openGbpTab('automation')">Zobacz automat</button></div></div>
+        <div class="card"><div class="title">Automatyzacja</div><div class="muted small">Podgląd → zatwierdzenie → wspólna kolejka Make → Google o wybranej porze.</div><div style="margin-top:9px"><button class="btn primary" onclick="openGbpTab('automation')">Zobacz automat</button></div></div>
         <div class="card"><div class="title">Wpisy</div><div class="muted small">Historia, ręczne wpisy awaryjne i podgląd publikacji.</div><div style="margin-top:9px"><button class="btn primary" onclick="openGbpTab('posts')">Otwórz wpisy</button></div></div>
         <div class="card"><div class="title">SEO lokalne</div><div class="muted small">Frazy Warszawa + marki + analiza wyników co 10 postów.</div><div style="margin-top:9px"><button class="btn" onclick="openGbpTab('seo')">Sprawdź SEO</button></div></div>
       </div>
@@ -324,7 +324,7 @@
     <div id="gbpTab_automation" class="gbp-manage-panel hidden">
       <div class="grid2">
         <div class="card">
-          <div class="section-head"><div class="title">Automat publikacji JURKO</div><span class="tag warn">DO URUCHOMIENIA</span></div>
+          <div class="section-head"><div class="title">Automat publikacji JURKO</div><span class="tag ok">KOLEJKA MAKE</span></div>
           <div id="gbpAutomationStatus"></div>
         </div>
         <div class="card">
@@ -991,7 +991,7 @@ function renderGbpManager(){
    ['Do przygotowania',gbpAutoQueue.filter(x=>(x.profile||'tiles')===gbpSelectedProfile&&normalizeGbpStatus(x.status)==='Do przygotowania').length],
    ['Do zatwierdzenia',gbpPostQueue.filter(x=>x.profile===gbpSelectedProfile&&normalizeGbpStatus(x.status)==='Do zatwierdzenia').length],
    ['Zaplanowane',gbpPostQueue.filter(x=>x.profile===gbpSelectedProfile&&normalizeGbpStatus(x.status)==='Zaplanowane').length],
-   ['Publikacja automatyczna','PLAN — wymaga uruchomienia harmonogramu'],
+   ['Publikacja automatyczna','Make — według zatwierdzonego terminu'],
    ['Wizualizacje AI','fal.ai / Nano Banana 2'],
    ['Branding','Canva — szablon JURKO'],
    ['Analiza','co 10 opublikowanych postów']
@@ -1008,21 +1008,21 @@ function renderGbpManager(){
 
  const autoStatus=document.getElementById('gbpAutomationStatus');
  if(autoStatus)autoStatus.innerHTML=[
-   ['Status','Do uruchomienia'],
-   ['Częstotliwość','co 3 dni'],
-   ['Zakres','5 producentów • kolekcje z oficjalnych stron'],
-   ['Wizualizacje','2–3 propozycje fal.ai / Nano Banana 2'],
-   ['Publikacja','Google Business Profile JURKO — po uruchomieniu harmonogramu'],
-   ['Kontrola','analiza po każdych 10 postach']
+   ['Status','Make włączony — potwierdzenia we wspólnej kolejce'],
+   ['Częstotliwość','sprawdzanie zatwierdzonych terminów co minutę'],
+   ['Zakres','zatwierdzone posty salonu płytek JURKO'],
+   ['Wizualizacje','wybierasz konkretne zdjęcie w podglądzie'],
+   ['Publikacja','Google Business Profile JURKO — według zapisanego terminu'],
+   ['Kontrola','status, błąd i link do publikacji we wspólnej kolejce']
  ].map(x=>`<div class="statrow"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('');
  const autoFlow=document.getElementById('gbpAutomationFlow');
  if(autoFlow)autoFlow.innerHTML=[
-   ['1','Drive — wybór kolejnej kolekcji'],
-   ['2','fal.ai — 2–3 wizualizacje'],
-   ['3','Canva — szablon JURKO'],
-   ['4','ChatGPT — tekst + frazy lokalne'],
-   ['5','Google — publikacja zdjęcia i wpisu'],
-   ['6','Drive — archiwum + numer posta']
+   ['1','Wybierz kolekcję i przygotuj materiał'],
+   ['2','Obejrzyj i wybierz zdjęcie'],
+   ['3','Sprawdź tekst, frazy i limit znaków'],
+   ['4','Zatwierdź treść, zdjęcie i termin warszawski'],
+   ['5','Make — publikacja po nadejściu terminu'],
+   ['6','Odczytaj status, błąd lub link Google']
  ].map(x=>`<div class="action"><span><b>${x[0]}. ${x[1]}</b></span><span class="tag ok">AUTO</span></div>`).join('');
  const kw=document.getElementById('gbpAutoKeywordCloud');
  if(kw)kw.innerHTML=['Tubądzin Warszawa','płytki Tubądzin Warszawa','salon Tubądzin Warszawa','gres Tubądzin Warszawa','płytki do łazienki Warszawa','gres wielkoformatowy Warszawa','salon płytek Warszawa'].map(p=>`<span class="chip">${p}</span>`).join('');
@@ -1763,7 +1763,7 @@ photo.onchange=show;show();
     const latest=await request('list');const found=latest.records.map(r=>{try{return JSON.parse(r.payload)}catch(e){return null}}).find(r=>r?.id===fields.id);
     if(action==='submit'&&found)return {ok:true,record:found};
     if(action==='cancel'&&found?.state==='cancelled')return {ok:true,record:found};
-    if(action==='cancel'&&found&&found.state!=='scheduled')throw Error('Post jest już przetwarzany lub opublikowany. Sprawdź jego status.');
+    if(action==='cancel'&&found&&!['scheduled','image_error'].includes(found.state))throw Error('Post jest już przetwarzany lub opublikowany. Sprawdź jego status.');
    }
    throw Error('Żądanie przyjęto, ale zapis nie został jeszcze potwierdzony. Odśwież kolejkę przed ponowieniem.');
   }
@@ -1787,7 +1787,7 @@ photo.onchange=show;show();
  function render(){
   const el=document.getElementById('jurkoOnlineRecords');if(!el)return;
   const visible=records.filter(x=>x.state&&x.state!=='draft').sort((a,b)=>new Date(b.approvedAt||0)-new Date(a.approvedAt||0));
-  el.innerHTML=visible.length?'<div style="overflow:auto"><table style="width:100%"><thead><tr><th>Materiał</th><th>Termin warszawski</th><th>Status z Make / Google</th><th>Działanie</th></tr></thead><tbody>'+visible.map(x=>'<tr><td>'+esc(x.title)+'</td><td>'+esc(time(x.scheduledAt))+'</td><td>'+esc(x.status||x.state)+(x.error?'<br><small>'+esc(x.error)+'</small>':'')+'</td><td><button class="btn" data-view="'+esc(x.id)+'">Zobacz zatwierdzony post</button>'+(x.state==='scheduled'?'<button class="btn" data-cancel="'+esc(x.id)+'">Anuluj termin</button>':'')+(x.publicationUrl&&/^https:\/\/(local|www)\.google\.com\//.test(x.publicationUrl)?'<a target="_blank" rel="noopener" href="'+esc(x.publicationUrl)+'">Zobacz w Google</a>':'')+'</td></tr>').join('')+'</tbody></table></div>':'<p>Brak zatwierdzonych postów w kolejce online. Materiały poniżej wymagają podglądu i zatwierdzenia.</p>';
+  el.innerHTML=visible.length?'<div style="overflow:auto"><table style="width:100%"><thead><tr><th>Materiał</th><th>Termin warszawski</th><th>Status z Make / Google</th><th>Działanie</th></tr></thead><tbody>'+visible.map(x=>'<tr><td>'+esc(x.title)+'</td><td>'+esc(time(x.scheduledAt))+'</td><td>'+esc(x.status||x.state)+(x.error?'<br><small>'+esc(x.error)+'</small>':'')+'</td><td><button class="btn" data-view="'+esc(x.id)+'">Zobacz zatwierdzony post</button>'+(['scheduled','image_error'].includes(x.state)?'<button class="btn" data-cancel="'+esc(x.id)+'">Anuluj termin</button>':'')+(x.publicationUrl&&/^https:\/\/(local|www)\.google\.com\//.test(x.publicationUrl)?'<a target="_blank" rel="noopener" href="'+esc(x.publicationUrl)+'">Zobacz w Google</a>':'')+'</td></tr>').join('')+'</tbody></table></div>':'<p>Brak zatwierdzonych postów w kolejce online. Materiały poniżej wymagają podglądu i zatwierdzenia.</p>';
   el.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await request('cancel',{id:b.dataset.cancel});await refresh();}catch(e){status(e.message);b.disabled=false;}});
   el.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>view(records.find(x=>x.id===b.dataset.view)));
  }
@@ -1804,6 +1804,14 @@ photo.onchange=show;show();
    records=data.records.map(r=>{try{return {...JSON.parse(r.payload),cloudKey:r.key}}catch(e){return null}}).filter(Boolean);
    // Import recovered source packages once. Never overwrite local draft edits during refresh.
    let imported=false;for(const x of records){if(!x.state&&x.status!=='Archiwum'&&x.jobId&&!gbpAutoQueue.some(q=>q.id===x.id||q.jobId===x.jobId)){gbpAutoQueue.push(x);imported=true;}}
+   const latestBySource=new Map();for(const r of [...records].filter(r=>r.sourceId).sort((a,b)=>new Date(b.approvedAt)-new Date(a.approvedAt))){if(!latestBySource.has(r.sourceId))latestBySource.set(r.sourceId,r);}
+   for(const [sourceId,r] of latestBySource){
+    let local=gbpAutoQueue.find(x=>x.id===sourceId);
+    if(!local){local={id:sourceId,jobId:r.jobId,profile:r.profile,producer:r.producer,collection:r.collection,title:r.title,description:r.description,keywords:r.keywords,cta:r.cta,finalImages:[{label:'Zatwierdzone zdjęcie',finalUrl:r.selectedImage}],history:[]};gbpAutoQueue.push(local);}
+    const states={scheduled:'Zaplanowane',publishing:'Publikowanie',published:'Opublikowane',google_review:'Publikowanie',cancelled:'Do zatwierdzenia',image_error:'Błąd',needs_review:'Błąd'};
+    const changes={cloudApprovalId:r.id,cloudState:r.state,status:states[r.state]||'Błąd',approved:['scheduled','publishing','published','google_review'].includes(r.state),publicationEnabled:r.state==='scheduled',scheduledAt:r.scheduledAt,publicationUrl:r.publicationUrl||'',cloudError:r.error||''};
+    if(Object.keys(changes).some(k=>local[k]!==changes[k])){Object.assign(local,changes);imported=true;}
+   }
    if(imported){saveGbpAuto();window.renderMaterialQueue?.();window.renderGbpApprovalPanel?.();}
    render();status('Kolejka potwierdzona przez Make: '+time(new Date().toISOString())+'. Sprawdzanie terminu co minutę.');return true;
   }catch(e){status('Nie udało się odświeżyć: '+e.message+' Widoczny wynik może być nieaktualny.');return false;}finally{refreshing=false;}
@@ -1831,6 +1839,12 @@ photo.onchange=show;show();
   approve.disabled=false;approve.textContent='Zatwierdź i zaplanuj w Make';
   message('Zatwierdzenie obejmuje dokładną treść powyżej, wybrane zdjęcie i termin warszawski.');
   if(x.profile==='building'){approve.disabled=true;message('Ten profil wymaga osobnego wskazania wizytówki Google. Obecnie połączony jest salon płytek.');}
+  const current=records.find(r=>r.sourceId===x.id&&['scheduled','publishing','google_review','published','needs_review','image_error'].includes(r.state));
+  if(current){
+   d.querySelectorAll('input,select,textarea').forEach(el=>el.disabled=true);save.disabled=true;
+   approve.disabled=false;approve.textContent='Zobacz zatwierdzoną wersję';approve.onclick=()=>view(current);
+   message('Ten materiał ma zapisaną wersję w Make. Aby zmienić treść, zdjęcie lub termin, najpierw anuluj termin we wspólnej kolejce.');return;
+  }
   approve.onclick=async()=>{
    approve.disabled=true;save.disabled=true;
    try{
@@ -1840,7 +1854,7 @@ photo.onchange=show;show();
     const image=images[Number(field('postPreviewPhoto').value)];const fileId=image?.finalUrl?.match(/\/d\/([A-Za-z0-9_-]+)/)?.[1];if(!fileId)throw Error('Wybierz zdjęcie z Dysku.');
     const date=warsawDate(field('postPreviewDate').value);if(date.getTime()<Date.now()+120000)throw Error('Wybierz termin co najmniej 2 minuty od teraz.');
     if(!await refresh())throw Error('Nie potwierdzono aktualnej kolejki. Poczekaj chwilę i odśwież ją przed zatwierdzeniem.');
-    const active=records.find(r=>r.sourceId===x.id&&['scheduled','publishing','google_review','published','needs_review'].includes(r.state));
+    const active=records.find(r=>r.sourceId===x.id&&['scheduled','publishing','google_review','published','needs_review','image_error'].includes(r.state));
     if(active){view(active);throw Error('Ten materiał ma już zatwierdzoną wersję. Najpierw anuluj termin lub sprawdź istniejącą publikację.');}
     const payload={sourceId:x.id,jobId:x.jobId||'',profile:'tiles',producer:x.producer||'',collection:x.collection||'',title:field('postPreviewTitle').value.trim(),description:field('postPreviewDescription').value.trim(),keywords:field('postPreviewKeywords').value.trim(),cta:field('postPreviewCta').value.trim(),summary:text,selectedImage:image.finalUrl,driveFileId:fileId,scheduledAt:date.toISOString(),dueEpoch:date.getTime(),confirmPublicImage:true};
     const previous=records.filter(r=>r.sourceId===x.id&&r.state==='cancelled').sort((a,b)=>new Date(b.approvedAt)-new Date(a.approvedAt))[0];
