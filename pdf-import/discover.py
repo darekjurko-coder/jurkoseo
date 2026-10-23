@@ -14,7 +14,9 @@ TECHNICAL=re.compile(r'technic|technical|scheda|certificat|installation|posa',re
 def safe(url,base):
     u=urlparse(url)
     b=urlparse(base)
-    return u.scheme=='https' and u.hostname and (u.hostname==b.hostname or u.hostname.endswith('.'+b.hostname.lstrip('www.'))) and not u.username and not u.password
+    base_host=(b.hostname or '').removeprefix('www.')
+    link_host=(u.hostname or '').removeprefix('www.')
+    return u.scheme=='https' and bool(link_host) and (link_host==base_host or link_host.endswith('.'+base_host)) and not u.username and not u.password
 
 def get_page(s,url):
     response=s.get(url,timeout=TIMEOUT,allow_redirects=True)
