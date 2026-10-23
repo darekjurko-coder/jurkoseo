@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 ROOT=pathlib.Path(__file__).parent
 TIMEOUT=(5,8)
-MAX_PAGES=18
+MAX_PAGES=75
 HEADERS={'User-Agent':'JURKO-PDF-Catalogue-Discovery/1.0 (catalogues for internal reference)'}
 LINK_TERMS=re.compile(r'catalog|download|scarica|pdf|collection|collezion|prodott|product|book|brochure',re.I)
 DOCUMENT_TERMS=re.compile(r'catalog|book|brochure|download|scarica|pdf',re.I)
@@ -28,6 +28,12 @@ def get_page(s,url):
 
 def main():
     results=[];issues=[]
+    collection_folders={}
+    with (ROOT/'collection_folders.csv').open(encoding='utf-8-sig',newline='') as f:
+      for row in csv.DictReader(f):
+        collection_folders.setdefault(row['manufacturer'],[]).append((row['collection'],row['folder_id']))
+    for collections in collection_folders.values():
+      collections.sort(key=lambda x:len(x[0]),reverse=True)
     with (ROOT/'sources.csv').open(encoding='utf-8-sig',newline='') as f: sources=list(csv.DictReader(f))
     with requests.Session() as s:
       s.headers.update(HEADERS)
@@ -43,6 +49,10 @@ def main():
             issues.append((source['manufacturer'],page,type(exc).__name__+': '+str(exc)[:180]))
             continue
           if html is None:continue
+          heading=html.find('h1')
+          page_title=heading.get_text(' ',strip=True) if heading else ''
+          match=next(((name,fid) for name,fid in collection_folders.get(source['manufacturer'],[])
+            if page_title.casefold()==name.casefold() or page_title.casefold().startswith(name.casefold()+' -')),None)
           for a in html.select('a[href]'):
             link=urljoin(page,a.get('href','').strip())
             link=urldefrag(link).url
@@ -51,18 +61,21 @@ def main():
             if re.search(r'\.pdf(?:$|\?)',link,re.I):
               if link in seen_pdf:continue
               seen_pdf.add(link)
-              parent=a.find_parent(['section','article','div'])
-              heading=parent.find(['h1','h2','h3','h4']) if parent else None
-              label=(heading.get_text(' ',strip=True) if heading else title).strip()[:100]
-              technical=bool(TECHNICAL.search(label+' '+title+' '+link))
-              generic=bool(re.search(r'generale|general|workbook|design book|outdoor book',label+' '+title,re.I))
-              kind='technical' if technical else 'general' if generic else 'unclassified'
-              # Do not guess that a PDF belongs to a collection from its filename alone.
-              slug=re.sub(r'[^A-Z0-9]+','_',title.upper()).strip('_')[:45] or 'DOCUMENT'
-              results.append({'manufacturer':source['manufacturer'],'collection':'','kind':kind,
-                'url':link,'folder_id':source['folder_id'],
-                'filename':re.sub(r'[^A-Z0-9]+','_',source['manufacturer'].upper()).strip('_')+'_'+slug+'.pdf'})
-            elif depth<1 and LINK_TERMS.search(title+' '+link) and link not in seen and len(queue)<400:
+              generic=bool(re.search(r'general|generale|workbook|design.book|outdoor.book',title+' '+link,re.I))
+              technical=bool(TECHNICAL.search(title+' '+link))
+              if generic:
+                kind='general';collection='';folder=source['folder_id']
+              elif match and (DOCUMENT_TERMS.search(title+' '+link) or technical):
+                kind='technical' if technical else 'collection'
+                collection,folder=match
+              else:
+                kind='unclassified';collection='';folder=source['folder_id']
+              base_name=collection+' '+(title or link.rsplit('/',1)[-1])
+              slug=re.sub(r'[^A-Z0-9]+','_',base_name.upper()).strip('_')[:75] or 'DOCUMENT'
+              maker=re.sub(r'[^A-Z0-9]+','_',source['manufacturer'].upper()).strip('_')
+              results.append({'manufacturer':source['manufacturer'],'collection':collection,'kind':kind,
+                'url':link,'folder_id':folder,'filename':maker+'_'+slug+'.pdf'})
+            elif depth<2 and LINK_TERMS.search(title+' '+link) and link not in seen and len(queue)<400:
               queue.append((link,depth+1))
         print(source['manufacturer']+': visited '+str(page_count)+' pages',flush=True)
     with (ROOT/'discovered.csv').open('w',encoding='utf-8-sig',newline='') as f:
