@@ -75,7 +75,7 @@ def main():
               maker=re.sub(r'[^A-Z0-9]+','_',source['manufacturer'].upper()).strip('_')
               results.append({'manufacturer':source['manufacturer'],'collection':collection,'kind':kind,
                 'url':link,'folder_id':folder,'filename':maker+'_'+slug+'.pdf'})
-            elif depth<2 and LINK_TERMS.search(title+' '+link) and link not in seen and len(queue)<400:
+            elif depth<2 and (LINK_TERMS.search(title+' '+link) or any(title.casefold()==name.casefold() for name,_ in collection_folders.get(source['manufacturer'],[]))) and link not in seen and len(queue)<400:
               queue.append((link,depth+1))
         print(source['manufacturer']+': visited '+str(page_count)+' pages',flush=True)
     with (ROOT/'discovered.csv').open('w',encoding='utf-8-sig',newline='') as f:
