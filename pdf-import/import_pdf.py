@@ -73,7 +73,9 @@ def main():
             entries.extend(csv.DictReader(f))
     unique={}
     for e in entries:
-        unique.setdefault(e['url'].strip(),e)
+        key=e['url'].strip()
+        if key not in unique or (unique[key]['kind']=='unclassified' and e['kind']!='unclassified'):
+            unique[key]=e
     entries=list(unique.values())
     rows=[]
     try: api=client()
