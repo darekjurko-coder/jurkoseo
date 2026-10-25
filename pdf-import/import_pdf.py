@@ -70,7 +70,10 @@ def main():
     additional=HERE/'discovered.csv'
     if additional.exists():
         with additional.open(encoding='utf-8-sig',newline='') as f:
-            entries.extend(csv.DictReader(f))
+            discovered=list(csv.DictReader(f))
+            for entry in discovered:
+                entry['review_only']='1'
+            entries.extend(discovered)
     unique={}
     for e in entries:
         key=e['url'].strip()
@@ -94,6 +97,10 @@ def main():
         r.update(producent=item['manufacturer'],kolekcja=item['collection'],
           rodzaj_katalogu=item['kind'],adres_zrodlowy=item['url'],status='BLAD')
         try:
+            if item.get('review_only') == '1':
+                r['status']='DO_PRZYPISANIA'
+                r['przyczyna_bledu']='Automatyczne odkrycie wymaga potwierdzenia nazwy kolekcji, rodzaju i folderu; bez przesylania na Drive'
+                continue
             if item['kind'] not in ('general','collection','technical') or (item['kind'] in ('collection','technical') and not item['collection'].strip()):
                 r['status']='DO_PRZYPISANIA'
                 r['przyczyna_bledu']='Link wykryty, brak potwierdzonego rodzaju katalogu i kolekcji; pominięto zapis'
